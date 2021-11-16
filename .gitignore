@@ -348,3 +348,5 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+/eFormAPI/eFormAPI.Web/Plugins/GreateBelt.Pn/net5.0
+/eFormAPI/eFormAPI.Web/Plugins/GreateBelt.Pn/net6.0

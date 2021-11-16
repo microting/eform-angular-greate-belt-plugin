@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31829.152
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GreateBelt.Pn", "GreateBelt.Pn\GreateBelt.Pn.csproj", "{3336F34C-A57A-4423-9A28-6D353E73643D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{BA36DE47-BB4F-4E27-B951-89275D0D817F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GreateBelt.Pn.Test", "GreateBelt.Pn.Test\GreateBelt.Pn.Test.csproj", "{88047D6E-10F3-425C-AEAE-567283ADE16D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3336F34C-A57A-4423-9A28-6D353E73643D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3336F34C-A57A-4423-9A28-6D353E73643D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3336F34C-A57A-4423-9A28-6D353E73643D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3336F34C-A57A-4423-9A28-6D353E73643D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{88047D6E-10F3-425C-AEAE-567283ADE16D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88047D6E-10F3-425C-AEAE-567283ADE16D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88047D6E-10F3-425C-AEAE-567283ADE16D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88047D6E-10F3-425C-AEAE-567283ADE16D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{88047D6E-10F3-425C-AEAE-567283ADE16D} = {BA36DE47-BB4F-4E27-B951-89275D0D817F}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0126E4F9-6701-4AE2-94EB-B6BC8D393B97}
+	EndGlobalSection
+EndGlobal
