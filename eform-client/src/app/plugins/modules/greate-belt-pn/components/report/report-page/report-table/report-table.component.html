@@ -11,55 +11,67 @@
       [tableHeaders]="tableHeaders"
       [stickyHeader]="true"
     ></thead>
-    <tbody id="properiesTableBody">
-      <tr *ngFor="let property of reportModel.entities; let i = index">
-        <td id="propertyId">
-          {{ property.id }}
+    <tbody id="reportCasesTableBody">
+      <tr *ngFor="let reportCase of reportModel.entities; let i = index">
+        <td id="reportCaseId">
+          {{ reportCase.id }}
         </td>
-        <td id="propertyName">
-          {{ property.name }}
+        <td id="reportCaseCustomField1">
+          {{ reportCase.customField1 }}
         </td>
-        <td id="propertyCHR">
-          {{ property.chr }}
+        <td id="reportCaseDoneAt">
+          {{ reportCase.doneAtUserEditable | date }}
         </td>
-        <td id="propertyAddress">
-          {{ property.address }}
+        <td id="reportCaseDoneBy">
+          {{ reportCase.doneBy }}
         </td>
-        <td id="propertyLanguages">
-          {{ getLanguages(property) }}
+        <td id="reportCaseItemName">
+          {{ reportCase.itemName }}
+        </td>
+        <td id="reportCaseArchive">
+          <div class="d-flex flex-row justify-content-center">
+            <button
+              id="archiveReportCaseBtn"
+              class="btn btn-icon mr-2"
+              [ngClass]="{
+                'btn-danger': !reportCase.isArchived,
+                'btn-success': reportCase.isArchived
+              }"
+              mdbTooltip="{{ 'Archive' | translate }}"
+              [disabled]="!reportCase.isArchived"
+              (click)="onShowArchiveCaseModal(reportCase)"
+            >
+              <fa-icon [icon]="'archive'" [fixedWidth]="true"></fa-icon>
+            </button>
+          </div>
         </td>
         <td>
           <div class="d-flex flex-row justify-content-center">
             <button
-              id="showPropertyAreasBtn"
-              class="btn btn-success btn-icon mr-2"
-              mdbTooltip="{{ 'View property areas' | translate }}"
-              [disabled]="!property.isWorkersAssigned"
-              (click)="onShowPropertyAreasModal(property)"
-            >
-              <fa-icon icon="warehouse" [fixedWidth]="true"></fa-icon>
-            </button>
-            <button
-              id="editPropertyAreasBtn"
-              class="btn btn-accent text-black-50 btn-icon mb-2"
-              mdbTooltip="{{ 'Configure property areas' | translate }}"
-              (click)="onShowEditPropertyAreasModal(property)"
-            >
-              <fa-icon icon="cogs" size="lg" [fixedWidth]="true"></fa-icon>
-            </button>
-            <button
-              id="editPropertyBtn"
-              class="btn btn-accent text-black-50 btn-icon mb-2"
-              mdbTooltip="{{ 'Edit property' | translate }}"
-              (click)="onShowEditPropertyModal(property)"
+              mdbBtn
+              class="btn-success btn-icon mb-2"
+              [routerLink]="['/cases/edit/' + reportCase.id + '/' + 1]"
+              mdbTooltip="{{ 'Edit Case' | translate }}"
             >
               <fa-icon icon="pen" size="lg" [fixedWidth]="true"></fa-icon>
             </button>
             <button
-              id="deletePropertyBtn"
-              class="btn btn-danger btn-icon mb-2"
-              mdbTooltip="{{ 'Delete property' | translate }}"
-              (click)="onShowDeletePropertyModal(property)"
+              mdbBtn
+              class="btn-success btn-icon mb-2"
+              (click)="onDownloadPdf(reportCase)"
+              mdbTooltip="{{ 'Download PDF' | translate }}"
+            >
+              <fa-icon
+                icon="file-pdf"
+                size="lg"
+                [fixedWidth]="true"
+              ></fa-icon></button
+            >`
+            <button
+              mdbBtn
+              class="btn-danger btn-icon mb-2"
+              mdbTooltip="{{ 'Delete Case' | translate }}"
+              (click)="onShowRemoveCaseModal(reportCase)"
             >
               <fa-icon icon="trash-alt" size="lg" [fixedWidth]="true"></fa-icon>
             </button>

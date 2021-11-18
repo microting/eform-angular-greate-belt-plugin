@@ -8,11 +8,10 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { EformCasesModule } from 'src/app/common/modules/eform-cases/eform-cases.module';
 import { EformSharedModule } from 'src/app/common/modules/eform-shared/eform-shared.module';
+import { ReportContainerComponent, ReportTableComponent } from './components';
 import { GreateBeltPnRouting } from './greate-belt-pn.routing.module';
 import { GreateBeltPnLayoutComponent } from './layouts';
-import {
-  GreateBeltPnReportService,
-} from './services';
+import { GreateBeltPnReportService } from './services';
 import { greateBeltStoreProviders } from './store-providers.config';
 
 @NgModule({
@@ -31,10 +30,9 @@ import { greateBeltStoreProviders } from './store-providers.config';
   ],
   declarations: [
     GreateBeltPnLayoutComponent,
+    ReportContainerComponent,
+    ReportTableComponent,
   ],
-  providers: [
-    GreateBeltPnReportService,
-    ...greateBeltStoreProviders,
-  ]
+  providers: [GreateBeltPnReportService, ...greateBeltStoreProviders],
 })
 export class GreateBeltPnModule {}
