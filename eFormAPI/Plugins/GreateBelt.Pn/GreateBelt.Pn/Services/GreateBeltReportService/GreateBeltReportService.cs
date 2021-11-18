@@ -84,7 +84,7 @@ namespace GreateBelt.Pn.Services.GreateBeltReportService
                                 .Select(z => z.Value)
                                 .FirstOrDefault(),
                     DoneAtUserEdtiable = x.DoneAtUserModifiable.Value,
-                    DoneBy = x.DoneAt.Value.ToString("yyyy-MM-dd"),
+                    DoneBy = x.Site.Name,
                     IsArchieved = x.IsArchived,
                 })
                 .ToListAsync();
@@ -99,7 +99,7 @@ namespace GreateBelt.Pn.Services.GreateBeltReportService
                 {
                     x.Id,
                     Name = x.NameTranslations
-                        .Where(y => y.LanguageId == 1)
+                        .Where(y => y.LanguageId == 1) //Danish
                         .Select(y => y.Name)
                         .FirstOrDefault(),
                 })
@@ -109,7 +109,7 @@ namespace GreateBelt.Pn.Services.GreateBeltReportService
             {
                 TotalCount = total,
                 Cases = foundCases
-                .Select(x => new GreateBeltReportIndexViewModel
+                .Select(x => new GreateBeltReportIndexModel
                 {
                     Id = x.Id,
                     CustomField1 = x.CustomField1,

@@ -25,6 +25,6 @@ namespace GreateBelt.Pn.Infrastructure.Models.Report.Index
     public class GreateBeltReportIndexResponseModel
     {
         public int TotalCount { get; set; }
-        public List<GreateBeltReportIndexViewModel> Cases { get; set; } = new List<GreateBeltReportIndexViewModel>();
+        public List<GreateBeltReportIndexModel> Cases { get; set; } = new List<GreateBeltReportIndexModel>();
     }
 }

@@ -22,7 +22,7 @@ namespace GreateBelt.Pn.Infrastructure.Models.Report.Index
 {
     using System;
 
-    public class GreateBeltReportIndexViewModel
+    public class GreateBeltReportIndexModel
     {
         public int Id { get; set; }
         public string CustomField1 { get; set; }
