@@ -18,15 +18,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-namespace GreateBelt.Pn.Services.GreateBeltMainService
+namespace GreateBelt.Pn.Services.GreateBeltReportService
 {
     using GreateBelt.Pn.Infrastructure.Models.Report.Index;
     using Microting.eFormApi.BasePn.Infrastructure.Models.API;
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
-    public interface IGreateBeltMainService
+    public interface IGreateBeltReportService
     {
-        Task<OperationDataResult<List<GreateBeltReportIndexViewModel>>> Index(GreateBeltReportIndexRequestModel model);
+        Task<OperationDataResult<GreateBeltReportIndexResponseModel>> Index(GreateBeltReportIndexRequestModel model);
     }
 }

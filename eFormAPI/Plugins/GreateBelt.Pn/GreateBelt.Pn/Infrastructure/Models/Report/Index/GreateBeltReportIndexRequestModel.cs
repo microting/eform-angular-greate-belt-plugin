@@ -22,18 +22,8 @@ namespace GreateBelt.Pn.Infrastructure.Models.Report.Index
 {
     public class GreateBeltReportIndexRequestModel
     {
-        public GreateBeltReportIndexRequestModel()
-        {
-            NameFilter = "";
-            Sort = "";
-            PageSize = 10;
-            Offset = 0;
-        }
-
         public int EformId { get; set; }
         public string NameFilter { get; set; }
-        public string Sort { get; set; }
-        public bool IsSortDsc { get; set; }
         public int PageSize { get; set; }
         public int Offset { get; set; }
     }

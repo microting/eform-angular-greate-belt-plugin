@@ -24,7 +24,7 @@ SOFTWARE.
 
 namespace GreateBelt.Pn.Services.GreateBeltLocalizationService
 {
-    internal interface IGreateBeltLocalizationService
+    public interface IGreateBeltLocalizationService
     {
         string GetString(string key);
 

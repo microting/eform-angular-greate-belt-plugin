@@ -28,7 +28,7 @@ namespace GreateBelt.Pn.Services.GreateBeltLocalizationService
     using Microting.eFormApi.BasePn.Localization.Abstractions;
     using Pn;
 
-    internal class GreateBeltLocalizationService : IGreateBeltLocalizationService
+    public class GreateBeltLocalizationService : IGreateBeltLocalizationService
     {
         private readonly IStringLocalizer _localizer;
 

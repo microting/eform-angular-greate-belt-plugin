@@ -23,22 +23,22 @@ namespace GreateBelt.Pn.Controllers
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using GreateBelt.Pn.Infrastructure.Models.Report.Index;
-    using GreateBelt.Pn.Services.GreateBeltMainService;
+    using GreateBelt.Pn.Services.GreateBeltReportService;
     using Microsoft.AspNetCore.Mvc;
     using Microting.eFormApi.BasePn.Infrastructure.Models.API;
 
-    [Route("api/greate-belt-pn/reports")]
+    [Route("api/greate-belt-pn/report")]
     public class GreateBeltReportController : Controller
     {
-        private readonly IGreateBeltMainService _greateBeltMainService;
-        public GreateBeltReportController(IGreateBeltMainService greateBeltMainService)
+        private readonly IGreateBeltReportService _greateBeltMainService;
+        public GreateBeltReportController(IGreateBeltReportService greateBeltMainService)
         {
             _greateBeltMainService = greateBeltMainService;
         }
 
         [HttpPost]
         [Route("index")]
-        public async Task<OperationDataResult<List<GreateBeltReportIndexViewModel>>> Index([FromBody] GreateBeltReportIndexRequestModel model)
+        public async Task<OperationDataResult<GreateBeltReportIndexResponseModel>> Index([FromBody] GreateBeltReportIndexRequestModel model)
         {
             return await _greateBeltMainService.Index(model);
         }

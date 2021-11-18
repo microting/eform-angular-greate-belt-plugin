@@ -18,18 +18,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-namespace GreateBelt.Pn.Services.GreateBeltMainService
+namespace GreateBelt.Pn.Infrastructure.Models.Report.Index
 {
-    using GreateBelt.Pn.Infrastructure.Models.Report.Index;
-    using Microting.eFormApi.BasePn.Infrastructure.Models.API;
     using System.Collections.Generic;
-    using System.Threading.Tasks;
 
-    public class GreateBeltMainService : IGreateBeltMainService
+    public class GreateBeltReportIndexResponseModel
     {
-        public async Task<OperationDataResult<List<GreateBeltReportIndexViewModel>>> Index(GreateBeltReportIndexRequestModel model)
-        {
-            throw new System.NotImplementedException();
-        }
+        public int TotalCount { get; set; }
+        public List<GreateBeltReportIndexViewModel> Cases { get; set; } = new List<GreateBeltReportIndexViewModel>();
     }
 }

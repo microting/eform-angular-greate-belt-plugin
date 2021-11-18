@@ -26,7 +26,7 @@ namespace GreateBelt.Pn
 {
     using GreateBelt.Pn.Infrastructure.Consts;
     using GreateBelt.Pn.Services.GreateBeltLocalizationService;
-    using GreateBelt.Pn.Services.GreateBeltMainService;
+    using GreateBelt.Pn.Services.GreateBeltReportService;
     using GreateBelt.Pn.Services.RebusService;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.EntityFrameworkCore;
@@ -38,8 +38,10 @@ namespace GreateBelt.Pn
     using Microting.eFormApi.BasePn.Infrastructure.Models.Application;
     using Microting.eFormApi.BasePn.Infrastructure.Models.Application.NavigationMenu;
     using Microting.ItemsPlanningBase.Infrastructure.Data;
+    using Microting.ItemsPlanningBase.Infrastructure.Data.Factories;
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Reflection;
     using System.Text.RegularExpressions;
 
@@ -61,7 +63,7 @@ namespace GreateBelt.Pn
         {
             services.AddSingleton<IRebusService, RebusService>();
             services.AddTransient<IGreateBeltLocalizationService, GreateBeltLocalizationService>();
-            services.AddTransient<IGreateBeltMainService, GreateBeltMainService>();
+            services.AddTransient<IGreateBeltReportService, GreateBeltReportService>();
             services.AddControllers();
         }
 
@@ -80,7 +82,7 @@ namespace GreateBelt.Pn
             var itemsPlannigConnectionString = connectionString.Replace(
                 "eform-angular-greate-belt-plugin",
                 "eform-angular-items-planning-plugin");
-
+            Debugger.Break();
             services.AddDbContext<ItemsPlanningPnDbContext>(o =>
                 o.UseMySql(itemsPlannigConnectionString, new MariaDbServerVersion(
                     new Version(10, 4, 0)), mySqlOptionsAction: builder =>
@@ -88,11 +90,15 @@ namespace GreateBelt.Pn
                         builder.EnableRetryOnFailure();
                         builder.MigrationsAssembly(PluginAssembly().FullName);
                     }));
+
+            var contextFactory = new ItemsPlanningPnContextFactory();
+            var context = contextFactory.CreateDbContext(new[] { itemsPlannigConnectionString });
+            context.Database.Migrate();
         }
 
         public void Configure(IApplicationBuilder appBuilder)
         {
-            var serviceProvider = appBuilder.ApplicationServices;
+/*            var serviceProvider = appBuilder.ApplicationServices;
 
             var rabbitMqHost = "localhost";
 
@@ -103,7 +109,7 @@ namespace GreateBelt.Pn
             }
 
             var rebusService = serviceProvider.GetService<IRebusService>();
-            rebusService.Start(_connectionString, "admin", "password", rabbitMqHost);
+            rebusService.Start(_connectionString, "admin", "password", rabbitMqHost);*/
 
             //_bus = rebusService.GetBus();
         }
