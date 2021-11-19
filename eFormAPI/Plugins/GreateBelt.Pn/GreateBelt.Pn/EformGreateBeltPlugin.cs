@@ -146,14 +146,14 @@ namespace GreateBelt.Pn
                             {
                                 Name = "Øresund: Sporanlæg (Eftersyn og smøring af skinneudtraek - 14 dags) menu",
                                 E2EId = "greate-belt-pn-report-oresund",
-                                Link = "/plugins/greate-belt-pn/report/oresund",
+                                Link = "/plugins/greate-belt-pn/report/oresund/14-dags",
                                 Type = MenuItemTypeEnum.Link,
                                 Position = 0,
                                 MenuTemplate = new PluginMenuTemplateModel
                                 {
                                     Name = "Øresund: Sporanlæg (Eftersyn og smøring af skinneudtraek - 14 dags) menu",
-                                    E2EId = "greate-belt-pn-oresund",
-                                    DefaultLink = "/plugins/greate-belt-pn/report/oresund",
+                                    E2EId = "greate-belt-pn-oresund-14-dags",
+                                    DefaultLink = "/plugins/greate-belt-pn/report/oresund/14-dags",
                                     Permissions = new List<PluginMenuTemplatePermissionModel>
                                     {
                                         new()
@@ -225,14 +225,14 @@ namespace GreateBelt.Pn
                             {
                                 Name = "Greate Belt: Sporanlæg (Eftersyn og smøring af skinneudtraek - 14 dags) menu",
                                 E2EId = "greate-belt-pn-report-storebaelt",
-                                Link = "/plugins/greate-belt-pn/report/storebaelt",
+                                Link = "/plugins/greate-belt-pn/report/storebaelt/14-dags",
                                 Type = MenuItemTypeEnum.Link,
                                 Position = 0,
                                 MenuTemplate = new PluginMenuTemplateModel
                                 {
                                     Name = "Greate Belt: Sporanlæg (Eftersyn og smøring af skinneudtraek - 14 dags) menu",
-                                    E2EId = "greate-belt-pn-storebaelt",
-                                    DefaultLink = "/plugins/greate-belt-pn/report/storebaelt",
+                                    E2EId = "greate-belt-pn-storebaelt-14-dags",
+                                    DefaultLink = "/plugins/greate-belt-pn/report/storebaelt/14-dags",
                                     Permissions = new List<PluginMenuTemplatePermissionModel>
                                     {
                                         new()
@@ -292,15 +292,13 @@ namespace GreateBelt.Pn
                 Name = localizationService.GetString("Øresund"),
                 E2EId = "greate-belt-pn-oresund",
                 Link = "",
-                Guards = new List<string> { GreateBeltClaims.AccessGreateBeltPlugin },
                 MenuItems = new List<MenuItemModel>
                 {
                     new()
                     {
                         Name = localizationService.GetString("Øresund: Sporanlæg (Eftersyn og smøring af skinneudtraek - 14 dags) menu"),
                         E2EId = "greate-belt-pn-report-oresund",
-                        Link = "/plugins/greate-belt-pn/report/oresund",
-                        Guards = new List<string> { GreateBeltClaims.GetOresundReports },
+                        Link = "/plugins/greate-belt-pn/report/oresund/14-dags",
                         Position = 0,
                     },
                 }
@@ -310,15 +308,13 @@ namespace GreateBelt.Pn
                 Name = localizationService.GetString("Greate Belt"),
                 E2EId = "greate-belt-pn-storebaelt",
                 Link = "",
-                Guards = new List<string> { GreateBeltClaims.AccessGreateBeltPlugin },
                 MenuItems = new List<MenuItemModel>
                 {
                     new()
                     {
                         Name = localizationService.GetString("Greate Belt: Sporanlæg (Eftersyn og smøring af skinneudtraek - 14 dags) menu"),
                         E2EId = "greate-belt-pn-report-storebaelt",
-                        Link = "/plugins/greate-belt-pn/report/storebaelt",
-                        Guards = new List<string> { GreateBeltClaims.GetGreatBeltReports },
+                        Link = "/plugins/greate-belt-pn/report/storebaelt/14-dags",
                         Position = 0,
                     },
                 }
