@@ -21,7 +21,7 @@ function createInitialState(): ReportState {
     },
     filters: {
       nameFilter: '',
-      tagIds: [],
+      // tagIds: [],
     },
     totalReportCases: 0,
   };
@@ -32,8 +32,8 @@ const reportPersistStorage = persistState({
   key: 'greateBeltPn',
   preStorageUpdate(storeName, state: ReportState) {
     return {
-      pagination: state.pagination,
-      filters: state.filters,
+      // pagination: state.pagination,
+      // filters: state.filters,
     };
   },
 });

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ReportCaseModel } from 'src/app/plugins/modules/greate-belt-pn/models';
+import { ReportCaseModel } from '../../../models';
 import { ReportStore, ReportQuery } from './';
 import { Observable } from 'rxjs';
 import {
@@ -12,7 +12,6 @@ import { updateTableSort } from 'src/app/common/helpers';
 import { getOffset } from 'src/app/common/helpers/pagination.helper';
 import { map } from 'rxjs/operators';
 import { GreateBeltPnReportService } from '../../../services';
-import { arrayToggle } from '@datorama/akita';
 
 @Injectable({ providedIn: 'root' })
 export class ReportStateService {
@@ -45,7 +44,6 @@ export class ReportStateService {
       .getReport({
         ...this.query.pageSetting.pagination,
         ...this.query.pageSetting.filters,
-        pageIndex: 0,
         eformIds,
       })
       .pipe(
@@ -128,15 +126,6 @@ export class ReportStateService {
         },
       }));
     }
-  }
-
-  updateDescriptionFilter(newDescriptionFilter: string) {
-    this.store.update((state) => ({
-      filters: {
-        ...state.filters,
-        descriptionFilter: newDescriptionFilter,
-      },
-    }));
   }
 
   getPagination(): Observable<PaginationModel> {

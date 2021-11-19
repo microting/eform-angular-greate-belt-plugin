@@ -5,4 +5,5 @@ export class ReportCaseModel {
   doneBy: string;
   itemName: string;
   isArchived: boolean;
+  templateId: number;
 }

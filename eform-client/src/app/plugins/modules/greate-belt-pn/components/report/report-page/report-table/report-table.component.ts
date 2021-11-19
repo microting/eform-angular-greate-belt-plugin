@@ -9,7 +9,6 @@ import {
 import { Paged, TableHeaderElementModel } from 'src/app/common/models';
 import { GreateBeltPnClaims } from '../../../../enums';
 import { ReportCaseModel } from '../../../../models';
-import { applicationLanguages } from 'src/app/common/const';
 
 @Component({
   selector: 'app-report-table',
@@ -22,26 +21,33 @@ export class ReportTableComponent implements OnInit {
   @Output()
   showArchiveCaseModal: EventEmitter<ReportCaseModel> = new EventEmitter<ReportCaseModel>();
   @Output()
-  showDeleteCaseModal: EventEmitter<ReportCaseModel> = new EventEmitter<ReportCaseModel>();
+  showRemoveCaseModal: EventEmitter<ReportCaseModel> = new EventEmitter<ReportCaseModel>();
+  @Output()
+  downloadPdf: EventEmitter<ReportCaseModel> = new EventEmitter<ReportCaseModel>();
 
   tableHeaders: TableHeaderElementModel[] = [
     { name: 'Id', elementId: 'idTableHeader', sortable: false },
-    { name: 'Name', elementId: 'nameTableHeader', sortable: false },
     {
-      name: 'CHR Number',
-      elementId: 'chrNumberTableHeader',
+      name: 'Maximo arbejdsordre nr',
+      elementId: 'customField1TableHeader',
       sortable: false,
     },
     {
-      name: 'Address',
-      elementId: 'addressTableHeader',
+      name: 'Done at',
+      elementId: 'doneAtTableHeader',
       sortable: false,
     },
-    { name: 'Languages', elementId: 'languagesTableHeader', sortable: false },
+    {
+      name: 'Done by',
+      elementId: 'doneByTableHeader',
+      sortable: false,
+    },
+    { name: 'Area', elementId: 'itemPlanningNameTableHeader', sortable: false },
+    { name: 'Status', elementId: 'statusTableHeader', sortable: false },
     { name: 'Actions', elementId: '', sortable: false },
   ];
 
-  get backendConfigurationPnClaims() {
+  get greateBeltPnClaims() {
     return GreateBeltPnClaims;
   }
 
@@ -49,11 +55,15 @@ export class ReportTableComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  onShowDeletePropertyModal(planning: ReportCaseModel) {
-    this.showDeleteCaseModal.emit(planning);
+  onShowRemoveCaseModal(planning: ReportCaseModel) {
+    this.showRemoveCaseModal.emit(planning);
   }
 
-  onShowEditPropertyModal(planning: ReportCaseModel) {
+  onShowArchiveCaseModal(planning: ReportCaseModel) {
     this.showArchiveCaseModal.emit(planning);
+  }
+
+  onDownloadPdf(model: ReportCaseModel) {
+    this.downloadPdf.emit(model);
   }
 }

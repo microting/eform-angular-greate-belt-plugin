@@ -1,4 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute, Route, Router } from '@angular/router';
+import { saveAs } from 'file-saver';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
@@ -7,6 +9,7 @@ import {
   CaseArchiveModalComponent,
   CaseRemoveModalComponent,
 } from 'src/app/common/modules/eform-cases/components';
+import { EFormService } from 'src/app/common/services';
 import { AuthStateService } from 'src/app/common/store';
 import { ReportCaseModel } from 'src/app/plugins/modules/greate-belt-pn/models';
 import { GreateBeltPnClaims } from '../../../../enums';
@@ -26,31 +29,37 @@ export class ReportContainerComponent implements OnInit, OnDestroy {
   caseArchiveModal: CaseArchiveModalComponent;
   nameSearchSubject = new Subject();
   reportModel: Paged<ReportCaseModel> = new Paged<ReportCaseModel>();
+  selectedEformIds: number[] = [];
 
   getReportSub$: Subscription;
+  downloadEformPdf$: Subscription;
+  routeSub$: Subscription;
 
   constructor(
     private reportService: GreateBeltPnReportService,
     public reportStateService: ReportStateService,
-    public authStateService: AuthStateService
+    public authStateService: AuthStateService,
+    private eFormService: EFormService,
+    private route: ActivatedRoute
   ) {
     this.nameSearchSubject.pipe(debounceTime(500)).subscribe((val) => {
       this.reportStateService.updateNameFilter(val.toString());
       this.getReport();
     });
+
+    this.routeSub$ = this.route.queryParamMap.subscribe((params) => {
+      this.selectedEformIds = params.getAll('eformId').map((x) => {
+        return +x;
+      });
+      this.getReport();
+    });
   }
 
-  get greateBeltPnClaims() {
-    return GreateBeltPnClaims;
-  }
-
-  ngOnInit() {
-    this.getReport();
-  }
+  ngOnInit() {}
 
   getReport() {
     this.getReportSub$ = this.reportStateService
-      .getReport([1, 2])
+      .getReport(this.selectedEformIds)
       .subscribe((data) => {
         this.reportModel = data.model;
       });
@@ -84,7 +93,7 @@ export class ReportContainerComponent implements OnInit, OnDestroy {
         doneAt: model.doneAtUserEditable,
         workerName: model.doneBy,
       }),
-      1
+      model.templateId
     );
   }
 
@@ -92,8 +101,17 @@ export class ReportContainerComponent implements OnInit, OnDestroy {
     this.caseArchiveModal.show({
       id: model.id,
       doneAt: model.doneAtUserEditable,
-      templateId: 1,
+      templateId: model.templateId,
       workerName: model.doneBy,
     });
+  }
+
+  onDownloadPdf(model: ReportCaseModel) {
+    this.downloadEformPdf$ = this.eFormService
+      .downloadEformPDF(model.templateId, model.id, 'pdf')
+      .subscribe((data) => {
+        const blob = new Blob([data]);
+        saveAs(blob, `template_${model.templateId}.pdf`);
+      });
   }
 }
