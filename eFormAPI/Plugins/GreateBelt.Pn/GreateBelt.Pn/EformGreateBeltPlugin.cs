@@ -41,7 +41,6 @@ namespace GreateBelt.Pn
     using Microting.ItemsPlanningBase.Infrastructure.Data.Factories;
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Reflection;
     using System.Text.RegularExpressions;
 
@@ -82,7 +81,7 @@ namespace GreateBelt.Pn
             var itemsPlannigConnectionString = connectionString.Replace(
                 "eform-angular-greate-belt-plugin",
                 "eform-angular-items-planning-plugin");
-            Debugger.Break();
+
             services.AddDbContext<ItemsPlanningPnDbContext>(o =>
                 o.UseMySql(itemsPlannigConnectionString, new MariaDbServerVersion(
                     new Version(10, 4, 0)), mySqlOptionsAction: builder =>
