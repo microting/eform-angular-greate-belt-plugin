@@ -5,7 +5,7 @@ import { ApiBaseService } from 'src/app/common/services';
 import { ReportCaseModel, ReportRequestModel } from '../models';
 
 export let GreateBeltPnPropertiesMethods = {
-  ReportIndex: 'api/greate-belt-pn/report/index',
+  ReportIndex: 'api/greate-belt-pn/report',
 };
 
 @Injectable({

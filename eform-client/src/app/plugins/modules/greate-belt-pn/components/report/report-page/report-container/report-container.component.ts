@@ -65,7 +65,9 @@ export class ReportContainerComponent implements OnInit, OnDestroy {
     this.getReportSub$ = this.reportStateService
       .getReport(this.selectedEformIds)
       .subscribe((data) => {
-        this.reportModel = data.model;
+        if (data && data.success) {
+          this.reportModel = data.model;
+        }
       });
   }
 
