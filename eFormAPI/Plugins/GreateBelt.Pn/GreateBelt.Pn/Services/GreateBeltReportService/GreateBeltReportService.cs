@@ -20,17 +20,19 @@ SOFTWARE.
 
 namespace GreateBelt.Pn.Services.GreateBeltReportService
 {
-    using GreateBelt.Pn.Infrastructure.Models.Report.Index;
-    using GreateBelt.Pn.Services.GreateBeltLocalizationService;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using GreateBeltLocalizationService;
+    using Infrastructure.Models.Report.Index;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Logging;
     using Microting.eFormApi.BasePn.Abstractions;
     using Microting.eFormApi.BasePn.Infrastructure.Helpers;
     using Microting.eFormApi.BasePn.Infrastructure.Models.API;
+    using Microting.eFormApi.BasePn.Infrastructure.Models.Common;
     using Microting.ItemsPlanningBase.Infrastructure.Data;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
 
     public class GreateBeltReportService : IGreateBeltReportService
     {
@@ -54,10 +56,12 @@ namespace GreateBelt.Pn.Services.GreateBeltReportService
             _core = core;
         }
 
-        public async Task<OperationDataResult<GreateBeltReportIndexResponseModel>> Index(GreateBeltReportIndexRequestModel model)
+        public async Task<OperationDataResult<Paged<GreateBeltReportIndexModel>>> Index(GreateBeltReportIndexRequestModel model)
         {
-            var core = await _core.GetCore();
-            await using var sdkDbContext = core.DbContextHelper.GetDbContext();
+            try
+            {
+                var core = await _core.GetCore();
+                var sdkDbContext = core.DbContextHelper.GetDbContext();
 
             var fieldIds = new List<int>();
 
@@ -80,7 +84,7 @@ namespace GreateBelt.Pn.Services.GreateBeltReportService
                 .Skip(model.Offset)
                 .Take(model.PageSize);
 
-            var total = await casesQuery.Select(x => x.Id).CountAsync();
+                var total = await casesQuery.Select(x => x.Id).CountAsync();
 
             var foundCases = await casesQuery
                 .Select(x => new
@@ -93,42 +97,50 @@ namespace GreateBelt.Pn.Services.GreateBeltReportService
                 })
                 .ToListAsync();
 
-            var foundCaseIds = foundCases.Select(x => x.Id).ToList();
+                var foundCaseIds = foundCases.Select(x => x.Id).ToList();
 
-            var allFieldValues = core.Advanced_FieldValueReadList(foundCaseIds, currentLanguage);
+                //var allFieldValues = core.Advanced_FieldValueReadList(foundCaseIds, currentLanguage);
 
-            var foundPlanningInfo = await _itemsPlanningPnDbContext.Plannings
-                .Where(planning => planning.PlanningCases.Select(y => y.MicrotingSdkCaseId).Any(caseId => foundCaseIds.Contains(caseId)))
-                .Select(x => new
+                var foundPlanningInfo = await _itemsPlanningPnDbContext.Plannings
+                    .Where(planning => planning.PlanningCases.Select(y => y.MicrotingSdkCaseId)
+                        .Any(caseId => foundCaseIds.Contains(caseId)))
+                    .Select(x => new
+                    {
+                        x.Id,
+                        Name = x.NameTranslations
+                            .Where(y => y.LanguageId == 1) //Danish
+                            .Select(y => y.Name)
+                            .FirstOrDefault(),
+                    })
+                    .ToListAsync();
+
+                var result = new Paged<GreateBeltReportIndexModel>
                 {
-                    x.Id,
-                    Name = x.NameTranslations
-                        .Where(y => y.LanguageId == 1) //Danish
-                        .Select(y => y.Name)
-                        .FirstOrDefault(),
-                })
-                .ToListAsync();
+                    Total = total,
+                    Entities = foundCases
+                        .Select(x => new GreateBeltReportIndexModel
+                        {
+                            Id = x.Id,
+                            CustomField1 = x.CustomField1,
+                            DoneAtUserEdtiable = x.DoneAtUserEdtiable,
+                            DoneBy = x.DoneBy,
+                            ItemName = foundPlanningInfo
+                                .Where(y => y.Id == x.Id)
+                                .Select(y => y.Name)
+                                .FirstOrDefault(),
+                            IsArchieved = x.IsArchieved,
+                        })
+                        .ToList(),
+                };
 
-            var result = new GreateBeltReportIndexResponseModel
+                return new OperationDataResult<Paged<GreateBeltReportIndexModel>>(true, result);
+            }
+            catch (Exception e)
             {
-                TotalCount = total,
-                Cases = foundCases
-                .Select(x => new GreateBeltReportIndexModel
-                {
-                    Id = x.Id,
-                    CustomField1 = x.CustomField1,
-                    DoneAtUserEdtiable = x.DoneAtUserEdtiable,
-                    DoneBy = x.DoneBy,
-                    ItemName = foundPlanningInfo
-                        .Where(y => y.Id == x.Id)
-                        .Select(y => y.Name)
-                        .FirstOrDefault(),
-                    IsArchieved = x.IsArchieved,
-                })
-                .ToList(),
-            };
-
-            return new OperationDataResult<GreateBeltReportIndexResponseModel>(true, result);
+                _logger.LogError(e, $"User {_userService.GetCurrentUserFullName()} logged in from GreateBeltReportService.Index");
+                return new OperationDataResult<Paged<GreateBeltReportIndexModel>>(false,
+                    _localizationService.GetString("ErrorWhileReadCases"));
+            }
         }
     }
 }

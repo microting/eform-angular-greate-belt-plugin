@@ -26,7 +26,6 @@ namespace GreateBelt.Pn.Services.GreateBeltLocalizationService
 {
     using Microsoft.Extensions.Localization;
     using Microting.eFormApi.BasePn.Localization.Abstractions;
-    using Pn;
 
     public class GreateBeltLocalizationService : IGreateBeltLocalizationService
     {

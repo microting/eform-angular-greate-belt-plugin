@@ -24,10 +24,9 @@ SOFTWARE.
 
 namespace GreateBelt.Pn
 {
-    using GreateBelt.Pn.Infrastructure.Consts;
-    using GreateBelt.Pn.Services.GreateBeltLocalizationService;
-    using GreateBelt.Pn.Services.GreateBeltReportService;
-    using GreateBelt.Pn.Services.RebusService;
+    using System;
+    using System.Collections.Generic;
+    using System.Reflection;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
@@ -43,6 +42,9 @@ namespace GreateBelt.Pn
     using System.Collections.Generic;
     using System.Reflection;
     using System.Text.RegularExpressions;
+    using Services.GreateBeltLocalizationService;
+    using Services.GreateBeltReportService;
+    using Services.RebusService;
 
     public class EformGreateBeltPlugin : IEformPlugin
     {
@@ -81,7 +83,6 @@ namespace GreateBelt.Pn
             var itemsPlannigConnectionString = connectionString.Replace(
                 "eform-angular-greate-belt-plugin",
                 "eform-angular-items-planning-plugin");
-
             services.AddDbContext<ItemsPlanningPnDbContext>(o =>
                 o.UseMySql(itemsPlannigConnectionString, new MariaDbServerVersion(
                     new Version(10, 4, 0)), mySqlOptionsAction: builder =>
@@ -141,14 +142,14 @@ namespace GreateBelt.Pn
                             {
                                 Name = "Øresund: Sporanlæg (Eftersyn og smøring af skinneudtraek - 14 dags) menu",
                                 E2EId = "greate-belt-pn-report-oresund",
-                                Link = "/plugins/greate-belt-pn/report/oresund/14-dags?eformId=11",
+                                Link = "/plugins/greate-belt-pn/report/oresund/14-dags",
                                 Type = MenuItemTypeEnum.Link,
                                 Position = 0,
                                 MenuTemplate = new PluginMenuTemplateModel
                                 {
                                     Name = "Øresund: Sporanlæg (Eftersyn og smøring af skinneudtraek - 14 dags) menu",
                                     E2EId = "greate-belt-pn-oresund-14-dags",
-                                    DefaultLink = "/plugins/greate-belt-pn/report/oresund/14-dags?eformId=11",
+                                    DefaultLink = "/plugins/greate-belt-pn/report/oresund/14-dags",
                                     Translations = new List<PluginMenuTranslationModel>
                                     {
                                         new()
@@ -211,14 +212,14 @@ namespace GreateBelt.Pn
                             {
                                 Name = "Greate Belt: Sporanlæg (Eftersyn og smøring af skinneudtraek - 14 dags) menu",
                                 E2EId = "greate-belt-pn-report-storebaelt",
-                                Link = "/plugins/greate-belt-pn/report/storebaelt/14-dags?eformId=11",
+                                Link = "/plugins/greate-belt-pn/report/storebaelt/14-dags",
                                 Type = MenuItemTypeEnum.Link,
                                 Position = 0,
                                 MenuTemplate = new PluginMenuTemplateModel
                                 {
                                     Name = "Greate Belt: Sporanlæg (Eftersyn og smøring af skinneudtraek - 14 dags) menu",
                                     E2EId = "greate-belt-pn-storebaelt-14-dags",
-                                    DefaultLink = "/plugins/greate-belt-pn/report/storebaelt/14-dags?eformId=11",
+                                    DefaultLink = "/plugins/greate-belt-pn/report/storebaelt/14-dags",
                                     Translations = new List<PluginMenuTranslationModel>
                                     {
                                         new()
