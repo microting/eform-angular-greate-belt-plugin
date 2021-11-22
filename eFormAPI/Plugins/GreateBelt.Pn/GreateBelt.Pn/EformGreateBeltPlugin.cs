@@ -42,6 +42,9 @@ namespace GreateBelt.Pn
     using System.Collections.Generic;
     using System.Reflection;
     using System.Text.RegularExpressions;
+    using Services.GreateBeltLocalizationService;
+    using Services.GreateBeltReportService;
+    using Services.RebusService;
 
     public class EformGreateBeltPlugin : IEformPlugin
     {
