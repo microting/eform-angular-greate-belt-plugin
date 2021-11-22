@@ -41,7 +41,6 @@ namespace GreateBelt.Pn
     using Microting.ItemsPlanningBase.Infrastructure.Data.Factories;
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Reflection;
     using System.Text.RegularExpressions;
 
@@ -89,10 +88,6 @@ namespace GreateBelt.Pn
                         builder.EnableRetryOnFailure();
                         builder.MigrationsAssembly(PluginAssembly().FullName);
                     }));
-
-            var contextFactory = new ItemsPlanningPnContextFactory();
-            var context = contextFactory.CreateDbContext(new[] { itemsPlannigConnectionString });
-            context.Database.Migrate();
         }
 
         public void Configure(IApplicationBuilder appBuilder)
