@@ -1,4 +1,4 @@
-﻿/*
+/*
 The MIT License (MIT)
 Copyright (c) 2007 - 2021 Microting A/S
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -100,11 +100,23 @@ namespace GreateBelt.Pn.Services.GreateBeltReportService
                     })
                     .ToListAsync();
 
+                var foundCaseIds = foundCases.Select(x => x.Id).ToList();
+
                 //var allFieldValues = core.Advanced_FieldValueReadList(foundCaseIds, currentLanguage);
 
-                var foundPlanningInfo = await _itemsPlanningPnDbContext.Plannings
+                var foundPlanningCasesSiteInfo = await _itemsPlanningPnDbContext.PlanningCaseSites
+                    //.Where(x => x.WorkflowState != Constants.WorkflowStates.Removed)
+                    .Where(x => model.EformIds.Contains(x.MicrotingSdkeFormId) && foundCaseIds.Contains(x.MicrotingSdkCaseId))
+                    .Select(x => new
+                    {
+                        x.PlanningId,
+                        x.MicrotingSdkCaseId,
+                    })
+                    .ToListAsync();
+
+                var plannings = await _itemsPlanningPnDbContext.Plannings
+                    .Where(x => foundPlanningCasesSiteInfo.Select(y => y.PlanningId).Contains(x.Id))
                     .Where(x => x.WorkflowState != Constants.WorkflowStates.Removed)
-                    .Where(planning => planning.PlanningCases.Any(y => model.EformIds.Contains(y.MicrotingSdkeFormId)))
                     .Select(x => new
                     {
                         x.Id,
@@ -114,6 +126,15 @@ namespace GreateBelt.Pn.Services.GreateBeltReportService
                             .FirstOrDefault(),
                     })
                     .ToListAsync();
+
+                var joined = plannings
+                    .Join(foundPlanningCasesSiteInfo, arg => arg.Id, arg => arg.PlanningId,
+                        (x, y) => new
+                        {
+                            x.Name,
+                            y.MicrotingSdkCaseId,
+                        })
+                    .ToList();
 
                 var result = new Paged<GreateBeltReportIndexModel>
                 {
@@ -125,8 +146,8 @@ namespace GreateBelt.Pn.Services.GreateBeltReportService
                             CustomField1 = x.CustomField1,
                             DoneAtUserEditable = x.DoneAtUserEditable,
                             DoneBy = x.DoneBy,
-                            ItemName = foundPlanningInfo
-                                .Where(y => y.Id == x.Id)
+                            ItemName = joined
+                                .Where(y => y.MicrotingSdkCaseId == x.Id)
                                 .Select(y => y.Name)
                                 .FirstOrDefault(),
                             IsArchived = x.IsArchieved,
