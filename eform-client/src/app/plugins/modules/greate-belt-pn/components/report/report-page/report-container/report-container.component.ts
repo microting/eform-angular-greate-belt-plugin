@@ -40,19 +40,23 @@ export class ReportContainerComponent implements OnInit, OnDestroy {
     public reportStateService: ReportStateService,
     public authStateService: AuthStateService,
     private eFormService: EFormService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {
     this.nameSearchSubject.pipe(debounceTime(500)).subscribe((val) => {
       this.reportStateService.updateNameFilter(val.toString());
       this.getReport();
     });
 
-    this.routeSub$ = this.route.queryParamMap.subscribe((params) => {
-      this.selectedEformIds = params.getAll('eformId').map((x) => {
-        return +x;
-      });
-      this.getReport();
-    });
+    if (this.router.url.indexOf('/oresund/14-dags') > -1) {
+      this.selectedEformIds = [11];
+    }
+
+    if (this.router.url.indexOf('/storebaelt/14-dags') > -1) {
+      this.selectedEformIds = [11];
+    }
+
+    this.getReport();
   }
 
   ngOnInit() {}
