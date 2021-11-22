@@ -59,15 +59,22 @@ namespace GreateBelt.Pn.Services.GreateBeltReportService
             var core = await _core.GetCore();
             await using var sdkDbContext = core.DbContextHelper.GetDbContext();
 
-            var fieldId = sdkDbContext.Fields
-                .Where(x => x.CheckListId == model.EformId)
-                .Select(x => x.Id)
-                .FirstOrDefault();
+            var fieldIds = new List<int>();
+
+            foreach (var eform in model.EformIds)
+            {
+                var fieldId = sdkDbContext.Fields
+                                .Where(x => eform + 1 == x.CheckListId.Value)
+                                .Select(x => x.Id)
+                                .FirstOrDefault();
+                fieldIds.Add(fieldId);
+            }
+
             var currentLanguage = await _userService.GetCurrentUserLanguage();
             var nameFields = new List<string> { "Id", "Value", "DoneAtUserModifiable", "DoneAt" };
 
             var casesQuery = sdkDbContext.Cases
-                .Where(x => x.CheckListId == model.EformId);
+                .Where(x => model.EformIds.Contains(x.CheckListId.Value));
             casesQuery = QueryHelper.AddFilterToQuery(casesQuery, nameFields, model.NameFilter);
             casesQuery = casesQuery
                 .Skip(model.Offset)
@@ -79,11 +86,8 @@ namespace GreateBelt.Pn.Services.GreateBeltReportService
                 .Select(x => new
                 {
                     Id = x.Id,
-                    CustomField1 = sdkDbContext.FieldValues
-                                .Where(z => z.FieldId == fieldId && z.CaseId == x.Id)
-                                .Select(z => z.Value)
-                                .FirstOrDefault(),
-                    DoneAtUserEdtiable = x.DoneAtUserModifiable.Value,
+                    CustomField1 = x.FieldValue1,
+                    DoneAtUserEdtiable = x.DoneAtUserModifiable,
                     DoneBy = x.Site.Name,
                     IsArchieved = x.IsArchived,
                 })

@@ -20,9 +20,11 @@ SOFTWARE.
 
 namespace GreateBelt.Pn.Infrastructure.Models.Report.Index
 {
+    using System.Collections.Generic;
+
     public class GreateBeltReportIndexRequestModel
     {
-        public int EformId { get; set; }
+        public List<int> EformIds { get; set; } = new List<int>();
         public string NameFilter { get; set; }
         public int PageSize { get; set; }
         public int Offset { get; set; }
