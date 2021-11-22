@@ -20,10 +20,11 @@ SOFTWARE.
 
 namespace GreateBelt.Pn.Infrastructure.Models.Report.Index
 {
-    public class GreateBeltReportIndexRequestModel
+    using Microting.eFormApi.BasePn.Infrastructure.Models.Common;
+
+    public class GreateBeltReportIndexRequestModel: FilterAndSortModel
     {
         public int EformId { get; set; }
-        public string NameFilter { get; set; }
         public int PageSize { get; set; }
         public int Offset { get; set; }
     }
