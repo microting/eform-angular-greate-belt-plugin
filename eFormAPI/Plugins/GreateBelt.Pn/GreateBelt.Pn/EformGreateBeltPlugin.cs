@@ -24,10 +24,9 @@ SOFTWARE.
 
 namespace GreateBelt.Pn
 {
-    using GreateBelt.Pn.Infrastructure.Consts;
-    using GreateBelt.Pn.Services.GreateBeltLocalizationService;
-    using GreateBelt.Pn.Services.GreateBeltReportService;
-    using GreateBelt.Pn.Services.RebusService;
+    using System;
+    using System.Collections.Generic;
+    using System.Reflection;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;

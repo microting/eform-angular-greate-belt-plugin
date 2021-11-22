@@ -28,7 +28,7 @@ namespace GreateBelt.Pn.Infrastructure.Consts
     public static class GreateBeltClaims
     {
         public const string AccessGreateBeltPlugin = "great_belt_plugin_access";
-        public const string GetGreatBeltReports = "great_belt_reports_get";
-        public const string GetOresundReports = "oresund_reports_get";
+        //public const string GetGreatBeltReports = "great_belt_reports_get";
+        //public const string GetOresundReports = "oresund_reports_get";
     }
 }

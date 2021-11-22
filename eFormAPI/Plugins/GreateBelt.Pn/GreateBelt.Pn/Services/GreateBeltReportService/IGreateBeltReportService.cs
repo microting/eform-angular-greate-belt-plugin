@@ -20,13 +20,13 @@ SOFTWARE.
 
 namespace GreateBelt.Pn.Services.GreateBeltReportService
 {
-    using GreateBelt.Pn.Infrastructure.Models.Report.Index;
-    using Microting.eFormApi.BasePn.Infrastructure.Models.API;
-    using System.Collections.Generic;
     using System.Threading.Tasks;
+    using Infrastructure.Models.Report.Index;
+    using Microting.eFormApi.BasePn.Infrastructure.Models.API;
+    using Microting.eFormApi.BasePn.Infrastructure.Models.Common;
 
     public interface IGreateBeltReportService
     {
-        Task<OperationDataResult<GreateBeltReportIndexResponseModel>> Index(GreateBeltReportIndexRequestModel model);
+        Task<OperationDataResult<Paged<GreateBeltReportIndexModel>>> Index(GreateBeltReportIndexRequestModel model);
     }
 }
