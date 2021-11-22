@@ -26,9 +26,9 @@ namespace GreateBelt.Pn.Infrastructure.Models.Report.Index
     {
         public int Id { get; set; }
         public string CustomField1 { get; set; }
-        public DateTime? DoneAtUserEdtiable { get; set; }
+        public DateTime? DoneAtUserEditable { get; set; }
         public string DoneBy { get; set; } 
         public string ItemName { get; set; }
-        public bool IsArchieved { get; set; }
+        public bool IsArchived { get; set; }
     }
 }

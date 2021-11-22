@@ -28,6 +28,7 @@ namespace GreateBelt.Pn.Services.GreateBeltReportService
     using Infrastructure.Models.Report.Index;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Logging;
+    using Microting.eForm.Infrastructure.Constants;
     using Microting.eFormApi.BasePn.Abstractions;
     using Microting.eFormApi.BasePn.Infrastructure.Helpers;
     using Microting.eFormApi.BasePn.Infrastructure.Models.API;
@@ -63,47 +64,47 @@ namespace GreateBelt.Pn.Services.GreateBeltReportService
                 var core = await _core.GetCore();
                 var sdkDbContext = core.DbContextHelper.GetDbContext();
 
-            var fieldIds = new List<int>();
+                var fieldIds = new List<int>();
 
-            foreach (var eform in model.EformIds)
-            {
-                var fieldId = sdkDbContext.Fields
-                                .Where(x => eform + 1 == x.CheckListId.Value)
-                                .Select(x => x.Id)
-                                .FirstOrDefault();
-                fieldIds.Add(fieldId);
-            }
+                foreach (var eform in model.EformIds)
+                {
+                    var fieldId = sdkDbContext.Fields
+                                    .Where(x => eform + 1 == x.CheckListId)
+                                    .Where(x => x.WorkflowState != Constants.WorkflowStates.Removed)
+                                    .Select(x => x.Id)
+                                    .FirstOrDefault();
+                    fieldIds.Add(fieldId);
+                }
 
-            var currentLanguage = await _userService.GetCurrentUserLanguage();
-            var nameFields = new List<string> { "Id", "Value", "DoneAtUserModifiable", "DoneAt" };
+                //var currentLanguage = await _userService.GetCurrentUserLanguage();
+                var nameFields = new List<string> { "Id", "Value", "DoneAtUserModifiable", "DoneAt" };
 
-            var casesQuery = sdkDbContext.Cases
-                .Where(x => model.EformIds.Contains(x.CheckListId.Value));
-            casesQuery = QueryHelper.AddFilterToQuery(casesQuery, nameFields, model.NameFilter);
-            casesQuery = casesQuery
-                .Skip(model.Offset)
-                .Take(model.PageSize);
+                var casesQuery = sdkDbContext.Cases
+                    .Where(x => x.WorkflowState != Constants.WorkflowStates.Removed)
+                    .Where(x => model.EformIds.Contains(x.CheckListId.Value));
+                casesQuery = QueryHelper.AddFilterToQuery(casesQuery, nameFields, model.NameFilter);
 
                 var total = await casesQuery.Select(x => x.Id).CountAsync();
+                casesQuery = casesQuery
+                    .Skip(model.Offset)
+                    .Take(model.PageSize);
 
-            var foundCases = await casesQuery
-                .Select(x => new
-                {
-                    Id = x.Id,
-                    CustomField1 = x.FieldValue1,
-                    DoneAtUserEdtiable = x.DoneAtUserModifiable,
-                    DoneBy = x.Site.Name,
-                    IsArchieved = x.IsArchived,
-                })
-                .ToListAsync();
-
-                var foundCaseIds = foundCases.Select(x => x.Id).ToList();
+                var foundCases = await casesQuery
+                    .Select(x => new
+                    {
+                        x.Id,
+                        CustomField1 = x.FieldValue1,
+                        DoneAtUserEditable = x.DoneAtUserModifiable,
+                        DoneBy = x.SiteId == null ? "" : x.Site.Name,
+                        IsArchieved = x.IsArchived,
+                    })
+                    .ToListAsync();
 
                 //var allFieldValues = core.Advanced_FieldValueReadList(foundCaseIds, currentLanguage);
 
                 var foundPlanningInfo = await _itemsPlanningPnDbContext.Plannings
-                    .Where(planning => planning.PlanningCases.Select(y => y.MicrotingSdkCaseId)
-                        .Any(caseId => foundCaseIds.Contains(caseId)))
+                    .Where(x => x.WorkflowState != Constants.WorkflowStates.Removed)
+                    .Where(planning => planning.PlanningCases.Any(y => model.EformIds.Contains(y.MicrotingSdkeFormId)))
                     .Select(x => new
                     {
                         x.Id,
@@ -122,13 +123,13 @@ namespace GreateBelt.Pn.Services.GreateBeltReportService
                         {
                             Id = x.Id,
                             CustomField1 = x.CustomField1,
-                            DoneAtUserEdtiable = x.DoneAtUserEdtiable,
+                            DoneAtUserEditable = x.DoneAtUserEditable,
                             DoneBy = x.DoneBy,
                             ItemName = foundPlanningInfo
                                 .Where(y => y.Id == x.Id)
                                 .Select(y => y.Name)
                                 .FirstOrDefault(),
-                            IsArchieved = x.IsArchieved,
+                            IsArchived = x.IsArchieved,
                         })
                         .ToList(),
                 };
