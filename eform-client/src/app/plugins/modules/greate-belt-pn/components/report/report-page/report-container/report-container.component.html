@@ -1,0 +1,47 @@
+<eform-subheader></eform-subheader>
+
+<div class="container-fluid">
+  <div class="row pl-1">
+    <div class="col-md-2">
+      <div class="md-form">
+        <input
+          mdbInput
+          [ngModel]="reportStateService.getNameFilter() | async"
+          (ngModelChange)="onNameFilterChanged($event)"
+          type="text"
+          class="form-control"
+          id="labelInput"
+        />
+        <label for="labelInput">{{ 'Search' | translate }}</label>
+      </div>
+    </div>
+  </div>
+  <app-report-table
+    [reportModel]="reportModel"
+    (showRemoveCaseModal)="showRemoveCaseModal($event)"
+    (showArchiveCaseModal)="showArchiveCaseModal($event)"
+    (downloadPdf)="onDownloadPdf($event)"
+  ></app-report-table>
+  <div class="row justify-content-between mr-2 ml-2">
+    <div class="col-md-1 col-sm-3">
+      <eform-page-size
+        [pageSize]="reportStateService.getPageSize() | async"
+        (onPageSizeChanged)="onPageSizeChanged($event)"
+      >
+      </eform-page-size>
+    </div>
+    <div class="col-md-4 ml-auto d-flex justify-content-end p-2">
+      <eform-pagination
+        [pagination]="reportStateService.getPagination() | async"
+        (onPageChanged)="changePage($event)"
+      ></eform-pagination>
+    </div>
+  </div>
+</div>
+<app-case-archive-modal
+  #caseArchiveModal
+  (caseArchived)="getReport()"
+></app-case-archive-modal>
+
+<app-case-remove-modal #caseRemoveModal (onCaseDeleted)="getReport()">
+</app-case-remove-modal>
