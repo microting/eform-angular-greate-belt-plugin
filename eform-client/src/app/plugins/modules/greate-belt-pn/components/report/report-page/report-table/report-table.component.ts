@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 import { Paged, TableHeaderElementModel } from 'src/app/common/models';
 import { GreateBeltPnClaims } from '../../../../enums';
+import { ReportStateService } from '../../store';
 import { ReportCaseModel } from '../../../../models';
 
 @Component({
@@ -24,26 +25,31 @@ export class ReportTableComponent implements OnInit {
   showRemoveCaseModal: EventEmitter<ReportCaseModel> = new EventEmitter<ReportCaseModel>();
   @Output()
   downloadPdf: EventEmitter<ReportCaseModel> = new EventEmitter<ReportCaseModel>();
+  @Output()
+  sortChange: EventEmitter<void> = new EventEmitter<void>();
 
   tableHeaders: TableHeaderElementModel[] = [
-    { name: 'Id', elementId: 'idTableHeader', sortable: false },
+    { name: 'Id', elementId: 'idTableHeader', sortable: true },
     {
-      name: 'Maximo arbejdsordre nr',
+      name: 'FieldValue1',
       elementId: 'customField1TableHeader',
-      sortable: false,
+      sortable: true,
+      visibleName: "Maximo arbejdsordre nr",
     },
     {
-      name: 'Done at',
+      name: 'DoneAtUserModifiable',
       elementId: 'doneAtTableHeader',
-      sortable: false,
+      sortable: true,
+      visibleName: "Done at",
     },
     {
-      name: 'Done by',
+      name: 'Name',
       elementId: 'doneByTableHeader',
-      sortable: false,
+      sortable: true,
+      visibleName: "Done by'",
     },
-    { name: 'Area', elementId: 'itemPlanningNameTableHeader', sortable: false },
-    { name: 'Status', elementId: 'statusTableHeader', sortable: false },
+    { name: 'ItemName', elementId: 'itemPlanningNameTableHeader', sortable: true, visibleName: "Area" },
+    { name: 'IsArchived', elementId: 'statusTableHeader', sortable: true, visibleName: "Status" },
     { name: 'Actions', elementId: '', sortable: false },
   ];
 
@@ -51,7 +57,7 @@ export class ReportTableComponent implements OnInit {
     return GreateBeltPnClaims;
   }
 
-  constructor() {}
+  constructor(public reportStateService: ReportStateService) {}
 
   ngOnInit(): void {}
 
@@ -66,4 +72,10 @@ export class ReportTableComponent implements OnInit {
   onDownloadPdf(model: ReportCaseModel) {
     this.downloadPdf.emit(model);
   }
+
+  sortTable(sort: string) {
+    this.reportStateService.onSortTable(sort);
+    this.sortChange.emit();
+  }
+
 }

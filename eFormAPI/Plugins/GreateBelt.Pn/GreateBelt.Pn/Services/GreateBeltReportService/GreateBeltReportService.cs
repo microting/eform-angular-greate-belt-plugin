@@ -82,7 +82,7 @@ namespace GreateBelt.Pn.Services.GreateBeltReportService
                 var casesQuery = sdkDbContext.Cases
                     .Where(x => x.WorkflowState != Constants.WorkflowStates.Removed)
                     .Where(x => model.EformIds.Contains(x.CheckListId.Value));
-                casesQuery = QueryHelper.AddFilterToQuery(casesQuery, nameFields, model.NameFilter);
+                casesQuery = QueryHelper.AddFilterAndSortToQuery(casesQuery, model, nameFields);
 
                 var total = await casesQuery.Select(x => x.Id).CountAsync();
                 casesQuery = casesQuery
