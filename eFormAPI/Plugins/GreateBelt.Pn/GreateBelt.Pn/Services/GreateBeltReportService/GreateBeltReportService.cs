@@ -82,7 +82,15 @@ namespace GreateBelt.Pn.Services.GreateBeltReportService
                 var casesQuery = sdkDbContext.Cases
                     .Where(x => x.WorkflowState != Constants.WorkflowStates.Removed)
                     .Where(x => model.EformIds.Contains(x.CheckListId.Value));
-                casesQuery = QueryHelper.AddFilterAndSortToQuery(casesQuery, model, nameFields);
+
+                if (model.Sort == "Name" || model.Sort == "ItemName")
+                {
+                    casesQuery = QueryHelper.AddFilterToQuery(casesQuery, nameFields, model.NameFilter);
+                }
+                else
+                {
+                    casesQuery = QueryHelper.AddFilterAndSortToQuery(casesQuery, model, nameFields);
+                }
 
                 var total = await casesQuery.Select(x => x.Id).CountAsync();
                 casesQuery = casesQuery
@@ -140,20 +148,56 @@ namespace GreateBelt.Pn.Services.GreateBeltReportService
                 {
                     Total = total,
                     Entities = foundCases
-                        .Select(x => new GreateBeltReportIndexModel
-                        {
-                            Id = x.Id,
-                            CustomField1 = x.CustomField1,
-                            DoneAtUserEditable = x.DoneAtUserEditable,
-                            DoneBy = x.DoneBy,
-                            ItemName = joined
-                                .Where(y => y.MicrotingSdkCaseId == x.Id)
-                                .Select(y => y.Name)
-                                .FirstOrDefault(),
-                            IsArchived = x.IsArchieved,
-                        })
-                        .ToList(),
+                                    .Select(x => new GreateBeltReportIndexModel
+                                    {
+                                        Id = x.Id,
+                                        CustomField1 = x.CustomField1,
+                                        DoneAtUserEditable = x.DoneAtUserEditable,
+                                        DoneBy = x.DoneBy,
+                                        ItemName = joined
+                                            .Where(y => y.MicrotingSdkCaseId == x.Id)
+                                            .Select(y => y.Name)
+                                            .FirstOrDefault(),
+                                        IsArchived = x.IsArchieved,
+                                    })
+                                    .ToList()
                 };
+
+
+                switch (model.Sort)
+                {
+                    case "Name":
+                        {
+                            if (model.IsSortDsc)
+                            {
+                                result.Entities = result.Entities.OrderByDescending(x => x.DoneBy).ToList();
+                            }
+                            else
+                            {
+                                result.Entities = result.Entities.OrderBy(x => x.DoneBy).ToList();
+                            }
+
+                            break;
+                        }
+
+                    case "ItemName":
+                        {
+                            if (model.IsSortDsc)
+                            {
+                                result.Entities = result.Entities.OrderByDescending(x => x.ItemName).ToList();
+                            }
+                            else
+                            {
+                                result.Entities = result.Entities.OrderBy(x => x.ItemName).ToList();
+                            }
+                            break;
+                        }
+
+                    default:
+                        {
+                            break;
+                        }
+                }
 
                 return new OperationDataResult<Paged<GreateBeltReportIndexModel>>(true, result);
             }
