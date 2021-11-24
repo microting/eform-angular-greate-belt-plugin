@@ -64,17 +64,17 @@ namespace GreateBelt.Pn.Services.GreateBeltReportService
                 var core = await _core.GetCore();
                 var sdkDbContext = core.DbContextHelper.GetDbContext();
 
-                var fieldIds = new List<int>();
-
-                foreach (var eform in model.EformIds)
-                {
-                    var fieldId = sdkDbContext.Fields
-                                    .Where(x => eform + 1 == x.CheckListId)
-                                    .Where(x => x.WorkflowState != Constants.WorkflowStates.Removed)
-                                    .Select(x => x.Id)
-                                    .FirstOrDefault();
-                    fieldIds.Add(fieldId);
-                }
+                // var fieldIds = new List<int>();
+                //
+                // foreach (var eform in model.EformIds)
+                // {
+                //     var fieldId = sdkDbContext.Fields
+                //                     .Where(x => eform + 1 == x.CheckListId)
+                //                     .Where(x => x.WorkflowState != Constants.WorkflowStates.Removed)
+                //                     .Select(x => x.Id)
+                //                     .FirstOrDefault();
+                //     fieldIds.Add(fieldId);
+                // }
 
                 //var currentLanguage = await _userService.GetCurrentUserLanguage();
                 var nameFields = new List<string> { "Id", "Value", "DoneAtUserModifiable", "DoneAt" };
@@ -114,11 +114,13 @@ namespace GreateBelt.Pn.Services.GreateBeltReportService
 
                 var foundPlanningCasesSiteInfo = await _itemsPlanningPnDbContext.PlanningCaseSites
                     //.Where(x => x.WorkflowState != Constants.WorkflowStates.Removed)
-                    .Where(x => model.EformIds.Contains(x.MicrotingSdkeFormId) && foundCaseIds.Contains(x.MicrotingSdkCaseId))
+                    .Where(x => model.EformIds.Contains(x.MicrotingSdkeFormId))
+                    .Where(x => foundCaseIds.Contains(x.MicrotingSdkCaseId) || foundCaseIds.Contains(x.MicrotingCheckListSitId))
                     .Select(x => new
                     {
                         x.PlanningId,
                         x.MicrotingSdkCaseId,
+                        x.MicrotingCheckListSitId
                     })
                     .ToListAsync();
 
