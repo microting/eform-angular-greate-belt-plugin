@@ -11,6 +11,7 @@ import { GreateBeltPnClaims } from '../../../../enums';
 import { ReportStateService } from '../../store';
 import { ReportCaseModel } from '../../../../models';
 import { STANDARD_DATE_FORMAT } from 'src/app/common/const';
+import { Params, Router } from '@angular/router';
 
 @Component({
   selector: 'app-report-table',
@@ -28,6 +29,7 @@ export class ReportTableComponent implements OnInit {
   downloadPdf: EventEmitter<ReportCaseModel> = new EventEmitter<ReportCaseModel>();
   @Output()
   sortChange: EventEmitter<void> = new EventEmitter<void>();
+  queryParams: Params;
 
   tableHeaders: TableHeaderElementModel[] = [
     { name: 'Id', elementId: 'idTableHeader', sortable: true },
@@ -35,22 +37,32 @@ export class ReportTableComponent implements OnInit {
       name: 'FieldValue1',
       elementId: 'customField1TableHeader',
       sortable: true,
-      visibleName: "Maximo arbejdsordre nr",
+      visibleName: 'Maximo arbejdsordre nr',
     },
     {
       name: 'DoneAtUserModifiable',
       elementId: 'doneAtTableHeader',
       sortable: true,
-      visibleName: "Done at",
+      visibleName: 'Done at',
     },
     {
       name: 'Name',
       elementId: 'doneByTableHeader',
       sortable: true,
-      visibleName: "Done by'",
+      visibleName: 'Done by',
     },
-    { name: 'ItemName', elementId: 'itemPlanningNameTableHeader', sortable: true, visibleName: "Area" },
-    { name: 'IsArchived', elementId: 'statusTableHeader', sortable: true, visibleName: "Status" },
+    {
+      name: 'ItemName',
+      elementId: 'itemPlanningNameTableHeader',
+      sortable: true,
+      visibleName: 'Area',
+    },
+    {
+      name: 'IsArchived',
+      elementId: 'statusTableHeader',
+      sortable: true,
+      visibleName: 'Status',
+    },
     { name: 'Actions', elementId: '', sortable: false },
   ];
 
@@ -62,9 +74,14 @@ export class ReportTableComponent implements OnInit {
     return STANDARD_DATE_FORMAT;
   }
 
-  constructor() {}
+  constructor(
+    private router: Router,
+    public reportStateService: ReportStateService
+  ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.queryParams = { reverseRoute: this.router.url };
+  }
 
   onShowRemoveCaseModal(planning: ReportCaseModel) {
     this.showRemoveCaseModal.emit(planning);
@@ -82,5 +99,4 @@ export class ReportTableComponent implements OnInit {
     this.reportStateService.onSortTable(sort);
     this.sortChange.emit();
   }
-
 }
