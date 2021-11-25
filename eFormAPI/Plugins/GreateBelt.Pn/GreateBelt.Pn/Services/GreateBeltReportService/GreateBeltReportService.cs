@@ -77,19 +77,18 @@ namespace GreateBelt.Pn.Services.GreateBeltReportService
                 // }
 
                 //var currentLanguage = await _userService.GetCurrentUserLanguage();
-                var nameFields = new List<string> { "Id", "Value", "DoneAtUserModifiable", "DoneAt" };
 
                 var casesQuery = sdkDbContext.Cases
                     .Where(x => x.WorkflowState != Constants.WorkflowStates.Removed)
-                    .Where(x => model.EformIds.Contains(x.CheckListId.Value));
+                    .Where(x => model.EformIds.Contains(x.CheckListId.Value))
+                    .Where(x => x.Id.ToString().Contains(model.NameFilter)
+                    || x.FieldValue1.Contains(model.NameFilter)
+                    || x.DoneAtUserModifiable.ToString().Contains(model.NameFilter)
+                    || x.Site.Name.Contains(model.NameFilter));
 
-                if (model.Sort == "Name" || model.Sort == "ItemName")
+                if (model.Sort != "Name" && model.Sort != "ItemName")
                 {
-                    casesQuery = QueryHelper.AddFilterToQuery(casesQuery, nameFields, model.NameFilter);
-                }
-                else
-                {
-                    casesQuery = QueryHelper.AddFilterAndSortToQuery(casesQuery, model, nameFields);
+                    casesQuery = QueryHelper.AddSortToQuery(casesQuery, model.Sort, model.IsSortDsc);
                 }
 
                 var total = await casesQuery.Select(x => x.Id).CountAsync();
