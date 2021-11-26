@@ -87,8 +87,8 @@ export class ReportTableComponent implements OnInit {
     this.showRemoveCaseModal.emit(planning);
   }
 
-  onShowArchiveCaseModal(planning: ReportCaseModel) {
-    this.showArchiveCaseModal.emit(planning);
+  onShowArchiveCaseModal(reportCaseModel: ReportCaseModel) {
+    this.showArchiveCaseModal.emit(reportCaseModel);
   }
 
   onDownloadPdf(model: ReportCaseModel) {

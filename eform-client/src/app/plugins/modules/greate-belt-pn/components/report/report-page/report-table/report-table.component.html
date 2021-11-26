@@ -38,8 +38,9 @@
                 'btn-danger': !reportCase.isArchived,
                 'btn-success': reportCase.isArchived
               }"
-              mdbTooltip="{{ 'Archive' | translate }}"
-              [disabled]="reportCase.isArchived"
+              mdbTooltip="{{
+                (reportCase.isArchived ? 'Unarchive' : 'Archive') | translate
+              }}"
               (click)="onShowArchiveCaseModal(reportCase)"
             >
               <fa-icon [icon]="'archive'" [fixedWidth]="true"></fa-icon>
