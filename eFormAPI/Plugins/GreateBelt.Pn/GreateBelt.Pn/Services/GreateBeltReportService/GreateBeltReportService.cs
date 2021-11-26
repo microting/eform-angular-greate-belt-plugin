@@ -91,13 +91,6 @@ namespace GreateBelt.Pn.Services.GreateBeltReportService
                                     || x.Site.Name.Contains(model.NameFilter));
                 }
 
-                casesQuery = QueryHelper.AddSortToQuery(casesQuery, model.Sort, model.IsSortDsc, new List<string> { "Name", "ItemName" });
-
-                var total = await casesQuery.Select(x => x.Id).CountAsync();
-                casesQuery = casesQuery
-                    .Skip(model.Offset)
-                    .Take(model.PageSize);
-
                 var foundCases = await casesQuery
                     .Select(x => new
                     {
@@ -161,23 +154,38 @@ namespace GreateBelt.Pn.Services.GreateBeltReportService
                         })
                     .ToList();
 
+                var foundResultQuery = foundCases
+                    .Select(x => new GreateBeltReportIndexModel
+                    {
+                        Id = x.Id,
+                        CustomField1 = x.CustomField1 ?? "",
+                        DoneAtUserEditable = x.DoneAtUserEditable,
+                        DoneBy = x.DoneBy,
+                        ItemName = joined
+                            .Where(y => y.MicrotingSdkCaseId == x.Id)
+                            .Select(y => y.Name)
+                            .FirstOrDefault(),
+                        IsArchived = x.IsArchieved,
+                    });
+
+                foundResultQuery = foundResultQuery
+                    .Where(x => x.Id.ToString().Contains(model.NameFilter)
+                    || x.CustomField1.Contains(model.NameFilter)
+                    || x.DoneAtUserEditable.ToString().Contains(model.NameFilter)
+                    || x.DoneBy.Contains(model.NameFilter)
+                    || x.ItemName.Contains(model.NameFilter))
+                    .Select(x => x)
+                    .ToList();
+
+                var total = foundResultQuery.Select(x => x.Id).Count();
+                foundResultQuery = foundResultQuery
+                    .Skip(model.Offset)
+                    .Take(model.PageSize);
+
                 var result = new Paged<GreateBeltReportIndexModel>
                 {
                     Total = total,
-                    Entities = foundCases
-                        .Select(x => new GreateBeltReportIndexModel
-                        {
-                            Id = x.Id,
-                            CustomField1 = x.CustomField1,
-                            DoneAtUserEditable = x.DoneAtUserEditable,
-                            DoneBy = x.DoneBy,
-                            ItemName = joined
-                                .Where(y => y.MicrotingSdkCaseId == x.Id)
-                                .Select(y => y.Name)
-                                .FirstOrDefault(),
-                            IsArchived = x.IsArchieved,
-                        })
-                        .ToList()
+                    Entities = foundResultQuery.ToList()
                 };
 
 
