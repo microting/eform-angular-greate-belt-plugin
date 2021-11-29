@@ -77,25 +77,19 @@ namespace GreateBelt.Pn.Services.GreateBeltReportService
                 // }
 
                 //var currentLanguage = await _userService.GetCurrentUserLanguage();
-                var nameFields = new List<string> { "Id", "Value", "DoneAtUserModifiable", "DoneAt" };
 
                 var casesQuery = sdkDbContext.Cases
                     .Where(x => x.WorkflowState != Constants.WorkflowStates.Removed)
                     .Where(x => model.EformIds.Contains(x.CheckListId.Value));
 
-                if (model.Sort == "Name" || model.Sort == "ItemName")
+                if (!string.IsNullOrEmpty(model.NameFilter))
                 {
-                    casesQuery = QueryHelper.AddFilterToQuery(casesQuery, nameFields, model.NameFilter);
+                    casesQuery = casesQuery
+                        .Where(x => x.Id.ToString().Contains(model.NameFilter)
+                                    || x.FieldValue1.Contains(model.NameFilter)
+                                    || x.DoneAtUserModifiable.ToString().Contains(model.NameFilter)
+                                    || x.Site.Name.Contains(model.NameFilter));
                 }
-                else
-                {
-                    casesQuery = QueryHelper.AddFilterAndSortToQuery(casesQuery, model, nameFields);
-                }
-
-                var total = await casesQuery.Select(x => x.Id).CountAsync();
-                casesQuery = casesQuery
-                    .Skip(model.Offset)
-                    .Take(model.PageSize);
 
                 var foundCases = await casesQuery
                     .Select(x => new
@@ -124,7 +118,7 @@ namespace GreateBelt.Pn.Services.GreateBeltReportService
                 //     })
                 //     .ToListAsync();
 
-                var plannings = await _itemsPlanningPnDbContext.Plannings
+                var planningQuery = _itemsPlanningPnDbContext.Plannings
                     .Where(x => model.EformIds.Contains(x.RelatedEFormId))
                     .Where(x => x.WorkflowState != Constants.WorkflowStates.Removed)
                     .Select(x => new
@@ -134,7 +128,14 @@ namespace GreateBelt.Pn.Services.GreateBeltReportService
                             .Where(y => y.LanguageId == 1) //Danish
                             .Select(y => y.Name)
                             .FirstOrDefault(),
-                    })
+                    });
+
+                //if (!string.IsNullOrEmpty(model.NameFilter))
+                //{
+                //    planningQuery = planningQuery.Where(x => x.Name.Contains(model.NameFilter));
+                //}
+
+                var plannings = await planningQuery
                     .ToListAsync();
 
                 var planningCasesQuery = _itemsPlanningPnDbContext.PlanningCases
@@ -153,23 +154,38 @@ namespace GreateBelt.Pn.Services.GreateBeltReportService
                         })
                     .ToList();
 
+                var foundResultQuery = foundCases
+                    .Select(x => new GreateBeltReportIndexModel
+                    {
+                        Id = x.Id,
+                        CustomField1 = x.CustomField1 ?? "",
+                        DoneAtUserEditable = x.DoneAtUserEditable,
+                        DoneBy = x.DoneBy,
+                        ItemName = joined
+                            .Where(y => y.MicrotingSdkCaseId == x.Id)
+                            .Select(y => y.Name)
+                            .FirstOrDefault(),
+                        IsArchived = x.IsArchieved,
+                    });
+
+                foundResultQuery = foundResultQuery
+                    .Where(x => x.Id.ToString().Contains(model.NameFilter)
+                    || x.CustomField1.Contains(model.NameFilter)
+                    || x.DoneAtUserEditable.ToString().Contains(model.NameFilter)
+                    || x.DoneBy.Contains(model.NameFilter)
+                    || x.ItemName.Contains(model.NameFilter))
+                    .Select(x => x)
+                    .ToList();
+
+                var total = foundResultQuery.Select(x => x.Id).Count();
+                foundResultQuery = foundResultQuery
+                    .Skip(model.Offset)
+                    .Take(model.PageSize);
+
                 var result = new Paged<GreateBeltReportIndexModel>
                 {
                     Total = total,
-                    Entities = foundCases
-                                    .Select(x => new GreateBeltReportIndexModel
-                                    {
-                                        Id = x.Id,
-                                        CustomField1 = x.CustomField1,
-                                        DoneAtUserEditable = x.DoneAtUserEditable,
-                                        DoneBy = x.DoneBy,
-                                        ItemName = joined
-                                            .Where(y => y.MicrotingSdkCaseId == x.Id)
-                                            .Select(y => y.Name)
-                                            .FirstOrDefault(),
-                                        IsArchived = x.IsArchieved,
-                                    })
-                                    .ToList()
+                    Entities = foundResultQuery.ToList()
                 };
 
 
@@ -177,6 +193,7 @@ namespace GreateBelt.Pn.Services.GreateBeltReportService
                 {
                     case "Name":
                         {
+                            // ReSharper disable once ConvertIfStatementToConditionalTernaryExpression
                             if (model.IsSortDsc)
                             {
                                 result.Entities = result.Entities.OrderByDescending(x => x.DoneBy).ToList();
@@ -188,9 +205,9 @@ namespace GreateBelt.Pn.Services.GreateBeltReportService
 
                             break;
                         }
-
                     case "ItemName":
                         {
+                            // ReSharper disable once ConvertIfStatementToConditionalTernaryExpression
                             if (model.IsSortDsc)
                             {
                                 result.Entities = result.Entities.OrderByDescending(x => x.ItemName).ToList();
@@ -201,7 +218,7 @@ namespace GreateBelt.Pn.Services.GreateBeltReportService
                             }
                             break;
                         }
-
+                    // ReSharper disable once RedundantEmptySwitchSection
                     default:
                         {
                             break;

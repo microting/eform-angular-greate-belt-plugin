@@ -137,6 +137,7 @@ export class ReportContainerComponent implements OnInit, OnDestroy {
       doneAt: model.doneAtUserEditable,
       templateId: model.templateId,
       workerName: model.doneBy,
+      isArchived: model.isArchived,
     });
   }
 

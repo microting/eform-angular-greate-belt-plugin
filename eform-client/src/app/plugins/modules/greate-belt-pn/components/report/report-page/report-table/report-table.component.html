@@ -6,10 +6,12 @@
     small="true"
     class="z-depth-1 text-center"
   >
-    <thead 
-      table-headers [tableHeaders]="tableHeaders"
-      (sortChanged)="sortTable($event)">
-    </thead>
+    <thead
+      table-headers
+      [tableHeaders]="tableHeaders"
+      [sort]="reportStateService.getSort() | async"
+      (sortChanged)="sortTable($event)"
+    ></thead>
     <tbody id="reportCasesTableBody">
       <tr *ngFor="let reportCase of reportModel.entities; let i = index">
         <td id="reportCaseId">
@@ -19,11 +21,7 @@
           {{ reportCase.customField1 }}
         </td>
         <td id="reportCaseDoneAt">
-          <date-formatter
-            [date]="reportCase.doneAtUserEditable"
-            [Format]="'datetime'"
-          ></date-formatter>
-          <!--          {{ reportCase.doneAtUserEditable | date }}-->
+          {{ reportCase.doneAtUserEditable | date: dateFormat }}
         </td>
         <td id="reportCaseDoneBy">
           {{ reportCase.doneBy }}
@@ -40,8 +38,9 @@
                 'btn-danger': !reportCase.isArchived,
                 'btn-success': reportCase.isArchived
               }"
-              mdbTooltip="{{ 'Archive' | translate }}"
-              [disabled]="reportCase.isArchived"
+              mdbTooltip="{{
+                (reportCase.isArchived ? 'Unarchive' : 'Archive') | translate
+              }}"
               (click)="onShowArchiveCaseModal(reportCase)"
             >
               <fa-icon [icon]="'archive'" [fixedWidth]="true"></fa-icon>
@@ -54,6 +53,7 @@
               mdbBtn
               class="btn-success btn-icon mb-2"
               [routerLink]="['/cases/edit/' + reportCase.id + '/' + 1]"
+              [queryParams]="queryParams"
               mdbTooltip="{{ 'Edit Case' | translate }}"
             >
               <fa-icon icon="pen" size="lg" [fixedWidth]="true"></fa-icon>
