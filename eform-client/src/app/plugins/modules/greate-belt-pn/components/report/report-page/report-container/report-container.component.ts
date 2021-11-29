@@ -49,7 +49,7 @@ export class ReportContainerComponent implements OnInit, OnDestroy {
     });
 
     if (this.router.url.indexOf('/oresund/14-dags') > -1) {
-      this.selectedEformIds = [11];
+      this.selectedEformIds = [707];
     }
 
     if (this.router.url.indexOf('/oresund/tr') > -1) {
@@ -61,7 +61,7 @@ export class ReportContainerComponent implements OnInit, OnDestroy {
     }
 
     if (this.router.url.indexOf('/oresund/oesse') > -1) {
-      this.selectedEformIds = [449];
+      this.selectedEformIds = [453, 462, 506, 620];
     }
 
     if (this.router.url.indexOf('/storebaelt/2-mdr') > -1) {

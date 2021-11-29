@@ -162,7 +162,7 @@ namespace GreateBelt.Pn
                                     {
                                         LocaleName = LocaleNames.Danish,
                                         Name =
-                                            "Øresund: Sporanlæg (Eftersyn og smøring af skinneudtraek - 14 dags) menu",
+                                            "Øresund: Sporanlæg (Eftersyn og smøring af skinneudtraek - 14 dags)",
                                         Language = LanguageNames.Danish,
                                     },
                                 }
@@ -179,7 +179,7 @@ namespace GreateBelt.Pn
                                 new()
                                 {
                                     LocaleName = LocaleNames.Danish,
-                                    Name = "Øresund: Sporanlæg (Eftersyn og smøring af skinneudtraek - 14 dags) menu",
+                                    Name = "Øresund: Sporanlæg (Eftersyn og smøring af skinneudtraek - 14 dags)",
                                     Language = LanguageNames.Danish,
                                 },
                             }
@@ -188,14 +188,14 @@ namespace GreateBelt.Pn
                         {
                             Name = "Øresund: Tilstandsrapport menu",
                             E2EId = "greate-belt-pn-report-oresund",
-                            Link = "/plugins/greate-belt-pn/report/oresund/oesse",
+                            Link = "/plugins/greate-belt-pn/report/oresund/tr",
                             Type = MenuItemTypeEnum.Link,
                             Position = 0,
                             MenuTemplate = new PluginMenuTemplateModel
                             {
                                 Name = "Øresund: Tilstandsrapport menu",
                                 E2EId = "greate-belt-pn-oresund-14-dags",
-                                DefaultLink = "/plugins/greate-belt-pn/report/oresund/oesse",
+                                DefaultLink = "/plugins/greate-belt-pn/report/oresund/tr",
                                 Translations = new List<PluginMenuTranslationModel>
                                 {
                                     new()
@@ -235,14 +235,14 @@ namespace GreateBelt.Pn
                         {
                             Name = "Øresund: Sporskifteeftersyn menu",
                             E2EId = "greate-belt-pn-report-oresund",
-                            Link = "/plugins/greate-belt-pn/report/oresund/tr",
+                            Link = "/plugins/greate-belt-pn/report/oresund/oesse",
                             Type = MenuItemTypeEnum.Link,
                             Position = 1,
                             MenuTemplate = new PluginMenuTemplateModel
                             {
                                 Name = "Øresund: Sporskifteeftersyn menu",
                                 E2EId = "greate-belt-pn-oresund-14-dags",
-                                DefaultLink = "/plugins/greate-belt-pn/report/oresund/tr",
+                                DefaultLink = "/plugins/greate-belt-pn/report/oresund/oesse",
                                 Translations = new List<PluginMenuTranslationModel>
                                 {
                                     new()
