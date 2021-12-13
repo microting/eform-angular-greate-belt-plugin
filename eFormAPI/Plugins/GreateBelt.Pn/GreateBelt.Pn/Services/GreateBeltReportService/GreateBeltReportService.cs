@@ -151,6 +151,8 @@ namespace GreateBelt.Pn.Services.GreateBeltReportService
                         {
                             x.Name,
                             y.MicrotingSdkCaseId,
+                            y.PlanningId,
+                            y.MicrotingSdkeFormId
                         })
                     .ToList();
 
@@ -166,6 +168,8 @@ namespace GreateBelt.Pn.Services.GreateBeltReportService
                             .Select(y => y.Name)
                             .FirstOrDefault(),
                         IsArchived = x.IsArchieved,
+                        ItemId = joined.Where(y => y.MicrotingSdkCaseId == x.Id).Select(y => y.PlanningId).FirstOrDefault(),
+                        TemplateId = joined.Where(y => y.MicrotingSdkCaseId == x.Id).Select(y => y.MicrotingSdkeFormId).FirstOrDefault()
                     });
 
                 foundResultQuery = foundResultQuery

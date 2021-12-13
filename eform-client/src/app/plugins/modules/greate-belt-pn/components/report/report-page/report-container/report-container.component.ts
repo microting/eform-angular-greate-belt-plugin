@@ -142,8 +142,8 @@ export class ReportContainerComponent implements OnInit, OnDestroy {
   }
 
   onDownloadPdf(model: ReportCaseModel) {
-    this.downloadEformPdf$ = this.eFormService
-      .downloadEformPDF(model.templateId, model.id, 'pdf')
+    this.downloadEformPdf$ = this.reportService
+      .downloadEformPDF(model.templateId, model.id, model.itemId)
       .subscribe((data) => {
         const blob = new Blob([data]);
         saveAs(blob, `template_${model.templateId}.pdf`);

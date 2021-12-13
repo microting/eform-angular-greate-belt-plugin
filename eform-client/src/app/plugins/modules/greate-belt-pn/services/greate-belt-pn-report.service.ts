@@ -6,6 +6,7 @@ import { ReportCaseModel, ReportRequestModel } from '../models';
 
 export let GreateBeltPnPropertiesMethods = {
   ReportIndex: 'api/greate-belt-pn/report',
+  DownloadPDF: 'api/greate-belt-pn/report',
 };
 
 @Injectable({
@@ -20,6 +21,23 @@ export class GreateBeltPnReportService {
     return this.apiBaseService.post(
       GreateBeltPnPropertiesMethods.ReportIndex,
       model
+    );
+  }
+
+  downloadEformPDF(
+    templateId: number,
+    caseId: number,
+    itemId: number
+  ): Observable<any> {
+    return this.apiBaseService.getBlobData(
+      GreateBeltPnPropertiesMethods.ReportIndex +
+      '/' +
+      templateId +
+      '/?caseId=' +
+      caseId +
+      '&itemId=' +
+      itemId +
+      '&fileType=pdf'
     );
   }
 }
