@@ -98,6 +98,7 @@ namespace GreateBelt.Pn.Services.GreateBeltReportService
                         CustomField1 = x.FieldValue1,
                         DoneAtUserEditable = x.DoneAtUserModifiable,
                         DoneBy = x.SiteId == null ? "" : x.Site.Name,
+                        x.CheckListId,
                         IsArchieved = x.IsArchived,
                     })
                     .ToListAsync();
@@ -124,6 +125,7 @@ namespace GreateBelt.Pn.Services.GreateBeltReportService
                     .Select(x => new
                     {
                         x.Id,
+                        x.RelatedEFormId,
                         Name = x.NameTranslations
                             .Where(y => y.LanguageId == 1) //Danish
                             .Select(y => y.Name)
@@ -166,10 +168,10 @@ namespace GreateBelt.Pn.Services.GreateBeltReportService
                         ItemName = joined
                             .Where(y => y.MicrotingSdkCaseId == x.Id)
                             .Select(y => y.Name)
-                            .FirstOrDefault(),
+                            .LastOrDefault(),
                         IsArchived = x.IsArchieved,
-                        ItemId = joined.Where(y => y.MicrotingSdkCaseId == x.Id).Select(y => y.PlanningId).FirstOrDefault(),
-                        TemplateId = joined.Where(y => y.MicrotingSdkCaseId == x.Id).Select(y => y.MicrotingSdkeFormId).FirstOrDefault()
+                        ItemId = joined.Where(y => y.MicrotingSdkCaseId == x.Id).Select(y => y.PlanningId).LastOrDefault(),
+                        TemplateId = joined.Where(y => y.MicrotingSdkCaseId == x.Id).Select(y => y.MicrotingSdkeFormId).LastOrDefault()
                     });
 
                 foundResultQuery = foundResultQuery

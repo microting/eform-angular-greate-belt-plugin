@@ -72,11 +72,21 @@ namespace GreateBelt.Pn.Controllers
 
                 var planningTranslation = await _itemsPlanningPnDbContext.PlanningNameTranslation.FirstOrDefaultAsync(x => x.PlanningId == item.Id && x.Language == language);
                 // Fix for broken SDK not handling empty customXmlContent well
-                string customXmlContent = new XElement("F_ItemName", planningTranslation.Name).ToString();
+                string customXml = new XElement("F_ItemName", planningTranslation.Name).ToString();
+                if (templateId == 11 || templateId == 23)
+                {
+                    customXml = new XElement("Custom",
+                        new XElement("F_ItemName", planningTranslation.Name),
+                        new XElement("groove_name", planningTranslation.Name.Substring(planningTranslation.Name.Length - 2,2)),
+                        new XElement("rail_name", planningTranslation.Name.Substring(0,2))).ToString();
+                }
 
                 var filePath = await core.CaseToPdf(caseId, templateId.ToString(),
                     DateTime.Now.ToString("yyyyMMddHHmmssffff"),
-                    $"{core.GetSdkSetting(Settings.httpServerAddress)}/" + "api/template-files/get-image/pdf", customXmlContent, language);
+                    $"{await core.GetSdkSetting(Settings.httpServerAddress)}/" + "api/template-files/get-image/", customXml, language);
+                // var filePath = await core.CaseToPdf(caseId, templateId.ToString(),
+                //     DateTime.Now.ToString("yyyyMMddHHmmssffff"),
+                //     $"{await core.GetSdkSetting(Settings.httpServerAddress)}/" + "api/template-files/get-image/pdf", customXmlContent, language);
                 //DateTime.Now.ToString("yyyyMMddHHmmssffff"), $"{core.GetHttpServerAddress()}/" + "api/template-files/get-image?&filename=");
                 if (!System.IO.File.Exists(filePath))
                 {

@@ -52,7 +52,7 @@
             <button
               mdbBtn
               class="btn-success btn-icon mb-2"
-              [routerLink]="['/cases/edit/' + reportCase.id + '/' + 1]"
+              [routerLink]="['/cases/edit/' + reportCase.id + '/' + reportCase.templateId]"
               [queryParams]="queryParams"
               mdbTooltip="{{ 'Edit Case' | translate }}"
             >
