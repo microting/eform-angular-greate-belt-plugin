@@ -82,14 +82,14 @@ namespace GreateBelt.Pn.Services.GreateBeltReportService
                     .Where(x => x.WorkflowState != Constants.WorkflowStates.Removed)
                     .Where(x => model.EformIds.Contains(x.CheckListId.Value));
 
-                if (!string.IsNullOrEmpty(model.NameFilter))
-                {
-                    casesQuery = casesQuery
-                        .Where(x => x.Id.ToString().Contains(model.NameFilter)
-                                    || x.FieldValue1.Contains(model.NameFilter)
-                                    || x.DoneAtUserModifiable.ToString().Contains(model.NameFilter)
-                                    || x.Site.Name.Contains(model.NameFilter));
-                }
+                // if (!string.IsNullOrEmpty(model.NameFilter))
+                // {
+                //     casesQuery = casesQuery
+                //         .Where(x => x.Id.ToString().Contains(model.NameFilter)
+                //                     || x.FieldValue1.Contains(model.NameFilter)
+                //                     || x.DoneAtUserModifiable.ToString().Contains(model.NameFilter)
+                //                     || x.Site.Name.Contains(model.NameFilter));
+                // }
 
                 var foundCases = await casesQuery
                     .Select(x => new
@@ -176,10 +176,10 @@ namespace GreateBelt.Pn.Services.GreateBeltReportService
 
                 foundResultQuery = foundResultQuery
                     .Where(x => x.Id.ToString().Contains(model.NameFilter)
-                    || x.CustomField1.Contains(model.NameFilter)
+                    || x.CustomField1.ToLower().Contains(model.NameFilter)
                     || x.DoneAtUserEditable.ToString().Contains(model.NameFilter)
-                    || x.DoneBy.Contains(model.NameFilter)
-                    || x.ItemName.Contains(model.NameFilter))
+                    || x.DoneBy.ToLower().Contains(model.NameFilter)
+                    || x.ItemName.ToLower().Contains(model.NameFilter))
                     .Select(x => x)
                     .ToList();
 
