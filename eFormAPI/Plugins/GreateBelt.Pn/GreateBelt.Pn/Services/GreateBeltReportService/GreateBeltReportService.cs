@@ -80,6 +80,7 @@ namespace GreateBelt.Pn.Services.GreateBeltReportService
 
                 var casesQuery = sdkDbContext.Cases
                     .Where(x => x.WorkflowState != Constants.WorkflowStates.Removed)
+                    .Where(x => x.DoneAt != null)
                     .Where(x => model.EformIds.Contains(x.CheckListId.Value));
 
                 // if (!string.IsNullOrEmpty(model.NameFilter))
