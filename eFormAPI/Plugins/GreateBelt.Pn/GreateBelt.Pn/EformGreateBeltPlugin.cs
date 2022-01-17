@@ -37,11 +37,6 @@ namespace GreateBelt.Pn
     using Microting.eFormApi.BasePn.Infrastructure.Models.Application;
     using Microting.eFormApi.BasePn.Infrastructure.Models.Application.NavigationMenu;
     using Microting.ItemsPlanningBase.Infrastructure.Data;
-    using Microting.ItemsPlanningBase.Infrastructure.Data.Factories;
-    using System;
-    using System.Collections.Generic;
-    using System.Reflection;
-    using System.Text.RegularExpressions;
     using Services.GreateBeltLocalizationService;
     using Services.GreateBeltReportService;
     using Services.RebusService;
@@ -93,20 +88,6 @@ namespace GreateBelt.Pn
 
         public void Configure(IApplicationBuilder appBuilder)
         {
-/*            var serviceProvider = appBuilder.ApplicationServices;
-
-            var rabbitMqHost = "localhost";
-
-            if (_connectionString.Contains("frontend"))
-            {
-                var dbPrefix = Regex.Match(_connectionString, @"atabase=(\d*)_").Groups[1].Value;
-                rabbitMqHost = $"frontend-{dbPrefix}-rabbitmq";
-            }
-
-            var rebusService = serviceProvider.GetService<IRebusService>();
-            rebusService.Start(_connectionString, "admin", "password", rabbitMqHost);*/
-
-            //_bus = rebusService.GetBus();
         }
 
         public List<PluginMenuItemModel> GetNavigationMenu(IServiceProvider serviceProvider)

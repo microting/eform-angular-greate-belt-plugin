@@ -21,7 +21,6 @@ SOFTWARE.
 namespace GreateBelt.Pn.Services.GreateBeltReportService
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
     using GreateBeltLocalizationService;
@@ -30,7 +29,6 @@ namespace GreateBelt.Pn.Services.GreateBeltReportService
     using Microsoft.Extensions.Logging;
     using Microting.eForm.Infrastructure.Constants;
     using Microting.eFormApi.BasePn.Abstractions;
-    using Microting.eFormApi.BasePn.Infrastructure.Helpers;
     using Microting.eFormApi.BasePn.Infrastructure.Models.API;
     using Microting.eFormApi.BasePn.Infrastructure.Models.Common;
     using Microting.ItemsPlanningBase.Infrastructure.Data;
@@ -64,33 +62,10 @@ namespace GreateBelt.Pn.Services.GreateBeltReportService
                 var core = await _core.GetCore();
                 var sdkDbContext = core.DbContextHelper.GetDbContext();
 
-                // var fieldIds = new List<int>();
-                //
-                // foreach (var eform in model.EformIds)
-                // {
-                //     var fieldId = sdkDbContext.Fields
-                //                     .Where(x => eform + 1 == x.CheckListId)
-                //                     .Where(x => x.WorkflowState != Constants.WorkflowStates.Removed)
-                //                     .Select(x => x.Id)
-                //                     .FirstOrDefault();
-                //     fieldIds.Add(fieldId);
-                // }
-
-                //var currentLanguage = await _userService.GetCurrentUserLanguage();
-
                 var casesQuery = sdkDbContext.Cases
                     .Where(x => x.WorkflowState != Constants.WorkflowStates.Removed)
                     .Where(x => x.DoneAt != null)
                     .Where(x => model.EformIds.Contains(x.CheckListId.Value));
-
-                // if (!string.IsNullOrEmpty(model.NameFilter))
-                // {
-                //     casesQuery = casesQuery
-                //         .Where(x => x.Id.ToString().Contains(model.NameFilter)
-                //                     || x.FieldValue1.Contains(model.NameFilter)
-                //                     || x.DoneAtUserModifiable.ToString().Contains(model.NameFilter)
-                //                     || x.Site.Name.Contains(model.NameFilter));
-                // }
 
                 var foundCases = await casesQuery
                     .Select(x => new
@@ -105,21 +80,6 @@ namespace GreateBelt.Pn.Services.GreateBeltReportService
                     .ToListAsync();
 
                 var foundCaseIds = foundCases.Select(x => x.Id).ToList();
-
-                //var allFieldValues = core.Advanced_FieldValueReadList(foundCaseIds, currentLanguage);
-
-                // var foundPlanningCasesSiteInfo = await _itemsPlanningPnDbContext.PlanningCaseSites
-                //     //.Where(x => x.WorkflowState != Constants.WorkflowStates.Removed)
-                //     .Where(x => model.EformIds.Contains(x.MicrotingSdkeFormId))
-                //     .Where(x => foundCaseIds.Contains(x.MicrotingSdkCaseId) || foundCaseIds.Contains(x.MicrotingCheckListSitId))
-                //     .Select(x => new
-                //     {
-                //         x.PlanningId,
-                //         x.MicrotingSdkCaseId,
-                //         x.MicrotingCheckListSitId
-                //     })
-                //     .ToListAsync();
-
                 var planningQuery = _itemsPlanningPnDbContext.Plannings
                     .Where(x => model.EformIds.Contains(x.RelatedEFormId))
                     .Where(x => x.WorkflowState != Constants.WorkflowStates.Removed)
@@ -132,11 +92,6 @@ namespace GreateBelt.Pn.Services.GreateBeltReportService
                             .Select(y => y.Name)
                             .FirstOrDefault(),
                     });
-
-                //if (!string.IsNullOrEmpty(model.NameFilter))
-                //{
-                //    planningQuery = planningQuery.Where(x => x.Name.Contains(model.NameFilter));
-                //}
 
                 var plannings = await planningQuery
                     .ToListAsync();

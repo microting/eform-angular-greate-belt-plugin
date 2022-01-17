@@ -20,9 +20,7 @@ SOFTWARE.
 
 using System;
 using System.IO;
-using System.Linq;
 using System.Xml.Linq;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microting.eForm.Dto;
 using Microting.eFormApi.BasePn.Abstractions;
