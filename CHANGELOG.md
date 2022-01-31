@@ -1,5 +1,16 @@
 # Changelog
 
+## [v1.0.6](https://github.com/microting/eform-angular-greate-belt-plugin/tree/v1.0.6) (2022-01-31)
+
+[Full Changelog](https://github.com/microting/eform-angular-greate-belt-plugin/compare/v1.0.5...v1.0.6)
+
+**Implemented enhancements:**
+
+- Bump Microting.ItemsPlanningBase from 3.0.86 to 3.0.88 [\#49](https://github.com/microting/eform-angular-greate-belt-plugin/issues/49)
+- Bump Microting.eFormApi.BasePn from 3.1.21 to 3.1.24 [\#48](https://github.com/microting/eform-angular-greate-belt-plugin/issues/48)
+- Bump Microting.eForm from 5.4.3 to 5.4.6 [\#47](https://github.com/microting/eform-angular-greate-belt-plugin/issues/47)
+- Bump Microting.ItemPlanningBase from  to  [\#42](https://github.com/microting/eform-angular-greate-belt-plugin/issues/42)
+
 ## [v1.0.5](https://github.com/microting/eform-angular-greate-belt-plugin/tree/v1.0.5) (2022-01-28)
 
 [Full Changelog](https://github.com/microting/eform-angular-greate-belt-plugin/compare/v1.0.4...v1.0.5)
@@ -24,6 +35,7 @@
 
 - Bump Magick.NET-Q16-x64 from 8.5.0 to 8.6.1 in /eFormAPI/Plugins/GreateBelt.Pn [\#27](https://github.com/microting/eform-angular-greate-belt-plugin/pull/27) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump NUnit3TestAdapter from 4.1.0 to 4.2.0 in /eFormAPI/Plugins/GreateBelt.Pn [\#26](https://github.com/microting/eform-angular-greate-belt-plugin/pull/26) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump Microting.ItemsPlanningBase from 3.0.79 to 3.0.81 in /eFormAPI/Plugins/GreateBelt.Pn [\#25](https://github.com/microting/eform-angular-greate-belt-plugin/pull/25) ([dependabot[bot]](https://github.com/apps/dependabot))
 
 ## [v1.0.3](https://github.com/microting/eform-angular-greate-belt-plugin/tree/v1.0.3) (2021-12-22)
 
@@ -39,7 +51,6 @@
 
 **Merged pull requests:**
 
-- Bump Microting.ItemsPlanningBase from 3.0.79 to 3.0.81 in /eFormAPI/Plugins/GreateBelt.Pn [\#25](https://github.com/microting/eform-angular-greate-belt-plugin/pull/25) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump Microting.eFormApi.BasePn from 3.1.11 to 3.1.13 in /eFormAPI/Plugins/GreateBelt.Pn [\#22](https://github.com/microting/eform-angular-greate-belt-plugin/pull/22) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump Microting.ItemsPlanningBase from 3.0.77 to 3.0.79 in /eFormAPI/Plugins/GreateBelt.Pn [\#21](https://github.com/microting/eform-angular-greate-belt-plugin/pull/21) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump Microting.eForm from 5.3.16 to 5.3.17 in /eFormAPI/Plugins/GreateBelt.Pn [\#19](https://github.com/microting/eform-angular-greate-belt-plugin/pull/19) ([dependabot[bot]](https://github.com/apps/dependabot))
