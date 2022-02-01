@@ -81,7 +81,7 @@ namespace GreateBelt.Pn.Controllers
 
                 var filePath = await core.CaseToPdf(caseId, templateId.ToString(),
                     DateTime.Now.ToString("yyyyMMddHHmmssffff"),
-                    $"{await core.GetSdkSetting(Settings.httpServerAddress)}/" + "api/template-files/get-image/", customXml, language);
+                    $"{await core.GetSdkSetting(Settings.httpServerAddress)}/" + "api/template-files/get-report-image/", customXml, language);
                 // var filePath = await core.CaseToPdf(caseId, templateId.ToString(),
                 //     DateTime.Now.ToString("yyyyMMddHHmmssffff"),
                 //     $"{await core.GetSdkSetting(Settings.httpServerAddress)}/" + "api/template-files/get-image/pdf", customXmlContent, language);
