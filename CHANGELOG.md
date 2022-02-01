@@ -1,5 +1,15 @@
 # Changelog
 
+## [v1.0.7](https://github.com/microting/eform-angular-greate-belt-plugin/tree/v1.0.7) (2022-02-01)
+
+[Full Changelog](https://github.com/microting/eform-angular-greate-belt-plugin/compare/v1.0.6...v1.0.7)
+
+**Implemented enhancements:**
+
+- Bump Microting.ItemsPlanningBase from 3.0.88 to 3.0.89 [\#55](https://github.com/microting/eform-angular-greate-belt-plugin/issues/55)
+- Bump Microting.eFormApi.BasePn from 3.1.24 to 3.1.25 [\#54](https://github.com/microting/eform-angular-greate-belt-plugin/issues/54)
+- Bump Microting.eForm from 5.4.6 to 5.4.7 [\#53](https://github.com/microting/eform-angular-greate-belt-plugin/issues/53)
+
 ## [v1.0.6](https://github.com/microting/eform-angular-greate-belt-plugin/tree/v1.0.6) (2022-01-31)
 
 [Full Changelog](https://github.com/microting/eform-angular-greate-belt-plugin/compare/v1.0.5...v1.0.6)
