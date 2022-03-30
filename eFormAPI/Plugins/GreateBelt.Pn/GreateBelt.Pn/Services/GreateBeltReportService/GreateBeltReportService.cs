@@ -154,37 +154,41 @@ namespace GreateBelt.Pn.Services.GreateBeltReportService
                 switch (model.Sort)
                 {
                     case "Name":
-                        {
-                            // ReSharper disable once ConvertIfStatementToConditionalTernaryExpression
-                            if (model.IsSortDsc)
-                            {
-                                result.Entities = result.Entities.OrderByDescending(x => x.DoneBy).ToList();
-                            }
-                            else
-                            {
-                                result.Entities = result.Entities.OrderBy(x => x.DoneBy).ToList();
-                            }
+                    {
+                        result.Entities = model.IsSortDsc
+                            ? result.Entities.OrderByDescending(x => x.DoneBy).ToList()
+                            : result.Entities.OrderBy(x => x.DoneBy).ToList();
 
-                            break;
-                        }
+                        break;
+                    }
                     case "ItemName":
-                        {
-                            // ReSharper disable once ConvertIfStatementToConditionalTernaryExpression
-                            if (model.IsSortDsc)
-                            {
-                                result.Entities = result.Entities.OrderByDescending(x => x.ItemName).ToList();
-                            }
-                            else
-                            {
-                                result.Entities = result.Entities.OrderBy(x => x.ItemName).ToList();
-                            }
-                            break;
-                        }
-                    // ReSharper disable once RedundantEmptySwitchSection
-                    default:
-                        {
-                            break;
-                        }
+                    {
+                        result.Entities = model.IsSortDsc
+                            ? result.Entities.OrderByDescending(x => x.ItemName).ToList()
+                            : result.Entities.OrderBy(x => x.ItemName).ToList();
+                        break;
+                    }
+                    case "Id":
+                    {
+                        result.Entities = model.IsSortDsc
+                            ? result.Entities.OrderByDescending(x => x.Id).ToList()
+                            : result.Entities.OrderBy(x => x.Id).ToList();
+                        break;
+                    }
+                    case "FieldValue1":
+                    {
+                        result.Entities = model.IsSortDsc
+                            ? result.Entities.OrderByDescending(x => x.CustomField1).ToList()
+                            : result.Entities.OrderBy(x => x.CustomField1).ToList();
+                        break;
+                    }
+                    case "DoneAtUserModifiable":
+                    {
+                        result.Entities = model.IsSortDsc
+                            ? result.Entities.OrderByDescending(x => x.DoneAtUserEditable).ToList()
+                            : result.Entities.OrderBy(x => x.DoneAtUserEditable).ToList();
+                        break;
+                    }
                 }
 
                 return new OperationDataResult<Paged<GreateBeltReportIndexModel>>(true, result);
