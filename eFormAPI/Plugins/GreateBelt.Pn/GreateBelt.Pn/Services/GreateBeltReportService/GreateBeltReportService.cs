@@ -189,6 +189,9 @@ namespace GreateBelt.Pn.Services.GreateBeltReportService
                             : result.Entities.OrderBy(x => x.DoneAtUserEditable).ToList();
                         break;
                     }
+                    default:
+                        result.Entities = result.Entities.OrderByDescending(x => x.Id).ToList();
+                        break;
                 }
 
                 return new OperationDataResult<Paged<GreateBeltReportIndexModel>>(true, result);
