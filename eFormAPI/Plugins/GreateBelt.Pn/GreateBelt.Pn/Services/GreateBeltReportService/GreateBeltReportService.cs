@@ -139,6 +139,49 @@ namespace GreateBelt.Pn.Services.GreateBeltReportService
                     .Select(x => x)
                     .ToList();
 
+                switch (model.Sort)
+                {
+                    case "Name":
+                    {
+                        foundResultQuery = model.IsSortDsc
+                            ? foundResultQuery.OrderByDescending(x => x.DoneBy).ToList()
+                            : foundResultQuery.OrderBy(x => x.DoneBy).ToList();
+
+                        break;
+                    }
+                    case "ItemName":
+                    {
+                        foundResultQuery = model.IsSortDsc
+                            ? foundResultQuery.OrderByDescending(x => x.ItemName).ToList()
+                            : foundResultQuery.OrderBy(x => x.ItemName).ToList();
+                        break;
+                    }
+                    case "Id":
+                    {
+                        foundResultQuery = model.IsSortDsc
+                            ? foundResultQuery.OrderByDescending(x => x.Id).ToList()
+                            : foundResultQuery.OrderBy(x => x.Id).ToList();
+                        break;
+                    }
+                    case "FieldValue1":
+                    {
+                        foundResultQuery = model.IsSortDsc
+                            ? foundResultQuery.OrderByDescending(x => x.CustomField1).ToList()
+                            : foundResultQuery.OrderBy(x => x.CustomField1).ToList();
+                        break;
+                    }
+                    case "DoneAtUserModifiable":
+                    {
+                        foundResultQuery = model.IsSortDsc
+                            ? foundResultQuery.OrderByDescending(x => x.DoneAtUserEditable).ToList()
+                            : foundResultQuery.OrderBy(x => x.DoneAtUserEditable).ToList();
+                        break;
+                    }
+                    default:
+                        foundResultQuery = foundResultQuery.OrderByDescending(x => x.Id).ToList();
+                        break;
+                }
+
                 var total = foundResultQuery.Select(x => x.Id).Count();
                 foundResultQuery = foundResultQuery
                     .Skip(model.Offset)
@@ -149,50 +192,6 @@ namespace GreateBelt.Pn.Services.GreateBeltReportService
                     Total = total,
                     Entities = foundResultQuery.ToList()
                 };
-
-
-                switch (model.Sort)
-                {
-                    case "Name":
-                    {
-                        result.Entities = model.IsSortDsc
-                            ? result.Entities.OrderByDescending(x => x.DoneBy).ToList()
-                            : result.Entities.OrderBy(x => x.DoneBy).ToList();
-
-                        break;
-                    }
-                    case "ItemName":
-                    {
-                        result.Entities = model.IsSortDsc
-                            ? result.Entities.OrderByDescending(x => x.ItemName).ToList()
-                            : result.Entities.OrderBy(x => x.ItemName).ToList();
-                        break;
-                    }
-                    case "Id":
-                    {
-                        result.Entities = model.IsSortDsc
-                            ? result.Entities.OrderByDescending(x => x.Id).ToList()
-                            : result.Entities.OrderBy(x => x.Id).ToList();
-                        break;
-                    }
-                    case "FieldValue1":
-                    {
-                        result.Entities = model.IsSortDsc
-                            ? result.Entities.OrderByDescending(x => x.CustomField1).ToList()
-                            : result.Entities.OrderBy(x => x.CustomField1).ToList();
-                        break;
-                    }
-                    case "DoneAtUserModifiable":
-                    {
-                        result.Entities = model.IsSortDsc
-                            ? result.Entities.OrderByDescending(x => x.DoneAtUserEditable).ToList()
-                            : result.Entities.OrderBy(x => x.DoneAtUserEditable).ToList();
-                        break;
-                    }
-                    default:
-                        result.Entities = result.Entities.OrderByDescending(x => x.Id).ToList();
-                        break;
-                }
 
                 return new OperationDataResult<Paged<GreateBeltReportIndexModel>>(true, result);
             }
