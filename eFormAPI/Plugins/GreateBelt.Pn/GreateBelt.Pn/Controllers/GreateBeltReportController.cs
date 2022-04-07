@@ -20,6 +20,7 @@ SOFTWARE.
 
 using System;
 using System.IO;
+using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microting.eForm.Dto;
@@ -73,10 +74,14 @@ namespace GreateBelt.Pn.Controllers
                 string customXml = new XElement("F_ItemName", planningTranslation.Name).ToString();
                 if (templateId == 11 || templateId == 23)
                 {
+                    Regex regex1 = new Regex(@"fuge nr. (\d+)");
+                    Regex regex2 = new Regex(@"- (\d)");
+                    Match match1 = regex1.Match(planningTranslation.Name);
+                    Match match2 = regex2.Match(planningTranslation.Name);
                     customXml = new XElement("Custom",
                         new XElement("F_ItemName", planningTranslation.Name),
-                        new XElement("groove_name", planningTranslation.Name.Substring(planningTranslation.Name.Length - 2,2)),
-                        new XElement("rail_name", planningTranslation.Name.Substring(0,2))).ToString();
+                        new XElement("groove_name", match1.Value.Replace("fuge nr. ", "")),
+                        new XElement("rail_name", match2.Value.Replace("- ", ""))).ToString();
                 }
 
                 var filePath = await core.CaseToPdf(caseId, templateId.ToString(),
