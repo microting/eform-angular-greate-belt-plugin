@@ -18,6 +18,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+using System;
+using System.IO;
+using System.Text.RegularExpressions;
+using System.Xml.Linq;
+using Microsoft.EntityFrameworkCore;
+using Microting.eForm.Dto;
+using Microting.eFormApi.BasePn.Abstractions;
+using Microting.ItemsPlanningBase.Infrastructure.Data;
+
 namespace GreateBelt.Pn.Controllers
 {
     using System.Threading.Tasks;
@@ -31,15 +40,70 @@ namespace GreateBelt.Pn.Controllers
     public class GreateBeltReportController : Controller
     {
         private readonly IGreateBeltReportService _greateBeltMainService;
-        public GreateBeltReportController(IGreateBeltReportService greateBeltMainService)
+        private readonly IEFormCoreService _coreHelper;
+        private readonly IUserService _userService;
+        private readonly ItemsPlanningPnDbContext _itemsPlanningPnDbContext;
+
+        public GreateBeltReportController(IGreateBeltReportService greateBeltMainService, IEFormCoreService coreHelper, IUserService userService, ItemsPlanningPnDbContext itemsPlanningPnDbContext)
         {
             _greateBeltMainService = greateBeltMainService;
+            _coreHelper = coreHelper;
+            _userService = userService;
+            _itemsPlanningPnDbContext = itemsPlanningPnDbContext;
         }
 
         [HttpPost]
         public async Task<OperationDataResult<Paged<GreateBeltReportIndexModel>>> Index([FromBody] GreateBeltReportIndexRequestModel model)
         {
             return await _greateBeltMainService.Index(model);
+        }
+
+        [HttpGet]
+        [Route("{templateId}")]
+        public async Task<IActionResult> DownloadEFormPdf(int templateId, int caseId, int itemId)
+        {
+
+            try
+            {
+                var core = await _coreHelper.GetCore();
+                var language = await _userService.GetCurrentUserLanguage();
+                var item = await _itemsPlanningPnDbContext.Plannings.FirstOrDefaultAsync(x => x.Id == itemId);
+
+                var planningTranslation = await _itemsPlanningPnDbContext.PlanningNameTranslation.FirstOrDefaultAsync(x => x.PlanningId == item.Id && x.Language == language);
+                // Fix for broken SDK not handling empty customXmlContent well
+                string customXml = new XElement("F_ItemName", planningTranslation.Name).ToString();
+                if (templateId == 11 || templateId == 23)
+                {
+                    Regex regex1 = new Regex(@"fuge nr. (\d+)");
+                    Regex regex2 = new Regex(@"- (\d)");
+                    Match match1 = regex1.Match(planningTranslation.Name);
+                    Match match2 = regex2.Match(planningTranslation.Name);
+                    customXml = new XElement("Custom",
+                        new XElement("F_ItemName", planningTranslation.Name),
+                        new XElement("groove_name", match1.Value.Replace("fuge nr. ", "")),
+                        new XElement("rail_name", match2.Value.Replace("- ", ""))).ToString();
+                }
+
+                var filePath = await core.CaseToPdf(caseId, templateId.ToString(),
+                    DateTime.Now.ToString("yyyyMMddHHmmssffff"),
+                    $"{await core.GetSdkSetting(Settings.httpServerAddress)}/" + "api/template-files/get-report-image/", customXml, language);
+                // var filePath = await core.CaseToPdf(caseId, templateId.ToString(),
+                //     DateTime.Now.ToString("yyyyMMddHHmmssffff"),
+                //     $"{await core.GetSdkSetting(Settings.httpServerAddress)}/" + "api/template-files/get-image/pdf", customXmlContent, language);
+                //DateTime.Now.ToString("yyyyMMddHHmmssffff"), $"{core.GetHttpServerAddress()}/" + "api/template-files/get-image?&filename=");
+                if (!System.IO.File.Exists(filePath))
+                {
+                    return NotFound();
+                }
+
+                var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+                return File(fileStream, "application/pdf", Path.GetFileName(filePath));
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception.Message);
+                return BadRequest();
+            }
         }
     }
 }

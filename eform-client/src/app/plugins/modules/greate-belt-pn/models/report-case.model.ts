@@ -6,4 +6,5 @@ export class ReportCaseModel {
   itemName: string;
   isArchived: boolean;
   templateId: number;
+  itemId: number;
 }
