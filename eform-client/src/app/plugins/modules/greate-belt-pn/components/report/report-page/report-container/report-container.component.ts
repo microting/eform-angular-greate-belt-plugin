@@ -4,17 +4,20 @@ import { saveAs } from 'file-saver';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import { CaseModel, Paged } from 'src/app/common/models';
+import {CaseModel, Paged, PaginationModel} from 'src/app/common/models';
 import {
   CaseArchiveModalComponent,
   CaseRemoveModalComponent,
 } from 'src/app/common/modules/eform-cases/components';
 import { EFormService } from 'src/app/common/services';
 import { AuthStateService } from 'src/app/common/store';
-import { ReportCaseModel } from 'src/app/plugins/modules/greate-belt-pn/models';
+import { ReportCaseModel } from '../../../../models';
 import { GreateBeltPnClaims } from '../../../../enums';
 import { GreateBeltPnReportService } from '../../../../services';
 import { ReportStateService } from '../../store';
+import {MatDialog} from '@angular/material/dialog';
+import {Overlay} from '@angular/cdk/overlay';
+import {dialogConfigHelper} from 'src/app/common/helpers';
 
 @AutoUnsubscribe()
 @Component({
@@ -25,8 +28,6 @@ import { ReportStateService } from '../../store';
 export class ReportContainerComponent implements OnInit, OnDestroy {
   @ViewChild('caseRemoveModal', { static: true })
   caseRemoveModal: CaseRemoveModalComponent;
-  @ViewChild('caseArchiveModal', { static: true })
-  caseArchiveModal: CaseArchiveModalComponent;
   nameSearchSubject = new Subject();
   reportModel: Paged<ReportCaseModel> = new Paged<ReportCaseModel>();
   selectedEformIds: number[] = [];
@@ -34,6 +35,8 @@ export class ReportContainerComponent implements OnInit, OnDestroy {
   getReportSub$: Subscription;
   downloadEformPdf$: Subscription;
   routeSub$: Subscription;
+  caseArchiveModalComponentAfterClosedSub$: Subscription;
+  caseRemoveModalComponentAfterClosedSub$: Subscription;
 
   constructor(
     private reportService: GreateBeltPnReportService,
@@ -41,7 +44,9 @@ export class ReportContainerComponent implements OnInit, OnDestroy {
     public authStateService: AuthStateService,
     private eFormService: EFormService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    public dialog: MatDialog,
+    private overlay: Overlay,
   ) {
     this.nameSearchSubject.pipe(debounceTime(500)).subscribe((val) => {
       this.reportStateService.updateNameFilter(val.toString());
@@ -121,24 +126,28 @@ export class ReportContainerComponent implements OnInit, OnDestroy {
   }
 
   showRemoveCaseModal(model: ReportCaseModel) {
-    this.caseRemoveModal.show(
-      new CaseModel({
-        id: model.id,
-        doneAt: model.doneAtUserEditable,
-        workerName: model.doneBy,
-      }),
-      model.templateId
-    );
+    this.caseRemoveModalComponentAfterClosedSub$ = this.dialog.open(CaseRemoveModalComponent,
+      {
+        ...dialogConfigHelper(this.overlay, {
+          caseModel: new CaseModel({
+            id: model.id,
+            doneAt: model.doneAtUserEditable,
+            workerName: model.doneBy,
+          }),
+          templateId: model.templateId
+        }), minWidth: 600})
+      .afterClosed()
+      .subscribe(data => data ? this.getReport() : void 0);
   }
 
   showArchiveCaseModal(model: ReportCaseModel) {
-    this.caseArchiveModal.show({
+    this.caseArchiveModalComponentAfterClosedSub$= this.dialog.open(CaseArchiveModalComponent, dialogConfigHelper(this.overlay, {
       id: model.id,
       doneAt: model.doneAtUserEditable,
       templateId: model.templateId,
       workerName: model.doneBy,
       isArchived: model.isArchived,
-    });
+    })).afterClosed().subscribe(x => x ? this.getReport() : void 0);
   }
 
   onDownloadPdf(model: ReportCaseModel) {
@@ -148,5 +157,11 @@ export class ReportContainerComponent implements OnInit, OnDestroy {
         const blob = new Blob([data]);
         saveAs(blob, `template_${model.templateId}.pdf`);
       });
+  }
+
+
+  onPaginationChanged(paginationModel: PaginationModel) {
+    this.reportStateService.updatePagination(paginationModel);
+    this.getReport();
   }
 }
