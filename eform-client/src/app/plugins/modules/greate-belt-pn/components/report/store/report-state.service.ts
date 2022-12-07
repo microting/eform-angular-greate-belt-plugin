@@ -25,12 +25,12 @@ export class ReportStateService {
   //   return this.query.selectOffset$;
   // }
 
-  getPageSize(): Observable<number> {
-    return this.query.selectPageSize$;
+  getActiveSort(): Observable<string> {
+    return this.query.selectActiveSort$;
   }
 
-  getSort(): Observable<SortModel> {
-    return this.query.selectSort$;
+  getActiveSortDirection(): Observable<'asc' | 'desc'> {
+    return this.query.selectActiveSortDirection$;
   }
 
   getNameFilter(): Observable<string> {
@@ -130,5 +130,16 @@ export class ReportStateService {
 
   getPagination(): Observable<PaginationModel> {
     return this.query.selectPagination$;
+  }
+
+  updatePagination(pagination: PaginationModel) {
+    this.store.update((state) => ({
+      pagination: {
+        ...state.pagination,
+        pageSize: pagination.pageSize,
+        offset: pagination.offset,
+      },
+    }));
+    // this.checkOffset();
   }
 }
