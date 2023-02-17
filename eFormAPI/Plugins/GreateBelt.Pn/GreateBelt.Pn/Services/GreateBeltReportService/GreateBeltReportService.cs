@@ -72,6 +72,10 @@ namespace GreateBelt.Pn.Services.GreateBeltReportService
                     {
                         x.Id,
                         CustomField1 = x.FieldValue1,
+                        CustomField2 = x.FieldValue2,
+                        CustomField3 = x.FieldValue3,
+                        CustomField4 = x.FieldValue4,
+                        CustomField5 = x.FieldValue5,
                         DoneAtUserEditable = x.DoneAtUserModifiable,
                         DoneBy = x.SiteId == null ? "" : x.Site.Name,
                         x.CheckListId,
@@ -119,6 +123,10 @@ namespace GreateBelt.Pn.Services.GreateBeltReportService
                     {
                         Id = x.Id,
                         CustomField1 = x.CustomField1 ?? "",
+                        CustomField2 = x.CustomField2 ?? "",
+                        CustomField3 = x.CustomField3 ?? "",
+                        CustomField4 = x.CustomField4 ?? "",
+                        CustomField5 = x.CustomField5 ?? "",
                         DoneAtUserEditable = x.DoneAtUserEditable,
                         DoneBy = x.DoneBy,
                         ItemName = joined
@@ -127,12 +135,16 @@ namespace GreateBelt.Pn.Services.GreateBeltReportService
                             .LastOrDefault(),
                         IsArchived = x.IsArchieved,
                         ItemId = joined.Where(y => y.MicrotingSdkCaseId == x.Id).Select(y => y.PlanningId).LastOrDefault(),
-                        TemplateId = joined.Where(y => y.MicrotingSdkCaseId == x.Id).Select(y => y.MicrotingSdkeFormId).LastOrDefault()
+                        TemplateId = joined.Where(y => y.MicrotingSdkCaseId == x.Id).Select(y => y.MicrotingSdkeFormId).LastOrDefault(),
                     });
 
                 foundResultQuery = foundResultQuery
                     .Where(x => x.Id.ToString().Contains(model.NameFilter)
                     || x.CustomField1.ToLower().Contains(model.NameFilter)
+                    || x.CustomField2.ToLower().Contains(model.NameFilter)
+                    || x.CustomField3.ToLower().Contains(model.NameFilter)
+                    || x.CustomField4.ToLower().Contains(model.NameFilter)
+                    || x.CustomField5.ToLower().Contains(model.NameFilter)
                     || x.DoneAtUserEditable.ToString().Contains(model.NameFilter)
                     || x.DoneBy.ToLower().Contains(model.NameFilter)
                     || x.ItemName.ToLower().Contains(model.NameFilter))
@@ -168,6 +180,34 @@ namespace GreateBelt.Pn.Services.GreateBeltReportService
                         foundResultQuery = model.IsSortDsc
                             ? foundResultQuery.OrderByDescending(x => x.CustomField1).ToList()
                             : foundResultQuery.OrderBy(x => x.CustomField1).ToList();
+                        break;
+                    }
+                    case "FieldValue2":
+                    {
+                        foundResultQuery = model.IsSortDsc
+                            ? foundResultQuery.OrderByDescending(x => x.CustomField2).ToList()
+                            : foundResultQuery.OrderBy(x => x.CustomField2).ToList();
+                        break;
+                    }
+                    case "FieldValue3":
+                    {
+                        foundResultQuery = model.IsSortDsc
+                            ? foundResultQuery.OrderByDescending(x => x.CustomField3).ToList()
+                            : foundResultQuery.OrderBy(x => x.CustomField3).ToList();
+                        break;
+                    }
+                    case "FieldValue4":
+                    {
+                        foundResultQuery = model.IsSortDsc
+                            ? foundResultQuery.OrderByDescending(x => x.CustomField4).ToList()
+                            : foundResultQuery.OrderBy(x => x.CustomField4).ToList();
+                        break;
+                    }
+                    case "FieldValue5":
+                    {
+                        foundResultQuery = model.IsSortDsc
+                            ? foundResultQuery.OrderByDescending(x => x.CustomField5).ToList()
+                            : foundResultQuery.OrderBy(x => x.CustomField5).ToList();
                         break;
                     }
                     case "DoneAtUserModifiable":

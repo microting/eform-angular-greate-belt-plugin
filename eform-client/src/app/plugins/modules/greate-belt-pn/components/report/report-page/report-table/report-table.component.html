@@ -12,3 +12,22 @@
   [sortDirection]="reportStateService.getActiveSortDirection() | async"
   (sortChange)="sortTable($event)"
 ></mtx-grid>
+
+<ng-template #statusTpl let-row let-i=index>
+  <button
+    mat-icon-button
+    color="primary"
+    (click)="editEntity(row)"
+    [disabled]="!reportModel.canEdit"
+  >
+    <mat-icon>edit</mat-icon>
+  </button>
+  <button
+    mat-icon-button
+    color="warn"
+    (click)="deleteEntity(row)"
+    [disabled]="!reportModel.canDelete"
+  >
+    <mat-icon>delete</mat-icon>
+  </button>
+</ng-template>

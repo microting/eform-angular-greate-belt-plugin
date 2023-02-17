@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Route, Router } from '@angular/router';
+import {ActivatedRoute, Params, Route, Router} from '@angular/router';
 import { saveAs } from 'file-saver';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 import { Subject, Subscription } from 'rxjs';
@@ -18,6 +18,9 @@ import { ReportStateService } from '../../store';
 import {MatDialog} from '@angular/material/dialog';
 import {Overlay} from '@angular/cdk/overlay';
 import {dialogConfigHelper} from 'src/app/common/helpers';
+import {MtxGridColumn} from '@ng-matero/extensions/grid';
+import {STANDARD_DATE_FORMAT} from 'src/app/common/const';
+import {TranslateService} from '@ngx-translate/core';
 
 @AutoUnsubscribe()
 @Component({
@@ -30,6 +33,7 @@ export class ReportContainerComponent implements OnInit, OnDestroy {
   caseRemoveModal: CaseRemoveModalComponent;
   nameSearchSubject = new Subject();
   reportModel: Paged<ReportCaseModel> = new Paged<ReportCaseModel>();
+  //tableHeaders: MtxGridColumn[];
   selectedEformIds: number[] = [];
 
   getReportSub$: Subscription;
@@ -37,6 +41,84 @@ export class ReportContainerComponent implements OnInit, OnDestroy {
   routeSub$: Subscription;
   caseArchiveModalComponentAfterClosedSub$: Subscription;
   caseRemoveModalComponentAfterClosedSub$: Subscription;
+  queryParams: Params;
+
+  tableHeaders: MtxGridColumn[] = [
+    {header: this.translateService.stream('Id'), field: 'id', sortProp: {id: 'Id'}, sortable: true, class: 'reportCaseId'},
+    {
+      header: this.translateService.stream('Maximo arbejdsordre nr'),
+      field: 'customField1',
+      sortProp: {id: 'FieldValue1'},
+      sortable: true,
+      class: 'reportCaseCustomField1'
+    },
+    {
+      header: this.translateService.stream('Done at'),
+      field: 'doneAtUserEditable',
+      sortProp: {id: 'DoneAtUserModifiable'},
+      sortable: true,
+      class: 'reportCaseDoneAt',
+      type: 'date',
+      typeParameter: {format: STANDARD_DATE_FORMAT}
+    },
+    {header: this.translateService.stream('Done by'), field: 'doneBy', sortProp: {id: 'Name'}, sortable: true, class: 'reportCaseDoneBy'},
+    {header: this.translateService.stream('Area'), field: 'itemName', sortProp: {id: 'ItemName'}, sortable: true, class: 'reportCaseItemName'},
+    {
+      header: this.translateService.stream('Status'),
+      field: 'isArchived', sortProp: {id: 'IsArchived'},
+      sortable: true,
+      type: 'button',
+      buttons: [
+        {
+          iif: (rowData: ReportCaseModel) => rowData.isArchived,
+          icon: 'inventory',
+          type: 'icon',
+          class: 'reportCaseArchive',
+          color: 'primary',
+          tooltip: this.translateService.stream('Unarchive'),
+          click: (rowData: ReportCaseModel) => this.onShowArchiveCaseModal(rowData),
+        },
+        {
+          iif: (rowData: ReportCaseModel) => !rowData.isArchived,
+          icon: 'inventory',
+          type: 'icon',
+          class: 'reportCaseArchive',
+          color: 'warn',
+          tooltip: this.translateService.stream('Archive'),
+          click: (rowData: ReportCaseModel) => this.onShowArchiveCaseModal(rowData),
+        },
+      ]
+    },
+    {
+      header: this.translateService.stream('Actions'),
+      field: 'actions',
+      type: 'button',
+      buttons: [
+        {
+          type: 'icon',
+          icon: 'edit',
+          color: 'accent',
+          tooltip: this.translateService.stream('Edit Case'),
+          click: (rowData: ReportCaseModel) => this.router.navigate(['/cases/edit/' + rowData.id + '/' + rowData.templateId], {queryParams: this.queryParams}),
+        },
+        {
+          type: 'icon',
+          icon: 'picture_as_pdf',
+          color: 'accent',
+          tooltip: this.translateService.stream('Download PDF'),
+          click: (rowData: ReportCaseModel) => this.onDownloadPdf(rowData),
+        },
+        {
+          color: 'warn',
+          type: 'icon',
+          icon: 'delete',
+          tooltip: this.translateService.stream('Delete Case'),
+          click: (rowData: ReportCaseModel) => this.onShowRemoveCaseModal(rowData),
+        },
+      ]
+    },
+  ];
+
 
   constructor(
     private reportService: GreateBeltPnReportService,
@@ -47,6 +129,7 @@ export class ReportContainerComponent implements OnInit, OnDestroy {
     private router: Router,
     public dialog: MatDialog,
     private overlay: Overlay,
+    private translateService: TranslateService,
   ) {
     this.nameSearchSubject.pipe(debounceTime(500)).subscribe((val) => {
       this.reportStateService.updateNameFilter(val.toString());
@@ -59,6 +142,102 @@ export class ReportContainerComponent implements OnInit, OnDestroy {
 
     if (this.router.url.indexOf('/oresund/tr') > -1) {
       this.selectedEformIds = [449];
+      this.tableHeaders = [
+        {header: this.translateService.stream('Id'), field: 'id', sortProp: {id: 'Id'}, sortable: true, class: 'reportCaseId'},
+        {
+          header: this.translateService.stream('Km fra'),
+          field: 'customField1',
+          sortProp: {id: 'FieldValue1'},
+          sortable: true,
+          class: 'reportCaseCustomField1'
+        },
+        {
+          header: this.translateService.stream('Km til'),
+          field: 'customField2',
+          sortProp: {id: 'FieldValue2'},
+          sortable: true,
+          class: 'reportCaseCustomField2'
+        },
+        {
+          header: this.translateService.stream('Fejl'),
+          field: 'customField3',
+          sortProp: {id: 'FieldValue3'},
+          sortable: true,
+          class: 'reportCaseCustomField3'
+        },
+        {
+          header: this.translateService.stream('Driftmessige konsekvenser'),
+          field: 'customField4',
+          sortProp: {id: 'FieldValue4'},
+          sortable: true,
+          class: 'reportCaseCustomField4'
+        },
+        {header: this.translateService.stream('Area'), field: 'itemName', sortProp: {id: 'ItemName'}, sortable: true, class: 'reportCaseItemName'},
+        {
+          header: this.translateService.stream('Done at'),
+          field: 'doneAtUserEditable',
+          sortProp: {id: 'DoneAtUserModifiable'},
+          sortable: true,
+          class: 'reportCaseDoneAt',
+          type: 'date',
+          typeParameter: {format: STANDARD_DATE_FORMAT}
+        },
+        {header: this.translateService.stream('Done by'), field: 'doneBy', sortProp: {id: 'Name'}, sortable: true, class: 'reportCaseDoneBy'},
+        {
+          header: this.translateService.stream('Status'),
+          field: 'isArchived', sortProp: {id: 'IsArchived'},
+          sortable: true,
+          type: 'button',
+          buttons: [
+            {
+              iif: (rowData: ReportCaseModel) => rowData.isArchived,
+              icon: 'inventory',
+              type: 'icon',
+              class: 'reportCaseUnarchive',
+              color: 'primary',
+              tooltip: this.translateService.stream('Unarchive'),
+              click: (rowData: ReportCaseModel) => this.onShowArchiveCaseModal(rowData),
+            },
+            {
+              iif: (rowData: ReportCaseModel) => !rowData.isArchived,
+              icon: 'inventory',
+              type: 'icon',
+              class: 'reportCaseArchive',
+              color: 'warn',
+              tooltip: this.translateService.stream('Archive'),
+              click: (rowData: ReportCaseModel) => this.onShowArchiveCaseModal(rowData),
+            },
+          ]
+        },
+        {
+          header: this.translateService.stream('Actions'),
+          field: 'actions',
+          type: 'button',
+          buttons: [
+            {
+              type: 'icon',
+              icon: 'edit',
+              color: 'accent',
+              tooltip: this.translateService.stream('Edit Case'),
+              click: (rowData: ReportCaseModel) => this.router.navigate(['/cases/edit/' + rowData.id + '/' + rowData.templateId], {queryParams: this.queryParams}),
+            },
+            {
+              type: 'icon',
+              icon: 'picture_as_pdf',
+              color: 'accent',
+              tooltip: this.translateService.stream('Download PDF'),
+              click: (rowData: ReportCaseModel) => this.onDownloadPdf(rowData),
+            },
+            {
+              color: 'warn',
+              type: 'icon',
+              icon: 'delete',
+              tooltip: this.translateService.stream('Delete Case'),
+              click: (rowData: ReportCaseModel) => this.onShowRemoveCaseModal(rowData),
+            },
+          ]
+        },
+      ];
     }
 
     if (this.router.url.indexOf('/oresund/oesaekcsltf') > -1) {
@@ -75,6 +254,102 @@ export class ReportContainerComponent implements OnInit, OnDestroy {
 
     if (this.router.url.indexOf('/storebaelt/tr') > -1) {
       this.selectedEformIds = [36];
+      this.tableHeaders = [
+        {header: this.translateService.stream('Id'), field: 'id', sortProp: {id: 'Id'}, sortable: true, class: 'reportCaseId'},
+        {
+          header: this.translateService.stream('Km fra'),
+          field: 'customField1',
+          sortProp: {id: 'FieldValue1'},
+          sortable: true,
+          class: 'reportCaseCustomField1'
+        },
+        {
+          header: this.translateService.stream('Km til'),
+          field: 'customField2',
+          sortProp: {id: 'FieldValue2'},
+          sortable: true,
+          class: 'reportCaseCustomField2'
+        },
+        {
+          header: this.translateService.stream('Fejl'),
+          field: 'customField3',
+          sortProp: {id: 'FieldValue3'},
+          sortable: true,
+          class: 'reportCaseCustomField3'
+        },
+        {
+          header: this.translateService.stream('Driftmessige konsekvenser'),
+          field: 'customField4',
+          sortProp: {id: 'FieldValue4'},
+          sortable: true,
+          class: 'reportCaseCustomField4'
+        },
+        {header: this.translateService.stream('Area'), field: 'itemName', sortProp: {id: 'ItemName'}, sortable: true, class: 'reportCaseItemName'},
+        {
+          header: this.translateService.stream('Done at'),
+          field: 'doneAtUserEditable',
+          sortProp: {id: 'DoneAtUserModifiable'},
+          sortable: true,
+          class: 'reportCaseDoneAt',
+          type: 'date',
+          typeParameter: {format: STANDARD_DATE_FORMAT}
+        },
+        {header: this.translateService.stream('Done by'), field: 'doneBy', sortProp: {id: 'Name'}, sortable: true, class: 'reportCaseDoneBy'},
+        {
+          header: this.translateService.stream('Status'),
+          field: 'isArchived', sortProp: {id: 'IsArchived'},
+          sortable: true,
+          type: 'button',
+          buttons: [
+            {
+              iif: (rowData: ReportCaseModel) => rowData.isArchived,
+              icon: 'inventory',
+              type: 'icon',
+              class: 'reportCaseUnarchive',
+              color: 'primary',
+              tooltip: this.translateService.stream('Unarchive'),
+              click: (rowData: ReportCaseModel) => this.onShowArchiveCaseModal(rowData),
+            },
+            {
+              iif: (rowData: ReportCaseModel) => !rowData.isArchived,
+              icon: 'inventory',
+              type: 'icon',
+              class: 'reportCaseArchive',
+              color: 'warn',
+              tooltip: this.translateService.stream('Archive'),
+              click: (rowData: ReportCaseModel) => this.onShowArchiveCaseModal(rowData),
+            },
+          ]
+        },
+        {
+          header: this.translateService.stream('Actions'),
+          field: 'actions',
+          type: 'button',
+          buttons: [
+            {
+              type: 'icon',
+              icon: 'edit',
+              color: 'accent',
+              tooltip: this.translateService.stream('Edit Case'),
+              click: (rowData: ReportCaseModel) => this.router.navigate(['/cases/edit/' + rowData.id + '/' + rowData.templateId], {queryParams: this.queryParams}),
+            },
+            {
+              type: 'icon',
+              icon: 'picture_as_pdf',
+              color: 'accent',
+              tooltip: this.translateService.stream('Download PDF'),
+              click: (rowData: ReportCaseModel) => this.onDownloadPdf(rowData),
+            },
+            {
+              color: 'warn',
+              type: 'icon',
+              icon: 'delete',
+              tooltip: this.translateService.stream('Delete Case'),
+              click: (rowData: ReportCaseModel) => this.onShowRemoveCaseModal(rowData),
+            },
+          ]
+        },
+      ];
     }
 
     if (this.router.url.indexOf('/storebaelt/14-dags') > -1) {
@@ -92,7 +367,8 @@ export class ReportContainerComponent implements OnInit, OnDestroy {
     this.getReport();
   }
 
-  ngOnInit() {}
+  ngOnInit(
+    ) {this.queryParams = { reverseRoute: this.router.url };}
 
   getReport() {
     this.getReportSub$ = this.reportStateService
@@ -164,4 +440,17 @@ export class ReportContainerComponent implements OnInit, OnDestroy {
     this.reportStateService.updatePagination(paginationModel);
     this.getReport();
   }
+
+
+  onShowRemoveCaseModal(planning: ReportCaseModel) {
+    this.showRemoveCaseModal(planning);
+  }
+
+  onShowArchiveCaseModal(reportCaseModel: ReportCaseModel) {
+    this.showArchiveCaseModal(reportCaseModel);
+  }
+
+  // onDownloadPdf(model: ReportCaseModel) {
+  //   this.downloadPdf.emit(model);
+  // }
 }

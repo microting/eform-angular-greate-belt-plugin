@@ -26,6 +26,10 @@ namespace GreateBelt.Pn.Infrastructure.Models.Report.Index
     {
         public int Id { get; set; }
         public string CustomField1 { get; set; }
+        public string CustomField2 { get; set; }
+        public string CustomField3 { get; set; }
+        public string CustomField4 { get; set; }
+        public string CustomField5 { get; set; }
         public int TemplateId { get; set; }
         public int ItemId { get; set; }
         public DateTime? DoneAtUserEditable { get; set; }
