@@ -18,6 +18,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
+
 namespace GreateBelt.Pn.Services.GreateBeltReportService
 {
     using System;
@@ -226,12 +229,24 @@ namespace GreateBelt.Pn.Services.GreateBeltReportService
                 foundResultQuery = foundResultQuery
                     .Skip(model.Offset)
                     .Take(model.PageSize);
-
                 var result = new Paged<GreateBeltReportIndexModel>
                 {
                     Total = total,
-                    Entities = foundResultQuery.ToList()
+                    Entities = new List<GreateBeltReportIndexModel>()
                 };
+
+                foreach (var indexModel in foundResultQuery.ToList())
+                {
+                    var regex = new Regex(@"(\d )(.*)");
+                    var matches = regex.Matches(indexModel.ItemName);
+                    if (matches.Count > 0)
+                    {
+                        indexModel.ItemName = indexModel.ItemName.Replace(matches[0].Groups[1].Value, "");
+                    }
+                    result.Entities.Add(indexModel);
+                }
+
+
 
                 return new OperationDataResult<Paged<GreateBeltReportIndexModel>>(true, result);
             }
