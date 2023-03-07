@@ -145,32 +145,46 @@ export class ReportContainerComponent implements OnInit, OnDestroy {
       this.tableHeaders = [
         {header: this.translateService.stream('Id'), field: 'id', sortProp: {id: 'Id'}, sortable: true, class: 'reportCaseId'},
         {
-          header: this.translateService.stream('Km fra'),
+          header: this.translateService.stream('Sporskifte nr.'),
           field: 'customField1',
           sortProp: {id: 'FieldValue1'},
           sortable: true,
           class: 'reportCaseCustomField1'
         },
         {
-          header: this.translateService.stream('Km til'),
+          header: this.translateService.stream('Spor nr.'),
           field: 'customField2',
           sortProp: {id: 'FieldValue2'},
           sortable: true,
           class: 'reportCaseCustomField2'
         },
         {
-          header: this.translateService.stream('Fejl'),
+          header: this.translateService.stream('Km fra'),
           field: 'customField3',
           sortProp: {id: 'FieldValue3'},
           sortable: true,
           class: 'reportCaseCustomField3'
         },
         {
-          header: this.translateService.stream('Driftmessige konsekvenser'),
+          header: this.translateService.stream('Km til'),
           field: 'customField4',
           sortProp: {id: 'FieldValue4'},
           sortable: true,
           class: 'reportCaseCustomField4'
+        },
+        {
+          header: this.translateService.stream('Fejl'),
+          field: 'customField5',
+          sortProp: {id: 'FieldValue5'},
+          sortable: true,
+          class: 'reportCaseCustomField5'
+        },
+        {
+          header: this.translateService.stream('Driftmessige konsekvenser'),
+          field: 'customField6',
+          sortProp: {id: 'FieldValue6'},
+          sortable: true,
+          class: 'reportCaseCustomField6'
         },
         {header: this.translateService.stream('Area'), field: 'itemName', sortProp: {id: 'ItemName'}, sortable: true, class: 'reportCaseItemName'},
         {
@@ -257,32 +271,46 @@ export class ReportContainerComponent implements OnInit, OnDestroy {
       this.tableHeaders = [
         {header: this.translateService.stream('Id'), field: 'id', sortProp: {id: 'Id'}, sortable: true, class: 'reportCaseId'},
         {
-          header: this.translateService.stream('Km fra'),
+          header: this.translateService.stream('Sporskifte nr.'),
           field: 'customField1',
           sortProp: {id: 'FieldValue1'},
           sortable: true,
           class: 'reportCaseCustomField1'
         },
         {
-          header: this.translateService.stream('Km til'),
+          header: this.translateService.stream('Spor nr.'),
           field: 'customField2',
           sortProp: {id: 'FieldValue2'},
           sortable: true,
           class: 'reportCaseCustomField2'
         },
         {
-          header: this.translateService.stream('Fejl'),
+          header: this.translateService.stream('Km fra'),
           field: 'customField3',
           sortProp: {id: 'FieldValue3'},
           sortable: true,
           class: 'reportCaseCustomField3'
         },
         {
-          header: this.translateService.stream('Driftmessige konsekvenser'),
+          header: this.translateService.stream('Km til'),
           field: 'customField4',
           sortProp: {id: 'FieldValue4'},
           sortable: true,
           class: 'reportCaseCustomField4'
+        },
+        {
+          header: this.translateService.stream('Fejl'),
+          field: 'customField5',
+          sortProp: {id: 'FieldValue5'},
+          sortable: true,
+          class: 'reportCaseCustomField5'
+        },
+        {
+          header: this.translateService.stream('Driftmessige konsekvenser'),
+          field: 'customField6',
+          sortProp: {id: 'FieldValue6'},
+          sortable: true,
+          class: 'reportCaseCustomField6'
         },
         {header: this.translateService.stream('Area'), field: 'itemName', sortProp: {id: 'ItemName'}, sortable: true, class: 'reportCaseItemName'},
         {
