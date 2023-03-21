@@ -138,7 +138,7 @@ namespace GreateBelt.Pn.Services.GreateBeltReportService
                             .LastOrDefault(),
                         IsArchived = x.IsArchieved,
                         ItemId = joined.Where(y => y.MicrotingSdkCaseId == x.Id).Select(y => y.PlanningId).LastOrDefault(),
-                        TemplateId = joined.Where(y => y.MicrotingSdkCaseId == x.Id).Select(y => y.MicrotingSdkeFormId).LastOrDefault(),
+                        TemplateId = joined.Where(y => y.MicrotingSdkCaseId == x.Id).Select(y => y.MicrotingSdkeFormId).LastOrDefault()
                     });
 
                 foundResultQuery = foundResultQuery
@@ -238,8 +238,13 @@ namespace GreateBelt.Pn.Services.GreateBeltReportService
                 foreach (var indexModel in foundResultQuery.ToList())
                 {
                     var regex = new Regex(@"(\d )(.*)");
+                    if (indexModel.ItemName == null)
+                    {
+                        result.Entities.Add(indexModel);
+                        continue;
+                    }
                     var matches = regex.Matches(indexModel.ItemName);
-                    if (matches.Count > 0)
+                    if (matches.Count > 0 && !indexModel.ItemName.Contains("fuge"))
                     {
                         indexModel.ItemName = indexModel.ItemName.Replace(matches[0].Groups[1].Value, "");
                     }
