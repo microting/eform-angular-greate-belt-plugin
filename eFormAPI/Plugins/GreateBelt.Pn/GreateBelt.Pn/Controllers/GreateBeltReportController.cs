@@ -69,7 +69,7 @@ namespace GreateBelt.Pn.Controllers
                 var language = await _userService.GetCurrentUserLanguage();
                 var item = await _itemsPlanningPnDbContext.Plannings.FirstOrDefaultAsync(x => x.Id == itemId);
 
-                var planningTranslation = await _itemsPlanningPnDbContext.PlanningNameTranslation.FirstOrDefaultAsync(x => x.PlanningId == item.Id && x.Language == language);
+                var planningTranslation = await _itemsPlanningPnDbContext.PlanningNameTranslation.FirstOrDefaultAsync(x => x.PlanningId == item.Id && x.LanguageId == language.Id);
 
                 var regex = new Regex(@"(\d )(.*)");
                 var matches = regex.Matches(planningTranslation.Name);
