@@ -1,7 +1,7 @@
 name: .NET Master
 
 on:
-  push:
+  pull_request:
     branches: [ master, stable, angular14 ]
 
 jobs:
