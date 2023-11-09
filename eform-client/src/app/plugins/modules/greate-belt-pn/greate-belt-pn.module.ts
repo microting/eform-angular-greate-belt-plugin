@@ -9,10 +9,11 @@ import {ReportContainerComponent, ReportTableComponent} from './components';
 import {GreateBeltPnRouting} from './greate-belt-pn.routing.module';
 import {GreateBeltPnLayoutComponent} from './layouts';
 import {GreateBeltPnReportService} from './services';
-import {greateBeltStoreProviders} from './store-providers.config';
 import {MtxGridModule} from '@ng-matero/extensions/grid';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
+import * as reportReducer from './state/report/report.reducer';
+import {StoreModule} from '@ngrx/store';
 
 @NgModule({
   imports: [
@@ -26,13 +27,16 @@ import {MatInputModule} from '@angular/material/input';
     MtxGridModule,
     MatFormFieldModule,
     MatInputModule,
+    StoreModule.forFeature('greateBeltPn', {
+      reportState: reportReducer.reportReducer,
+    })
   ],
   declarations: [
     GreateBeltPnLayoutComponent,
     ReportContainerComponent,
     ReportTableComponent,
   ],
-  providers: [GreateBeltPnReportService, ...greateBeltStoreProviders],
+  providers: [GreateBeltPnReportService],
 })
 export class GreateBeltPnModule {
 }

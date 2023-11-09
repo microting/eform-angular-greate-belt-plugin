@@ -4,6 +4,8 @@ import {translates} from './../i18n/translates';
 import {AuthStateService} from 'src/app/common/store';
 import {Subscription} from 'rxjs';
 import {LocaleService} from 'src/app/common/services';
+import {selectCurrentUserLocale} from "src/app/state/auth/auth.selector";
+import {Store} from "@ngrx/store";
 
 @Component({
   selector: 'app-greate-belt-pn-layout',
@@ -13,8 +15,9 @@ import {LocaleService} from 'src/app/common/services';
 export class GreateBeltPnLayoutComponent
   implements AfterContentInit, OnInit, OnDestroy {
   currentUserLocaleAsyncSub$: Subscription;
-
+  private selectCurrentUserLocale$ = this.store.select(selectCurrentUserLocale);
   constructor(
+    private store: Store,
     private localeService: LocaleService,
     private translateService: TranslateService,
     private authStateService: AuthStateService
@@ -25,9 +28,9 @@ export class GreateBeltPnLayoutComponent
   }
 
   ngAfterContentInit() {
-    this.currentUserLocaleAsyncSub$ = this.authStateService.currentUserLocaleAsync.subscribe(lang => {
-      const i18n = translates[lang];
-      this.translateService.setTranslation(lang, i18n, true);
+    this.selectCurrentUserLocale$.subscribe((locale) => {
+      const i18n = translates[locale];
+      this.translateService.setTranslation(locale, i18n, true);
     });
   }
 

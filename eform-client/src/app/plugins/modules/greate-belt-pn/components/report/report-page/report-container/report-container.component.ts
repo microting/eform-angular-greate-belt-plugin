@@ -409,21 +409,21 @@ export class ReportContainerComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {}
-
-  onPageSizeChanged(newPageSize: number) {
-    this.reportStateService.updatePageSize(newPageSize);
-    this.getReport();
-  }
-
-  sortTable(sort: string) {
-    this.reportStateService.onSortTable(sort);
-    this.getReport();
-  }
-
-  changePage(newPage: any) {
-    this.reportStateService.changePage(newPage);
-    this.getReport();
-  }
+  //
+  // onPageSizeChanged(newPageSize: number) {
+  //   this.reportStateService.updatePageSize(newPageSize);
+  //   this.getReport();
+  // }
+  //
+  // sortTable(sort: string) {
+  //   this.reportStateService.onSortTable(sort);
+  //   this.getReport();
+  // }
+  //
+  // changePage(newPage: any) {
+  //   this.reportStateService.changePage(newPage);
+  //   this.getReport();
+  // }
 
   onNameFilterChanged(name: string) {
     this.nameSearchSubject.next(name);
