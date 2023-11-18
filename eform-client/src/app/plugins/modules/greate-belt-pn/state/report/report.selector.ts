@@ -12,3 +12,5 @@ export const selectReportPaginationSort =
   createSelector(selectReportPagination, (state) => state.sort);
 export const selectReportFilters =
   createSelector(selectReport, (state) => state.filters);
+export const selectReportFiltersNameFilter =
+  createSelector(selectReportFilters, (state) => state.nameFilter);

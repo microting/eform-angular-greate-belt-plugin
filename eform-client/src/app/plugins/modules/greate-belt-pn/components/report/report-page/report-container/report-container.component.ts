@@ -21,6 +21,11 @@ import {dialogConfigHelper} from 'src/app/common/helpers';
 import {MtxGridColumn} from '@ng-matero/extensions/grid';
 import {STANDARD_DATE_FORMAT} from 'src/app/common/const';
 import {TranslateService} from '@ngx-translate/core';
+import {Store} from "@ngrx/store";
+import {
+  selectReportFiltersNameFilter,
+  selectReportPagination
+} from "src/app/plugins/modules/greate-belt-pn/state/report/report.selector";
 
 @AutoUnsubscribe()
 @Component({
@@ -118,7 +123,8 @@ export class ReportContainerComponent implements OnInit, OnDestroy {
       ]
     },
   ];
-
+  public selectReportFiltersNameFilter$ = this.store.select(selectReportFiltersNameFilter);
+  public selectReportPagination$ = this.store.select(selectReportPagination);
 
   constructor(
     private reportService: GreateBeltPnReportService,
@@ -126,6 +132,7 @@ export class ReportContainerComponent implements OnInit, OnDestroy {
     public authStateService: AuthStateService,
     private eFormService: EFormService,
     private route: ActivatedRoute,
+    private store: Store,
     private router: Router,
     public dialog: MatDialog,
     private overlay: Overlay,

@@ -9,7 +9,7 @@
           matInput
           type="text"
           (ngModelChange)="onNameFilterChanged($event)"
-          [ngModel]="reportStateService.getNameFilter() | async"
+          [ngModel]="selectReportFiltersNameFilter$ | async"
           id="labelInput"
         />
       </mat-form-field>
@@ -30,7 +30,7 @@
 
 <ng-template #paginatorTpl>
   <eform-pagination
-    [pagination]="reportStateService.getPagination() | async"
+    [pagination]="selectReportPagination$ | async"
     (paginationChanged)="onPaginationChanged($event)"
   ></eform-pagination>
 </ng-template>
