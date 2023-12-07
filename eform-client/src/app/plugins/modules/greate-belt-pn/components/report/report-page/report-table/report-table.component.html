@@ -1,82 +1,33 @@
-<div class="row p-1 mt-4 table-responsive no-gutters">
-  <table
-    mdbTable
-    striped="true"
-    hover="true"
-    small="true"
-    class="z-depth-1 text-center"
-  >
-    <thead
-      table-headers
-      [tableHeaders]="tableHeaders"
-      [sort]="reportStateService.getSort() | async"
-      (sortChanged)="sortTable($event)"
-    ></thead>
-    <tbody id="reportCasesTableBody">
-      <tr *ngFor="let reportCase of reportModel.entities; let i = index">
-        <td id="reportCaseId">
-          {{ reportCase.id }}
-        </td>
-        <td id="reportCaseCustomField1">
-          {{ reportCase.customField1 }}
-        </td>
-        <td id="reportCaseDoneAt">
-          {{ reportCase.doneAtUserEditable | date: dateFormat }}
-        </td>
-        <td id="reportCaseDoneBy">
-          {{ reportCase.doneBy }}
-        </td>
-        <td id="reportCaseItemName">
-          {{ reportCase.itemName }}
-        </td>
-        <td id="reportCaseArchive">
-          <div class="d-flex flex-row justify-content-center">
-            <button
-              id="archiveReportCaseBtn"
-              class="btn btn-icon mr-2"
-              [ngClass]="{
-                'btn-danger': !reportCase.isArchived,
-                'btn-success': reportCase.isArchived
-              }"
-              mdbTooltip="{{
-                (reportCase.isArchived ? 'Unarchive' : 'Archive') | translate
-              }}"
-              (click)="onShowArchiveCaseModal(reportCase)"
-            >
-              <fa-icon [icon]="'archive'" [fixedWidth]="true"></fa-icon>
-            </button>
-          </div>
-        </td>
-        <td>
-          <div class="d-flex flex-row justify-content-center">
-            <button
-              mdbBtn
-              class="btn-success btn-icon mb-2"
-              [routerLink]="['/cases/edit/' + reportCase.id + '/' + reportCase.templateId]"
-              [queryParams]="queryParams"
-              mdbTooltip="{{ 'Edit Case' | translate }}"
-            >
-              <fa-icon icon="pen" size="lg" [fixedWidth]="true"></fa-icon>
-            </button>
-            <button
-              mdbBtn
-              class="btn-success btn-icon mb-2"
-              (click)="onDownloadPdf(reportCase)"
-              mdbTooltip="{{ 'Download PDF' | translate }}"
-            >
-              <fa-icon icon="file-pdf" size="lg" [fixedWidth]="true"></fa-icon>
-            </button>
-            <button
-              mdbBtn
-              class="btn-danger btn-icon mb-2"
-              mdbTooltip="{{ 'Delete Case' | translate }}"
-              (click)="onShowRemoveCaseModal(reportCase)"
-            >
-              <fa-icon icon="trash-alt" size="lg" [fixedWidth]="true"></fa-icon>
-            </button>
-          </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+<mtx-grid
+  [data]="reportModel.entities"
+  [columns]="tableHeaders"
+  [showPaginator]="true"
+  [paginationTemplate]="paginationTemplate"
+  [pageOnFront]="false"
+  [rowStriped]="true"
+  [showToolbar]="true"
+  [toolbarTemplate]="toolbarTemplate"
+  [showColumnMenuButton]="false"
+  [sortActive]="selectReportPaginationSort$ | async"
+  [sortDirection]="selectReportPaginationIsSortDsc$ | async"
+  (sortChange)="sortTable($event)"
+></mtx-grid>
+
+<!--<ng-template #statusTpl let-row let-i=index>-->
+<!--  <button-->
+<!--    mat-icon-button-->
+<!--    color="primary"-->
+<!--    (click)="editEntity(row)"-->
+<!--    [disabled]="!reportModel.canEdit"-->
+<!--  >-->
+<!--    <mat-icon>edit</mat-icon>-->
+<!--  </button>-->
+<!--  <button-->
+<!--    mat-icon-button-->
+<!--    color="warn"-->
+<!--    (click)="deleteEntity(row)"-->
+<!--    [disabled]="!reportModel.canDelete"-->
+<!--  >-->
+<!--    <mat-icon>delete</mat-icon>-->
+<!--  </button>-->
+<!--</ng-template>-->

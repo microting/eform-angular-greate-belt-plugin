@@ -4,14 +4,22 @@ import {
   EventEmitter,
   Input,
   OnInit,
-  Output,
+  Output, TemplateRef,
 } from '@angular/core';
-import { Paged, TableHeaderElementModel } from 'src/app/common/models';
+import { Paged, } from 'src/app/common/models';
 import { GreateBeltPnClaims } from '../../../../enums';
 import { ReportStateService } from '../../store';
 import { ReportCaseModel } from '../../../../models';
 import { STANDARD_DATE_FORMAT } from 'src/app/common/const';
-import { Params, Router } from '@angular/router';
+import {Params, Router } from '@angular/router';
+import {Sort} from '@angular/material/sort';
+import {MtxGridColumn} from '@ng-matero/extensions/grid';
+import {TranslateService} from '@ngx-translate/core';
+import {Store} from '@ngrx/store';
+import {
+  selectReportPaginationIsSortDsc,
+  selectReportPaginationSort
+} from "src/app/plugins/modules/greate-belt-pn/state/report/report.selector";
 
 @Component({
   selector: 'app-report-table',
@@ -21,82 +29,33 @@ import { Params, Router } from '@angular/router';
 })
 export class ReportTableComponent implements OnInit {
   @Input() reportModel: Paged<ReportCaseModel> = new Paged<ReportCaseModel>();
-  @Output()
-  showArchiveCaseModal: EventEmitter<ReportCaseModel> = new EventEmitter<ReportCaseModel>();
-  @Output()
-  showRemoveCaseModal: EventEmitter<ReportCaseModel> = new EventEmitter<ReportCaseModel>();
-  @Output()
-  downloadPdf: EventEmitter<ReportCaseModel> = new EventEmitter<ReportCaseModel>();
-  @Output()
-  sortChange: EventEmitter<void> = new EventEmitter<void>();
-  queryParams: Params;
-
-  tableHeaders: TableHeaderElementModel[] = [
-    { name: 'Id', elementId: 'idTableHeader', sortable: true },
-    {
-      name: 'FieldValue1',
-      elementId: 'customField1TableHeader',
-      sortable: true,
-      visibleName: 'Maximo arbejdsordre nr',
-    },
-    {
-      name: 'DoneAtUserModifiable',
-      elementId: 'doneAtTableHeader',
-      sortable: true,
-      visibleName: 'Done at',
-    },
-    {
-      name: 'Name',
-      elementId: 'doneByTableHeader',
-      sortable: true,
-      visibleName: 'Done by',
-    },
-    {
-      name: 'ItemName',
-      elementId: 'itemPlanningNameTableHeader',
-      sortable: true,
-      visibleName: 'Area',
-    },
-    {
-      name: 'IsArchived',
-      elementId: 'statusTableHeader',
-      sortable: true,
-      visibleName: 'Status',
-    },
-    { name: 'Actions', elementId: '', sortable: false },
-  ];
+  @Input() tableHeaders: MtxGridColumn[];
+  @Input() paginationTemplate!: TemplateRef<any>;
+  @Input() toolbarTemplate!: TemplateRef<any>;
+  @Output() showArchiveCaseModal: EventEmitter<ReportCaseModel> = new EventEmitter<ReportCaseModel>();
+  @Output() showRemoveCaseModal: EventEmitter<ReportCaseModel> = new EventEmitter<ReportCaseModel>();
+  @Output() downloadPdf: EventEmitter<ReportCaseModel> = new EventEmitter<ReportCaseModel>();
+  @Output() sortChange: EventEmitter<void> = new EventEmitter<void>();
 
   get greateBeltPnClaims() {
     return GreateBeltPnClaims;
   }
 
-  get dateFormat() {
-    return STANDARD_DATE_FORMAT;
-  }
+  public selectReportPaginationIsSortDsc$ = this.store.select(selectReportPaginationIsSortDsc);
+  public selectReportPaginationSort$ = this.store.select(selectReportPaginationSort);
 
   constructor(
+    private store: Store,
     private router: Router,
-    public reportStateService: ReportStateService
+    public reportStateService: ReportStateService,
+    private translateService: TranslateService,
   ) {}
 
   ngOnInit(): void {
-    this.queryParams = { reverseRoute: this.router.url };
   }
 
-  onShowRemoveCaseModal(planning: ReportCaseModel) {
-    this.showRemoveCaseModal.emit(planning);
-  }
-
-  onShowArchiveCaseModal(reportCaseModel: ReportCaseModel) {
-    this.showArchiveCaseModal.emit(reportCaseModel);
-  }
-
-  onDownloadPdf(model: ReportCaseModel) {
-    this.downloadPdf.emit(model);
-  }
-
-  sortTable(sort: string) {
-    this.reportStateService.onSortTable(sort);
+  sortTable(sort: Sort) {
+    this.reportStateService.onSortTable(sort.active);
     this.sortChange.emit();
   }
 }

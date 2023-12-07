@@ -7,7 +7,7 @@ if (( "$GIT_STATUS" > 0 )); then
 	cd eFormAPI/Plugins/GreateBelt.Pn/GreateBelt.Pn
   CURRENT_NUMBER_OF_COMMITS=`git log --oneline | wc -l`
 
-	PACKAGES=('Microting.eForm' 'Microting.eFormApi.BasePn' 'Microting.ItemsPlanningBase' 'Magick.NET-Q16-x64')
+	PACKAGES=('Microting.eForm' 'Microting.eFormApi.BasePn' 'Microting.ItemsPlanningBase')
 	PROJECT_NAME='GreateBelt.Pn.csproj'
 	REPOSITORY='eform-angular-greate-belt-plugin'
 

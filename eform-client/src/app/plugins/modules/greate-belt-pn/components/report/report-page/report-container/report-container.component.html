@@ -1,48 +1,36 @@
-<eform-subheader></eform-subheader>
+<eform-new-subheader></eform-new-subheader>
 
-<div class="container-fluid">
-  <div class="row pl-1">
-    <div class="col-md-2">
-      <div class="md-form">
+<ng-template #toolbarTpl>
+  <div class="d-flex flex-row justify-content-start flex-nowrap">
+    <div class="d-flex flex-column mr-2 ml-2">
+      <mat-form-field>
+        <mat-label>{{ 'Search' | translate }}</mat-label>
         <input
-          mdbInput
-          [ngModel]="reportStateService.getNameFilter() | async"
-          (ngModelChange)="onNameFilterChanged($event)"
+          matInput
           type="text"
-          class="form-control"
+          (ngModelChange)="onNameFilterChanged($event)"
+          [ngModel]="selectReportFiltersNameFilter$ | async"
           id="labelInput"
         />
-        <label for="labelInput">{{ 'Search' | translate }}</label>
-      </div>
+      </mat-form-field>
     </div>
   </div>
-  <app-report-table
-    [reportModel]="reportModel"
-    (showRemoveCaseModal)="showRemoveCaseModal($event)"
-    (showArchiveCaseModal)="showArchiveCaseModal($event)"
-    (downloadPdf)="onDownloadPdf($event)"
-    (sortChange)="getReport()"
-  ></app-report-table>
-  <div class="row justify-content-between mr-2 ml-2">
-    <div class="col-md-1 col-sm-3">
-      <eform-page-size
-        [pageSize]="reportStateService.getPageSize() | async"
-        (onPageSizeChanged)="onPageSizeChanged($event)"
-      >
-      </eform-page-size>
-    </div>
-    <div class="col-md-4 ml-auto d-flex justify-content-end p-2">
-      <eform-pagination
-        [pagination]="reportStateService.getPagination() | async"
-        (onPageChanged)="changePage($event)"
-      ></eform-pagination>
-    </div>
-  </div>
-</div>
-<app-case-archive-modal
-  #caseArchiveModal
-  (caseArchived)="getReport()"
-></app-case-archive-modal>
+</ng-template>
 
-<app-case-remove-modal #caseRemoveModal (onCaseDeleted)="getReport()">
-</app-case-remove-modal>
+<app-report-table
+  [tableHeaders]="tableHeaders"
+  [reportModel]="reportModel"
+  [paginationTemplate]="paginatorTpl"
+  [toolbarTemplate]="toolbarTpl"
+  (showRemoveCaseModal)="showRemoveCaseModal($event)"
+  (showArchiveCaseModal)="showArchiveCaseModal($event)"
+  (downloadPdf)="onDownloadPdf($event)"
+  (sortChange)="getReport()"
+></app-report-table>
+
+<ng-template #paginatorTpl>
+  <eform-pagination
+    [pagination]="selectReportPagination$ | async"
+    (paginationChanged)="onPaginationChanged($event)"
+  ></eform-pagination>
+</ng-template>

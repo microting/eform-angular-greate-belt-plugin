@@ -69,8 +69,15 @@ namespace GreateBelt.Pn.Controllers
                 var language = await _userService.GetCurrentUserLanguage();
                 var item = await _itemsPlanningPnDbContext.Plannings.FirstOrDefaultAsync(x => x.Id == itemId);
 
-                var planningTranslation = await _itemsPlanningPnDbContext.PlanningNameTranslation.FirstOrDefaultAsync(x => x.PlanningId == item.Id && x.Language == language);
-                // Fix for broken SDK not handling empty customXmlContent well
+                var planningTranslation = await _itemsPlanningPnDbContext.PlanningNameTranslation.FirstOrDefaultAsync(x => x.PlanningId == item.Id && x.LanguageId == language.Id);
+
+                var regex = new Regex(@"(\d )(.*)");
+                var matches = regex.Matches(planningTranslation.Name);
+                if (matches.Count > 0)
+                {
+                    planningTranslation.Name = matches[0].Groups[2].Value;
+                }
+
                 string customXml = new XElement("F_ItemName", planningTranslation.Name).ToString();
                 if (templateId == 11 || templateId == 23)
                 {
