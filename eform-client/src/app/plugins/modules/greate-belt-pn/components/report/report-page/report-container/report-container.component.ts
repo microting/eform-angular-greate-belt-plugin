@@ -1,31 +1,30 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import {ActivatedRoute, Params, Route, Router} from '@angular/router';
-import { saveAs } from 'file-saver';
-import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
-import { Subject, Subscription } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {ActivatedRoute, Params, Router} from '@angular/router';
+import {saveAs} from 'file-saver';
+import {AutoUnsubscribe} from 'ngx-auto-unsubscribe';
+import {Subject, Subscription} from 'rxjs';
+import {debounceTime} from 'rxjs/operators';
 import {CaseModel, Paged, PaginationModel} from 'src/app/common/models';
 import {
   CaseArchiveModalComponent,
   CaseRemoveModalComponent,
 } from 'src/app/common/modules/eform-cases/components';
-import { EFormService } from 'src/app/common/services';
-import { AuthStateService } from 'src/app/common/store';
-import { ReportCaseModel } from '../../../../models';
-import { GreateBeltPnClaims } from '../../../../enums';
-import { GreateBeltPnReportService } from '../../../../services';
-import { ReportStateService } from '../../store';
+import {EFormService} from 'src/app/common/services';
+import {AuthStateService} from 'src/app/common/store';
+import {ReportCaseModel} from '../../../../models';
+import {GreateBeltPnReportService} from '../../../../services';
+import {ReportStateService} from '../../store';
 import {MatDialog} from '@angular/material/dialog';
 import {Overlay} from '@angular/cdk/overlay';
 import {dialogConfigHelper} from 'src/app/common/helpers';
 import {MtxGridColumn} from '@ng-matero/extensions/grid';
 import {STANDARD_DATE_FORMAT} from 'src/app/common/const';
 import {TranslateService} from '@ngx-translate/core';
-import {Store} from "@ngrx/store";
+import {Store} from '@ngrx/store';
 import {
   selectReportFiltersNameFilter,
   selectReportPagination
-} from "src/app/plugins/modules/greate-belt-pn/state/report/report.selector";
+} from '../../../../state';
 
 @AutoUnsubscribe()
 @Component({
@@ -34,11 +33,10 @@ import {
   styleUrls: ['./report-container.component.scss'],
 })
 export class ReportContainerComponent implements OnInit, OnDestroy {
-  @ViewChild('caseRemoveModal', { static: true })
+  @ViewChild('caseRemoveModal', {static: true})
   caseRemoveModal: CaseRemoveModalComponent;
   nameSearchSubject = new Subject();
   reportModel: Paged<ReportCaseModel> = new Paged<ReportCaseModel>();
-  //tableHeaders: MtxGridColumn[];
   selectedEformIds: number[] = [];
 
   getReportSub$: Subscription;
@@ -67,7 +65,13 @@ export class ReportContainerComponent implements OnInit, OnDestroy {
       typeParameter: {format: STANDARD_DATE_FORMAT}
     },
     {header: this.translateService.stream('Done by'), field: 'doneBy', sortProp: {id: 'Name'}, sortable: true, class: 'reportCaseDoneBy'},
-    {header: this.translateService.stream('Area'), field: 'itemName', sortProp: {id: 'ItemName'}, sortable: true, class: 'reportCaseItemName'},
+    {
+      header: this.translateService.stream('Area'),
+      field: 'itemName',
+      sortProp: {id: 'ItemName'},
+      sortable: true,
+      class: 'reportCaseItemName'
+    },
     {
       header: this.translateService.stream('Status'),
       field: 'isArchived', sortProp: {id: 'IsArchived'},
@@ -193,7 +197,13 @@ export class ReportContainerComponent implements OnInit, OnDestroy {
           sortable: true,
           class: 'reportCaseCustomField6'
         },
-        {header: this.translateService.stream('Area'), field: 'itemName', sortProp: {id: 'ItemName'}, sortable: true, class: 'reportCaseItemName'},
+        {
+          header: this.translateService.stream('Area'),
+          field: 'itemName',
+          sortProp: {id: 'ItemName'},
+          sortable: true,
+          class: 'reportCaseItemName'
+        },
         {
           header: this.translateService.stream('Done at'),
           field: 'doneAtUserEditable',
@@ -203,7 +213,13 @@ export class ReportContainerComponent implements OnInit, OnDestroy {
           type: 'date',
           typeParameter: {format: STANDARD_DATE_FORMAT}
         },
-        {header: this.translateService.stream('Done by'), field: 'doneBy', sortProp: {id: 'Name'}, sortable: true, class: 'reportCaseDoneBy'},
+        {
+          header: this.translateService.stream('Done by'),
+          field: 'doneBy',
+          sortProp: {id: 'Name'},
+          sortable: true,
+          class: 'reportCaseDoneBy'
+        },
         {
           header: this.translateService.stream('Status'),
           field: 'isArchived', sortProp: {id: 'IsArchived'},
@@ -319,7 +335,13 @@ export class ReportContainerComponent implements OnInit, OnDestroy {
           sortable: true,
           class: 'reportCaseCustomField6'
         },
-        {header: this.translateService.stream('Area'), field: 'itemName', sortProp: {id: 'ItemName'}, sortable: true, class: 'reportCaseItemName'},
+        {
+          header: this.translateService.stream('Area'),
+          field: 'itemName',
+          sortProp: {id: 'ItemName'},
+          sortable: true,
+          class: 'reportCaseItemName'
+        },
         {
           header: this.translateService.stream('Done at'),
           field: 'doneAtUserEditable',
@@ -329,7 +351,13 @@ export class ReportContainerComponent implements OnInit, OnDestroy {
           type: 'date',
           typeParameter: {format: STANDARD_DATE_FORMAT}
         },
-        {header: this.translateService.stream('Done by'), field: 'doneBy', sortProp: {id: 'Name'}, sortable: true, class: 'reportCaseDoneBy'},
+        {
+          header: this.translateService.stream('Done by'),
+          field: 'doneBy',
+          sortProp: {id: 'Name'},
+          sortable: true,
+          class: 'reportCaseDoneBy'
+        },
         {
           header: this.translateService.stream('Status'),
           field: 'isArchived', sortProp: {id: 'IsArchived'},
@@ -402,8 +430,9 @@ export class ReportContainerComponent implements OnInit, OnDestroy {
     this.getReport();
   }
 
-  ngOnInit(
-    ) {this.queryParams = { reverseRoute: this.router.url };}
+  ngOnInit() {
+    this.queryParams = {reverseRoute: this.router.url};
+  }
 
   getReport() {
     this.getReportSub$ = this.reportStateService
@@ -415,22 +444,8 @@ export class ReportContainerComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy(): void {}
-  //
-  // onPageSizeChanged(newPageSize: number) {
-  //   this.reportStateService.updatePageSize(newPageSize);
-  //   this.getReport();
-  // }
-  //
-  // sortTable(sort: string) {
-  //   this.reportStateService.onSortTable(sort);
-  //   this.getReport();
-  // }
-  //
-  // changePage(newPage: any) {
-  //   this.reportStateService.changePage(newPage);
-  //   this.getReport();
-  // }
+  ngOnDestroy(): void {
+  }
 
   onNameFilterChanged(name: string) {
     this.nameSearchSubject.next(name);
@@ -446,13 +461,14 @@ export class ReportContainerComponent implements OnInit, OnDestroy {
             workerName: model.doneBy,
           }),
           templateId: model.templateId
-        }), minWidth: 600})
+        }), minWidth: 600
+      })
       .afterClosed()
       .subscribe(data => data ? this.getReport() : void 0);
   }
 
   showArchiveCaseModal(model: ReportCaseModel) {
-    this.caseArchiveModalComponentAfterClosedSub$= this.dialog.open(CaseArchiveModalComponent, dialogConfigHelper(this.overlay, {
+    this.caseArchiveModalComponentAfterClosedSub$ = this.dialog.open(CaseArchiveModalComponent, dialogConfigHelper(this.overlay, {
       id: model.id,
       doneAt: model.doneAtUserEditable,
       templateId: model.templateId,

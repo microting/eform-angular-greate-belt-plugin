@@ -1,4 +1,4 @@
-import {ReportState} from './report/report.reducer';
+import {ReportState} from './';
 
 export interface GreateBeltState {
   reportState: ReportState;
