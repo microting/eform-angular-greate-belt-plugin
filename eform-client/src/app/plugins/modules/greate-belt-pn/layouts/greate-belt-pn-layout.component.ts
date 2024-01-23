@@ -35,6 +35,6 @@ export class GreateBeltPnLayoutComponent
   }
 
   ngOnDestroy(): void {
-    this.currentUserLocaleAsyncSub$.unsubscribe();
+    //this.currentUserLocaleAsyncSub$.unsubscribe();
   }
 }
