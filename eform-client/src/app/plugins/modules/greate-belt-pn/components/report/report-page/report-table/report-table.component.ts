@@ -6,12 +6,11 @@ import {
   OnInit,
   Output, TemplateRef,
 } from '@angular/core';
-import { Paged, } from 'src/app/common/models';
-import { GreateBeltPnClaims } from '../../../../enums';
-import { ReportStateService } from '../../store';
-import { ReportCaseModel } from '../../../../models';
-import { STANDARD_DATE_FORMAT } from 'src/app/common/const';
-import {Params, Router } from '@angular/router';
+import {Paged,} from 'src/app/common/models';
+import {GreateBeltPnClaims} from '../../../../enums';
+import {ReportStateService} from '../../store';
+import {ReportCaseModel} from '../../../../models';
+import {Router} from '@angular/router';
 import {Sort} from '@angular/material/sort';
 import {MtxGridColumn} from '@ng-matero/extensions/grid';
 import {TranslateService} from '@ngx-translate/core';
@@ -19,7 +18,7 @@ import {Store} from '@ngrx/store';
 import {
   selectReportPaginationIsSortDsc,
   selectReportPaginationSort
-} from "src/app/plugins/modules/greate-belt-pn/state/report/report.selector";
+} from '../../../../state';
 
 @Component({
   selector: 'app-report-table',
@@ -49,7 +48,8 @@ export class ReportTableComponent implements OnInit {
     private router: Router,
     public reportStateService: ReportStateService,
     private translateService: TranslateService,
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
   }

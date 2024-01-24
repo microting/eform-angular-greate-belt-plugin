@@ -1,1 +1,1 @@
-export * from './backend-configuration-pn-claims.const';
+export * from './greate-belt-pn-claims.const';
