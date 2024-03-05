@@ -23,7 +23,7 @@
 
   <ItemGroup>
     <PackageReference Include="McMaster.NETCore.Plugins" Version="1.4.0" />
-    <PackageReference Include="Microting.eForm" Version="8.0.10" />
+    <PackageReference Include="Microting.eForm" Version="8.0.12" />
     <PackageReference Include="Microting.eFormApi.BasePn" Version="8.0.9" />
     <PackageReference Include="Microting.ItemsPlanningBase" Version="8.0.7" />
   </ItemGroup>
