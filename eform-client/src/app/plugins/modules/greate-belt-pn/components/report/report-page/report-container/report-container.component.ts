@@ -310,18 +310,18 @@ export class ReportContainerComponent implements OnInit, OnDestroy {
           class: 'reportCaseCustomField4'
         },
         {
-          header: this.translateService.stream('Fejl'),
-          field: 'customField5',
-          sortProp: {id: 'FieldValue5'},
-          sortable: true,
-          class: 'reportCaseCustomField5'
-        },
-        {
           header: this.translateService.stream('Fejltype'),
           field: 'customField6',
           sortProp: {id: 'FieldValue6'},
           sortable: true,
           class: 'reportCaseCustomField6'
+        },
+        {
+          header: this.translateService.stream('Driftmessige konsekvenser'),
+          field: 'customField7',
+          sortProp: {id: 'FieldValue7'},
+          sortable: true,
+          class: 'reportCaseCustomField7'
         },
         {
           header: this.translateService.stream('Area'),
@@ -573,18 +573,18 @@ export class ReportContainerComponent implements OnInit, OnDestroy {
           class: 'reportCaseCustomField4'
         },
         {
-          header: this.translateService.stream('Fejl'),
-          field: 'customField5',
-          sortProp: {id: 'FieldValue5'},
-          sortable: true,
-          class: 'reportCaseCustomField5'
-        },
-        {
           header: this.translateService.stream('Fejltype'),
           field: 'customField6',
           sortProp: {id: 'FieldValue6'},
           sortable: true,
           class: 'reportCaseCustomField6'
+        },
+        {
+          header: this.translateService.stream('Driftmessige konsekvenser'),
+          field: 'customField7',
+          sortProp: {id: 'FieldValue7'},
+          sortable: true,
+          class: 'reportCaseCustomField7'
         },
         {
           header: this.translateService.stream('Area'),
