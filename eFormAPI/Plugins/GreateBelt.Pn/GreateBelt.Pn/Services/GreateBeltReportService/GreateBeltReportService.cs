@@ -79,6 +79,7 @@ namespace GreateBelt.Pn.Services.GreateBeltReportService
                         CustomField3 = x.FieldValue3,
                         CustomField4 = x.FieldValue4,
                         CustomField5 = x.FieldValue5,
+                        CustomField6 = x.FieldValue6,
                         DoneAtUserEditable = x.DoneAtUserModifiable,
                         DoneBy = x.SiteId == null ? "" : x.Site.Name,
                         x.CheckListId,
@@ -130,6 +131,7 @@ namespace GreateBelt.Pn.Services.GreateBeltReportService
                         CustomField3 = x.CustomField3 ?? "",
                         CustomField4 = x.CustomField4 ?? "",
                         CustomField5 = x.CustomField5 ?? "",
+                        CustomField6 = x.CustomField6 ?? "",
                         DoneAtUserEditable = x.DoneAtUserEditable,
                         DoneBy = x.DoneBy,
                         ItemName = joined
@@ -148,6 +150,7 @@ namespace GreateBelt.Pn.Services.GreateBeltReportService
                     || x.CustomField3.ToLower().Contains(model.NameFilter)
                     || x.CustomField4.ToLower().Contains(model.NameFilter)
                     || x.CustomField5.ToLower().Contains(model.NameFilter)
+                    || x.CustomField6.ToLower().Contains(model.NameFilter)
                     || x.DoneAtUserEditable.ToString().Contains(model.NameFilter)
                     || x.DoneBy.ToLower().Contains(model.NameFilter)
                     || x.ItemName.ToLower().Contains(model.NameFilter))
@@ -211,6 +214,13 @@ namespace GreateBelt.Pn.Services.GreateBeltReportService
                         foundResultQuery = model.IsSortDsc
                             ? foundResultQuery.OrderByDescending(x => x.CustomField5).ToList()
                             : foundResultQuery.OrderBy(x => x.CustomField5).ToList();
+                        break;
+                    }
+                    case "FieldValue6":
+                    {
+                        foundResultQuery = model.IsSortDsc
+                            ? foundResultQuery.OrderByDescending(x => x.CustomField6).ToList()
+                            : foundResultQuery.OrderBy(x => x.CustomField6).ToList();
                         break;
                     }
                     case "DoneAtUserModifiable":

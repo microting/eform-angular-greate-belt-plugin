@@ -17,6 +17,10 @@ export const routes: Routes = [
         component: ReportContainerComponent,
       },
       {
+        path: 'report/storebaelt/ntr',
+        component: ReportContainerComponent,
+      },
+      {
         path: 'report/storebaelt/tr',
         component: ReportContainerComponent,
       },
@@ -30,6 +34,10 @@ export const routes: Routes = [
       },
       {
         path: 'report/oresund/14-dags',
+        component: ReportContainerComponent,
+      },
+      {
+        path: 'report/oresund/ntr',
         component: ReportContainerComponent,
       },
       {

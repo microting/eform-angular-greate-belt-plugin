@@ -1,4 +1,4 @@
-import {GreateBeltState} from 'src/app/plugins/modules/greate-belt-pn/state/greate-belt.state';
+import {GreateBeltState} from '../';
 import {createSelector} from '@ngrx/store';
 
 export const selectGreateBeltPn = (state: { greateBeltPn: GreateBeltState }) => state.greateBeltPn;

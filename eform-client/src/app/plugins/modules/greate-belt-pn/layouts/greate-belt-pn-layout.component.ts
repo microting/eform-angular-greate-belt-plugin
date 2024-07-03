@@ -2,10 +2,11 @@ import {AfterContentInit, Component, OnDestroy, OnInit} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
 import {translates} from './../i18n/translates';
 import {AuthStateService} from 'src/app/common/store';
-import {Subscription} from 'rxjs';
+import {Subscription, tap} from 'rxjs';
 import {LocaleService} from 'src/app/common/services';
-import {selectCurrentUserLocale} from "src/app/state/auth/auth.selector";
-import {Store} from "@ngrx/store";
+import {selectCurrentUserLocale} from 'src/app/state';
+import {Store} from '@ngrx/store';
+import {filter} from 'rxjs/operators';
 
 @Component({
   selector: 'app-greate-belt-pn-layout',
@@ -15,6 +16,7 @@ import {Store} from "@ngrx/store";
 export class GreateBeltPnLayoutComponent
   implements AfterContentInit, OnInit, OnDestroy {
   currentUserLocaleAsyncSub$: Subscription;
+  getTranslationsSub$: Subscription;
   private selectCurrentUserLocale$ = this.store.select(selectCurrentUserLocale);
   constructor(
     private store: Store,
@@ -28,13 +30,19 @@ export class GreateBeltPnLayoutComponent
   }
 
   ngAfterContentInit() {
-    this.selectCurrentUserLocale$.subscribe((locale) => {
-      const i18n = translates[locale];
-      this.translateService.setTranslation(locale, i18n, true);
+    this.currentUserLocaleAsyncSub$ = this.selectCurrentUserLocale$.subscribe((locale) => {
+      this.getTranslationsSub$ = this.translateService.getTranslation(locale).pipe(
+        filter(x => !!x),
+        tap(() => {
+          const i18n = translates[locale];
+          this.translateService.setTranslation(locale, i18n, true);
+        })
+      ).subscribe()
     });
   }
 
   ngOnDestroy(): void {
+    this.getTranslationsSub$.unsubscribe();
     this.currentUserLocaleAsyncSub$.unsubscribe();
   }
 }
