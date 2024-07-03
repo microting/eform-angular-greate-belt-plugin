@@ -2,7 +2,7 @@ name: .NET Master
 
 on:
   push:
-    branches: [ master, stable, angular14 ]
+    branches: [ master, stable, angular15 ]
 
 jobs:
   greate-belt-pn-build:
@@ -79,7 +79,7 @@ jobs:
     - name: Use Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: 18.18.2
+        node-version: 20
     - name: 'Preparing Frontend checkout'
       uses: actions/checkout@v3
       with:
