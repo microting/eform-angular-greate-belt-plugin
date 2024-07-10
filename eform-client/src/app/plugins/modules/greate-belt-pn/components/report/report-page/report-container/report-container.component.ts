@@ -62,7 +62,8 @@ export class ReportContainerComponent implements OnInit, OnDestroy {
       sortable: true,
       class: 'reportCaseDoneAt',
       type: 'date',
-      typeParameter: {format: STANDARD_DATE_FORMAT}
+      typeParameter: {format: 'dd.MM.y HH:mm', timezone: 'utc'}
+      //typeParameter: {format: STANDARD_DATE_FORMAT}
     },
     {header: this.translateService.stream('Done by'), field: 'doneBy', sortProp: {id: 'Name'}, sortable: true, class: 'reportCaseDoneBy'},
     {
@@ -99,6 +100,7 @@ export class ReportContainerComponent implements OnInit, OnDestroy {
       ]
     },
     {
+      pinned: 'right',
       header: this.translateService.stream('Actions'),
       field: 'actions',
       type: 'button',
@@ -211,7 +213,8 @@ export class ReportContainerComponent implements OnInit, OnDestroy {
           sortable: true,
           class: 'reportCaseDoneAt',
           type: 'date',
-          typeParameter: {format: STANDARD_DATE_FORMAT}
+          typeParameter: {format: 'dd.MM.y HH:mm', timezone: 'utc'}
+          //typeParameter: {format: STANDARD_DATE_FORMAT}
         },
         {
           header: this.translateService.stream('Done by'),
@@ -247,6 +250,7 @@ export class ReportContainerComponent implements OnInit, OnDestroy {
           ]
         },
         {
+          pinned: 'right',
           header: this.translateService.stream('Actions'),
           field: 'actions',
           type: 'button',
@@ -337,7 +341,8 @@ export class ReportContainerComponent implements OnInit, OnDestroy {
           sortable: true,
           class: 'reportCaseDoneAt',
           type: 'date',
-          typeParameter: {format: STANDARD_DATE_FORMAT}
+          typeParameter: {format: 'dd.MM.y HH:mm', timezone: 'utc'}
+          //typeParameter: {format: STANDARD_DATE_FORMAT}
         },
         {
           header: this.translateService.stream('Done by'),
@@ -373,6 +378,7 @@ export class ReportContainerComponent implements OnInit, OnDestroy {
           ]
         },
         {
+          pinned: 'right',
           header: this.translateService.stream('Actions'),
           field: 'actions',
           type: 'button',
@@ -475,7 +481,8 @@ export class ReportContainerComponent implements OnInit, OnDestroy {
           sortable: true,
           class: 'reportCaseDoneAt',
           type: 'date',
-          typeParameter: {format: STANDARD_DATE_FORMAT}
+          typeParameter: {format: 'dd.MM.y HH:mm', timezone: 'utc'}
+          //typeParameter: {format: STANDARD_DATE_FORMAT}
         },
         {
           header: this.translateService.stream('Done by'),
@@ -511,6 +518,7 @@ export class ReportContainerComponent implements OnInit, OnDestroy {
           ]
         },
         {
+          pinned: 'right',
           header: this.translateService.stream('Actions'),
           field: 'actions',
           type: 'button',
@@ -600,7 +608,8 @@ export class ReportContainerComponent implements OnInit, OnDestroy {
           sortable: true,
           class: 'reportCaseDoneAt',
           type: 'date',
-          typeParameter: {format: STANDARD_DATE_FORMAT}
+          typeParameter: {format: 'dd.MM.y HH:mm', timezone: 'utc'}
+          //typeParameter: {format: STANDARD_DATE_FORMAT}
         },
         {
           header: this.translateService.stream('Done by'),
@@ -636,6 +645,7 @@ export class ReportContainerComponent implements OnInit, OnDestroy {
           ]
         },
         {
+          pinned: 'right',
           header: this.translateService.stream('Actions'),
           field: 'actions',
           type: 'button',
