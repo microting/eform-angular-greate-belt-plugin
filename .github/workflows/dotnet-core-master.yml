@@ -57,7 +57,7 @@ jobs:
     - name: Extract branch name
       id: extract_branch
       run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
-    - uses: actions/download-artifact@v3
+    - uses: actions/download-artifact@v4.1.7
       with:
         name: greate-belt-container
     - run: docker load -i greate-belt-container.tar
