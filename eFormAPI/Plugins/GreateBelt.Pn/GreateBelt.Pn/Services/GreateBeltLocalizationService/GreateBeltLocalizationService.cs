@@ -27,14 +27,9 @@ namespace GreateBelt.Pn.Services.GreateBeltLocalizationService
     using Microsoft.Extensions.Localization;
     using Microting.eFormApi.BasePn.Localization.Abstractions;
 
-    public class GreateBeltLocalizationService : IGreateBeltLocalizationService
+    public class GreateBeltLocalizationService(IEformLocalizerFactory factory) : IGreateBeltLocalizationService
     {
-        private readonly IStringLocalizer _localizer;
-
-        public GreateBeltLocalizationService(IEformLocalizerFactory factory)
-        {
-            _localizer = factory.Create(typeof(EformGreateBeltPlugin));
-        }
+        private readonly IStringLocalizer _localizer = factory.Create(typeof(EformGreateBeltPlugin));
 
         public string GetString(string key)
         {

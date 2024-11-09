@@ -20,6 +20,7 @@ SOFTWARE.
 
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using Sentry;
 
 namespace GreateBelt.Pn.Services.GreateBeltReportService
 {
@@ -36,34 +37,20 @@ namespace GreateBelt.Pn.Services.GreateBeltReportService
     using Microting.eFormApi.BasePn.Infrastructure.Models.Common;
     using Microting.ItemsPlanningBase.Infrastructure.Data;
 
-    public class GreateBeltReportService : IGreateBeltReportService
+    public class GreateBeltReportService(
+        ILogger<GreateBeltReportService> logger,
+        ItemsPlanningPnDbContext itemsPlanningPnDbContext,
+        IUserService userService,
+        IGreateBeltLocalizationService localizationService,
+        IEFormCoreService core)
+        : IGreateBeltReportService
     {
-        private readonly ILogger<GreateBeltReportService> _logger;
-        private readonly ItemsPlanningPnDbContext _itemsPlanningPnDbContext;
-        private readonly IUserService _userService;
-        private readonly IGreateBeltLocalizationService _localizationService;
-        private readonly IEFormCoreService _core;
-
-        public GreateBeltReportService(
-            ILogger<GreateBeltReportService> logger,
-            ItemsPlanningPnDbContext itemsPlanningPnDbContext,
-            IUserService userService,
-            IGreateBeltLocalizationService localizationService,
-            IEFormCoreService core)
-        {
-            _logger = logger;
-            _itemsPlanningPnDbContext = itemsPlanningPnDbContext;
-            _userService = userService;
-            _localizationService = localizationService;
-            _core = core;
-        }
-
         public async Task<OperationDataResult<Paged<GreateBeltReportIndexModel>>> Index(GreateBeltReportIndexRequestModel model)
         {
             try
             {
-                var core = await _core.GetCore();
-                var sdkDbContext = core.DbContextHelper.GetDbContext();
+                var core1 = await core.GetCore();
+                var sdkDbContext = core1.DbContextHelper.GetDbContext();
 
                 var casesQuery = sdkDbContext.Cases
                     .Where(x => x.WorkflowState != Constants.WorkflowStates.Removed)
@@ -88,7 +75,7 @@ namespace GreateBelt.Pn.Services.GreateBeltReportService
                     .ToListAsync();
 
                 var foundCaseIds = foundCases.Select(x => x.Id).ToList();
-                var planningQuery = _itemsPlanningPnDbContext.Plannings
+                var planningQuery = itemsPlanningPnDbContext.Plannings
                     .Where(x => model.EformIds.Contains(x.RelatedEFormId))
                     .Where(x => x.WorkflowState != Constants.WorkflowStates.Removed)
                     .Select(x => new
@@ -104,7 +91,7 @@ namespace GreateBelt.Pn.Services.GreateBeltReportService
                 var plannings = await planningQuery
                     .ToListAsync();
 
-                var planningCasesQuery = _itemsPlanningPnDbContext.PlanningCases
+                var planningCasesQuery = itemsPlanningPnDbContext.PlanningCases
                     .Include(x => x.Planning)
                     .Where(x => foundCaseIds.Contains(x.MicrotingSdkCaseId))
                     .Where(x => x.Status == 100)
@@ -267,9 +254,11 @@ namespace GreateBelt.Pn.Services.GreateBeltReportService
             }
             catch (Exception e)
             {
-                _logger.LogError(e, $"User {_userService.GetCurrentUserFullName()} logged in from GreateBeltReportService.Index");
+                SentrySdk.CaptureException(e);
+                logger.LogError(e, $"User {userService.GetCurrentUserFullName()} logged in from GreateBeltReportService.Index");
+                logger.LogTrace(e.StackTrace);
                 return new OperationDataResult<Paged<GreateBeltReportIndexModel>>(false,
-                    _localizationService.GetString("ErrorWhileReadCases"));
+                    localizationService.GetString("ErrorWhileReadCases"));
             }
         }
     }
