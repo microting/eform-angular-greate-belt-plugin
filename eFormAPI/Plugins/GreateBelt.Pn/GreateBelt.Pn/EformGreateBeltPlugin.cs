@@ -125,6 +125,7 @@ namespace GreateBelt.Pn
                 {
                     builder.EnableRetryOnFailure();
                     builder.MigrationsAssembly(PluginAssembly().FullName);
+                    builder.TranslateParameterizedCollectionsToConstants();
                 }));
         }
 
