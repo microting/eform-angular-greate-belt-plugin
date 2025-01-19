@@ -40,7 +40,7 @@ jobs:
       run: |-
         docker tag microtingas/greate-belt-container:latest microtingas/greate-belt-container:latest
     - run: docker save microtingas/greate-belt-container:latest -o greate-belt-container.tar
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v3
       with:
         name: greate-belt-container
         path: greate-belt-container.tar
@@ -51,7 +51,7 @@ jobs:
     - uses: actions/checkout@v3
       with:
         path: eform-angular-greate-belt-plugin
-    - uses: actions/download-artifact@v4
+    - uses: actions/download-artifact@v3
       with:
         name: greate-belt-container
     - run: docker load -i greate-belt-container.tar
@@ -113,7 +113,7 @@ jobs:
       run: |
         cat docker_run_log
     - name: DB Configuration
-      uses: cypress-io/github-action@v4
+      uses: cypress-io/github-action@v3
       with:
         start: echo 'hi'
         wait-on: "http://localhost:4200"
@@ -140,7 +140,7 @@ jobs:
         cat docker_run_log
     - name: Archive screenshot artifacts
       if: ${{ failure() }}
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v3
       with:
         name: error Screenshots
         path: |
