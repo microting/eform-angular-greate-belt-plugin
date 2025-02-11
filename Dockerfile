@@ -27,7 +27,7 @@ RUN mkdir -p ./Plugins/ItemsPlanning.Pn
 RUN mkdir -p ./Plugins/GreateBelt.Pn
 COPY --from=build-env /app/ItemsPlanning.Pn/out ./Plugins/ItemsPlanning.Pn
 COPY --from=build-env /app/GreateBelt.Pn/out ./Plugins/GreateBelt.Pn
-COPY --from=node-env /app/dist wwwroot
+COPY --from=node-env /app/dist/browser wwwroot
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV Logging__Console__FormatterName=
