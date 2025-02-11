@@ -9,9 +9,10 @@ import {Store} from '@ngrx/store';
 import {filter} from 'rxjs/operators';
 
 @Component({
-  selector: 'app-greate-belt-pn-layout',
-  template: `
+    selector: 'app-greate-belt-pn-layout',
+    template: `
     <router-outlet></router-outlet>`,
+    standalone: false
 })
 export class GreateBeltPnLayoutComponent
   implements AfterContentInit, OnInit, OnDestroy {

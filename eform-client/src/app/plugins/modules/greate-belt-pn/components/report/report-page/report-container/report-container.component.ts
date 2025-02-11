@@ -28,9 +28,10 @@ import {
 
 @AutoUnsubscribe()
 @Component({
-  selector: 'app-report-container',
-  templateUrl: './report-container.component.html',
-  styleUrls: ['./report-container.component.scss'],
+    selector: 'app-report-container',
+    templateUrl: './report-container.component.html',
+    styleUrls: ['./report-container.component.scss'],
+    standalone: false
 })
 export class ReportContainerComponent implements OnInit, OnDestroy {
   @ViewChild('caseRemoveModal', {static: true})
