@@ -17,7 +17,6 @@ import {filter} from 'rxjs/operators';
 export class GreateBeltPnLayoutComponent
   implements AfterContentInit, OnInit, OnDestroy {
   currentUserLocaleAsyncSub$: Subscription;
-  getTranslationsSub$: Subscription;
   private selectCurrentUserLocale$ = this.store.select(selectCurrentUserLocale);
   constructor(
     private store: Store,
@@ -32,18 +31,12 @@ export class GreateBeltPnLayoutComponent
 
   ngAfterContentInit() {
     this.currentUserLocaleAsyncSub$ = this.selectCurrentUserLocale$.subscribe((locale) => {
-      this.getTranslationsSub$ = this.translateService.getTranslation(locale).pipe(
-        filter(x => !!x),
-        tap(() => {
-          const i18n = translates[locale];
-          this.translateService.setTranslation(locale, i18n, true);
-        })
-      ).subscribe()
+      const i18n = translates[locale];
+      this.translateService.setTranslation(locale, i18n, true);
     });
   }
 
   ngOnDestroy(): void {
-    this.getTranslationsSub$.unsubscribe();
     this.currentUserLocaleAsyncSub$.unsubscribe();
   }
 }
