@@ -32,10 +32,12 @@ export class ReportTableComponent implements OnInit {
   @Input() tableHeaders: MtxGridColumn[];
   @Input() paginationTemplate!: TemplateRef<any>;
   @Input() toolbarTemplate!: TemplateRef<any>;
+  @Input() queryParams: any;
   @Output() showArchiveCaseModal: EventEmitter<ReportCaseModel> = new EventEmitter<ReportCaseModel>();
   @Output() showRemoveCaseModal: EventEmitter<ReportCaseModel> = new EventEmitter<ReportCaseModel>();
   @Output() downloadPdf: EventEmitter<ReportCaseModel> = new EventEmitter<ReportCaseModel>();
   @Output() sortChange: EventEmitter<void> = new EventEmitter<void>();
+  @Output() editCase: EventEmitter<ReportCaseModel> = new EventEmitter<ReportCaseModel>();
 
   get greateBeltPnClaims() {
     return GreateBeltPnClaims;
@@ -58,5 +60,17 @@ export class ReportTableComponent implements OnInit {
   sortTable(sort: Sort) {
     this.reportStateService.onSortTable(sort.active);
     this.sortChange.emit();
+  }
+
+  onEditCase(row: ReportCaseModel) {
+    this.editCase.emit(row);
+  }
+
+  onDownloadPdf(row: ReportCaseModel) {
+    this.downloadPdf.emit(row);
+  }
+
+  onDeleteCase(row: ReportCaseModel) {
+    this.showRemoveCaseModal.emit(row);
   }
 }
