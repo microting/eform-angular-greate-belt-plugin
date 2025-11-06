@@ -18,7 +18,7 @@
 
 <ng-template #actionsTpl let-row let-i="index">
   <div class="report-actions" id="action-items-{{i}}">
-    <button id="actionMenu" mat-icon-button [matMenuTriggerFor]="menu" matTooltip="{{ 'Actions' | translate }}">
+    <button id="actionMenu-{{i}}" mat-icon-button [matMenuTriggerFor]="menu" matTooltip="{{ 'Actions' | translate }}">
       <mat-icon>more_vert</mat-icon>
     </button>
 
@@ -41,10 +41,11 @@
       </button>
       <button
         mat-menu-item
+        color="warn"
         id="deleteCaseBtn-{{i}}"
         (click)="onDeleteCase(row)"
       >
-        <mat-icon color="warn">delete</mat-icon>
+        <mat-icon>delete</mat-icon>
         <span>{{ 'Delete Case' | translate }}</span>
       </button>
     </mat-menu>
