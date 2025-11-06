@@ -14,6 +14,8 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import * as reportReducer from './state/report/report.reducer';
 import {StoreModule} from '@ngrx/store';
+import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu';
+import {MatIcon} from '@angular/material/icon';
 
 @NgModule({
   imports: [
@@ -29,7 +31,11 @@ import {StoreModule} from '@ngrx/store';
     MatInputModule,
     StoreModule.forFeature('greateBeltPn', {
       reportState: reportReducer.reportReducer,
-    })
+    }),
+    MatMenuTrigger,
+    MatIcon,
+    MatMenu,
+    MatMenuItem,
   ],
   declarations: [
     GreateBeltPnLayoutComponent,
