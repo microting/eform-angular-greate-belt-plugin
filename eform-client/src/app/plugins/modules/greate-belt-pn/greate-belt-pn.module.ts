@@ -16,6 +16,7 @@ import * as reportReducer from './state/report/report.reducer';
 import {StoreModule} from '@ngrx/store';
 import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu';
 import {MatIcon} from '@angular/material/icon';
+import {MatIconButton} from "@angular/material/button";
 
 @NgModule({
   imports: [
@@ -36,6 +37,7 @@ import {MatIcon} from '@angular/material/icon';
     MatIcon,
     MatMenu,
     MatMenuItem,
+    MatIconButton
   ],
   declarations: [
     GreateBeltPnLayoutComponent,
