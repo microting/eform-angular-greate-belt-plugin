@@ -22,9 +22,11 @@
   [reportModel]="reportModel"
   [paginationTemplate]="paginatorTpl"
   [toolbarTemplate]="toolbarTpl"
+  [queryParams]="queryParams"
   (showRemoveCaseModal)="showRemoveCaseModal($event)"
   (showArchiveCaseModal)="showArchiveCaseModal($event)"
   (downloadPdf)="onDownloadPdf($event)"
+  (editCase)="onEditCase($event)"
   (sortChange)="getReport()"
 ></app-report-table>
 

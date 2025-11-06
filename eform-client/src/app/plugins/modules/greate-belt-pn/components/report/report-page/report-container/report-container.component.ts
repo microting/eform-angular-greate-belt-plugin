@@ -104,30 +104,7 @@ export class ReportContainerComponent implements OnInit, OnDestroy {
       pinned: 'right',
       header: this.translateService.stream('Actions'),
       field: 'actions',
-      type: 'button',
-      buttons: [
-        {
-          type: 'icon',
-          icon: 'edit',
-          color: 'accent',
-          tooltip: this.translateService.stream('Edit Case'),
-          click: (rowData: ReportCaseModel) => this.router.navigate(['/cases/edit/' + rowData.id + '/' + rowData.templateId], {queryParams: this.queryParams}),
-        },
-        {
-          type: 'icon',
-          icon: 'picture_as_pdf',
-          color: 'accent',
-          tooltip: this.translateService.stream('Download PDF'),
-          click: (rowData: ReportCaseModel) => this.onDownloadPdf(rowData),
-        },
-        {
-          color: 'warn',
-          type: 'icon',
-          icon: 'delete',
-          tooltip: this.translateService.stream('Delete Case'),
-          click: (rowData: ReportCaseModel) => this.onShowRemoveCaseModal(rowData),
-        },
-      ]
+      width: '160px',
     },
   ];
   public selectReportFiltersNameFilter$ = this.store.select(selectReportFiltersNameFilter);
@@ -254,30 +231,7 @@ export class ReportContainerComponent implements OnInit, OnDestroy {
           pinned: 'right',
           header: this.translateService.stream('Actions'),
           field: 'actions',
-          type: 'button',
-          buttons: [
-            {
-              type: 'icon',
-              icon: 'edit',
-              color: 'accent',
-              tooltip: this.translateService.stream('Edit Case'),
-              click: (rowData: ReportCaseModel) => this.router.navigate(['/cases/edit/' + rowData.id + '/' + rowData.templateId], {queryParams: this.queryParams}),
-            },
-            {
-              type: 'icon',
-              icon: 'picture_as_pdf',
-              color: 'accent',
-              tooltip: this.translateService.stream('Download PDF'),
-              click: (rowData: ReportCaseModel) => this.onDownloadPdf(rowData),
-            },
-            {
-              color: 'warn',
-              type: 'icon',
-              icon: 'delete',
-              tooltip: this.translateService.stream('Delete Case'),
-              click: (rowData: ReportCaseModel) => this.onShowRemoveCaseModal(rowData),
-            },
-          ]
+          width: '160px',
         },
       ];
     }
@@ -382,30 +336,7 @@ export class ReportContainerComponent implements OnInit, OnDestroy {
           pinned: 'right',
           header: this.translateService.stream('Actions'),
           field: 'actions',
-          type: 'button',
-          buttons: [
-            {
-              type: 'icon',
-              icon: 'edit',
-              color: 'accent',
-              tooltip: this.translateService.stream('Edit Case'),
-              click: (rowData: ReportCaseModel) => this.router.navigate(['/cases/edit/' + rowData.id + '/' + rowData.templateId], {queryParams: this.queryParams}),
-            },
-            {
-              type: 'icon',
-              icon: 'picture_as_pdf',
-              color: 'accent',
-              tooltip: this.translateService.stream('Download PDF'),
-              click: (rowData: ReportCaseModel) => this.onDownloadPdf(rowData),
-            },
-            {
-              color: 'warn',
-              type: 'icon',
-              icon: 'delete',
-              tooltip: this.translateService.stream('Delete Case'),
-              click: (rowData: ReportCaseModel) => this.onShowRemoveCaseModal(rowData),
-            },
-          ]
+          width: '160px',
         },
       ];
     }
@@ -522,30 +453,7 @@ export class ReportContainerComponent implements OnInit, OnDestroy {
           pinned: 'right',
           header: this.translateService.stream('Actions'),
           field: 'actions',
-          type: 'button',
-          buttons: [
-            {
-              type: 'icon',
-              icon: 'edit',
-              color: 'accent',
-              tooltip: this.translateService.stream('Edit Case'),
-              click: (rowData: ReportCaseModel) => this.router.navigate(['/cases/edit/' + rowData.id + '/' + rowData.templateId], {queryParams: this.queryParams}),
-            },
-            {
-              type: 'icon',
-              icon: 'picture_as_pdf',
-              color: 'accent',
-              tooltip: this.translateService.stream('Download PDF'),
-              click: (rowData: ReportCaseModel) => this.onDownloadPdf(rowData),
-            },
-            {
-              color: 'warn',
-              type: 'icon',
-              icon: 'delete',
-              tooltip: this.translateService.stream('Delete Case'),
-              click: (rowData: ReportCaseModel) => this.onShowRemoveCaseModal(rowData),
-            },
-          ]
+          width: '160px',
         },
       ];
     }
@@ -761,6 +669,10 @@ export class ReportContainerComponent implements OnInit, OnDestroy {
 
   onShowArchiveCaseModal(reportCaseModel: ReportCaseModel) {
     this.showArchiveCaseModal(reportCaseModel);
+  }
+
+  onEditCase(model: ReportCaseModel) {
+    this.router.navigate(['/cases/edit/' + model.id + '/' + model.templateId], {queryParams: this.queryParams});
   }
 
   // onDownloadPdf(model: ReportCaseModel) {

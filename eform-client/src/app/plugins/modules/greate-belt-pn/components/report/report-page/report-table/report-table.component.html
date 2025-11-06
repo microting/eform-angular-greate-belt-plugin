@@ -1,6 +1,9 @@
 <mtx-grid
   [data]="reportModel.entities"
   [columns]="tableHeaders"
+  [cellTemplate]="{
+    actions: actionsTpl
+  }"
   [showPaginator]="true"
   [paginationTemplate]="paginationTemplate"
   [pageOnFront]="false"
@@ -13,21 +16,38 @@
   (sortChange)="sortTable($event)"
 ></mtx-grid>
 
-<!--<ng-template #statusTpl let-row let-i=index>-->
-<!--  <button-->
-<!--    mat-icon-button-->
-<!--    color="primary"-->
-<!--    (click)="editEntity(row)"-->
-<!--    [disabled]="!reportModel.canEdit"-->
-<!--  >-->
-<!--    <mat-icon>edit</mat-icon>-->
-<!--  </button>-->
-<!--  <button-->
-<!--    mat-icon-button-->
-<!--    color="warn"-->
-<!--    (click)="deleteEntity(row)"-->
-<!--    [disabled]="!reportModel.canDelete"-->
-<!--  >-->
-<!--    <mat-icon>delete</mat-icon>-->
-<!--  </button>-->
-<!--</ng-template>-->
+<ng-template #actionsTpl let-row let-i="index">
+  <div class="report-actions" id="action-items-{{i}}">
+    <button id="actionMenu-{{i}}" mat-icon-button [matMenuTriggerFor]="menu" matTooltip="{{ 'Actions' | translate }}">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+
+    <mat-menu #menu="matMenu">
+      <button
+        mat-menu-item
+        id="editCaseBtn-{{i}}"
+        (click)="onEditCase(row)"
+      >
+        <mat-icon>edit</mat-icon>
+        <span>{{ 'Edit Case' | translate }}</span>
+      </button>
+      <button
+        mat-menu-item
+        id="downloadPdfBtn-{{i}}"
+        (click)="onDownloadPdf(row)"
+      >
+        <mat-icon>picture_as_pdf</mat-icon>
+        <span>{{ 'Download PDF' | translate }}</span>
+      </button>
+      <button
+        mat-menu-item
+        color="warn"
+        id="deleteCaseBtn-{{i}}"
+        (click)="onDeleteCase(row)"
+      >
+        <mat-icon color="warn">delete</mat-icon>
+        <span>{{ 'Delete Case' | translate }}</span>
+      </button>
+    </mat-menu>
+  </div>
+</ng-template>
