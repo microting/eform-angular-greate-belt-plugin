@@ -69,7 +69,7 @@ class PluginRowObject {
   rowNumber: number;
 
   public async getRow(rowNum: number): Promise<PluginRowObject> {
-    this.rowNumber= rowNum -1;
+    this.rowNumber = rowNum - 1;
 
     this.id = +await ($('#plugin-id'+this.rowNumber)).getText();
     this.name = await (await $('#plugin-name'+this.rowNumber)).getText();
