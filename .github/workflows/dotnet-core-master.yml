@@ -49,7 +49,7 @@ jobs:
         path: greate-belt-container.tar
   greate-betl-pn-test:
     needs: greate-belt-pn-build
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
       with:
