@@ -15,10 +15,7 @@ export const config: Options.Testrunner = {
     // directory is where your package.json resides, so `wdio` will be called from there.
     //
     specs: [
-      'e2e/Tests/workflow-settings/application-settings.plugins-page.spec.ts',
-      'e2e/Tests/workflow-general/workflow.sorting.ts',
-      'e2e/Tests/workflow-general/workflow.filtration.ts',
-      'e2e/Tests/workflow-general/workflow.edit.ts',
+      'e2e/Tests/greate-belt-settings/application-settings.plugins-page.spec.ts',
     ],
     suites: {
         settings: [
