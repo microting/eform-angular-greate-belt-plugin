@@ -23,7 +23,7 @@ export class ReportStateService {
   private selectReportPagination$ = this.store.select(selectReportPagination);
   private selectReportFilters$ = this.store.select(selectReportFilters);
   currentPagination: CommonPaginationState;
-  currentFilters:FiltrationStateModel;
+  currentFilters: FiltrationStateModel;
 
   constructor() {
     this.selectReportPagination$.subscribe((x) => this.currentPagination = x);
