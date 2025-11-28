@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 import {saveAs} from 'file-saver';
 import {AutoUnsubscribe} from 'ngx-auto-unsubscribe';
@@ -34,6 +34,17 @@ import {
     standalone: false
 })
 export class ReportContainerComponent implements OnInit, OnDestroy {
+  private reportService = inject(GreateBeltPnReportService);
+  public reportStateService = inject(ReportStateService);
+  public authStateService = inject(AuthStateService);
+  private eFormService = inject(EFormService);
+  private route = inject(ActivatedRoute);
+  private store = inject(Store);
+  private router = inject(Router);
+  public dialog = inject(MatDialog);
+  private overlay = inject(Overlay);
+  private translateService = inject(TranslateService);
+
   @ViewChild('caseRemoveModal', {static: true})
   caseRemoveModal: CaseRemoveModalComponent;
   nameSearchSubject = new Subject();
@@ -110,18 +121,7 @@ export class ReportContainerComponent implements OnInit, OnDestroy {
   public selectReportFiltersNameFilter$ = this.store.select(selectReportFiltersNameFilter);
   public selectReportPagination$ = this.store.select(selectReportPagination);
 
-  constructor(
-    private reportService: GreateBeltPnReportService,
-    public reportStateService: ReportStateService,
-    public authStateService: AuthStateService,
-    private eFormService: EFormService,
-    private route: ActivatedRoute,
-    private store: Store,
-    private router: Router,
-    public dialog: MatDialog,
-    private overlay: Overlay,
-    private translateService: TranslateService,
-  ) {
+  constructor() {
     this.nameSearchSubject.pipe(debounceTime(500)).subscribe((val) => {
       this.reportStateService.updateNameFilter(val.toString());
       this.getReport();

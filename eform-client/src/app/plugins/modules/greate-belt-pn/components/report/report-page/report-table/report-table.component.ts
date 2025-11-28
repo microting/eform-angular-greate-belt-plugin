@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
+  inject,
   Input,
   OnInit,
   Output, TemplateRef,
@@ -28,6 +29,11 @@ import {
     standalone: false
 })
 export class ReportTableComponent implements OnInit {
+  private store = inject(Store);
+  private router = inject(Router);
+  public reportStateService = inject(ReportStateService);
+  private translateService = inject(TranslateService);
+
   @Input() reportModel: Paged<ReportCaseModel> = new Paged<ReportCaseModel>();
   @Input() tableHeaders: MtxGridColumn[];
   @Input() paginationTemplate!: TemplateRef<any>;
@@ -45,14 +51,6 @@ export class ReportTableComponent implements OnInit {
 
   public selectReportPaginationIsSortDsc$ = this.store.select(selectReportPaginationIsSortDsc);
   public selectReportPaginationSort$ = this.store.select(selectReportPaginationSort);
-
-  constructor(
-    private store: Store,
-    private router: Router,
-    public reportStateService: ReportStateService,
-    private translateService: TranslateService,
-  ) {
-  }
 
   ngOnInit(): void {
   }

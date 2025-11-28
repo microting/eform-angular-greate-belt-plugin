@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { OperationDataResult, Paged } from 'src/app/common/models';
 import { ApiBaseService } from 'src/app/common/services';
@@ -13,7 +13,7 @@ export let GreateBeltPnPropertiesMethods = {
   providedIn: 'root',
 })
 export class GreateBeltPnReportService {
-  constructor(private apiBaseService: ApiBaseService) {}
+  private apiBaseService = inject(ApiBaseService);
 
   getReport(
     model: ReportRequestModel
