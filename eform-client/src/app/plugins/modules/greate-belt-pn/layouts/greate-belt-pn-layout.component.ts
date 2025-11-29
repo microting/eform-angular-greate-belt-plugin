@@ -1,4 +1,4 @@
-import {AfterContentInit, Component, OnDestroy, OnInit} from '@angular/core';
+import {AfterContentInit, Component, inject, OnDestroy, OnInit} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
 import {translates} from './../i18n/translates';
 import {AuthStateService} from 'src/app/common/store';
@@ -16,15 +16,13 @@ import {filter} from 'rxjs/operators';
 })
 export class GreateBeltPnLayoutComponent
   implements AfterContentInit, OnInit, OnDestroy {
+  private store = inject(Store);
+  private localeService = inject(LocaleService);
+  private translateService = inject(TranslateService);
+  private authStateService = inject(AuthStateService);
+
   currentUserLocaleAsyncSub$: Subscription;
   private selectCurrentUserLocale$ = this.store.select(selectCurrentUserLocale);
-  constructor(
-    private store: Store,
-    private localeService: LocaleService,
-    private translateService: TranslateService,
-    private authStateService: AuthStateService
-  ) {
-  }
 
   ngOnInit(): void {
   }

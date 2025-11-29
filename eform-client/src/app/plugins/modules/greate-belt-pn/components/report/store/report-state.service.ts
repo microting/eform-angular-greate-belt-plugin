@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import {tap} from 'rxjs';
 import {
   CommonPaginationState,
@@ -18,14 +18,14 @@ import {
 
 @Injectable({ providedIn: 'root' })
 export class ReportStateService {
+  private store = inject(Store);
+  private service = inject(GreateBeltPnReportService);
   private selectReportPagination$ = this.store.select(selectReportPagination);
   private selectReportFilters$ = this.store.select(selectReportFilters);
   currentPagination: CommonPaginationState;
-  currentFilters:FiltrationStateModel;
-    constructor(
-    private store: Store,
-    private service: GreateBeltPnReportService,
-  ) {
+  currentFilters: FiltrationStateModel;
+
+  constructor() {
     this.selectReportPagination$.subscribe((x) => this.currentPagination = x);
     this.selectReportFilters$.subscribe((x) => this.currentFilters = x);
   }
