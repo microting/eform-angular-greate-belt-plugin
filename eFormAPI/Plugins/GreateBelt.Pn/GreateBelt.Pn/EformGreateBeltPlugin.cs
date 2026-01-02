@@ -51,7 +51,6 @@ namespace GreateBelt.Pn
         public string PluginPath => PluginAssembly().Location;
         public string PluginBaseUrl => "greate-belt-pn";
 
-        private string _connectionString;
         //private IBus _bus;
 
         public Assembly PluginAssembly()
@@ -125,7 +124,6 @@ namespace GreateBelt.Pn
                 {
                     builder.EnableRetryOnFailure();
                     builder.MigrationsAssembly(PluginAssembly().FullName);
-                    builder.TranslateParameterizedCollectionsToConstants();
                 }));
         }
 
