@@ -214,6 +214,10 @@ jobs:
         mkdir -p eform-angular-frontend/eFormAPI/eFormAPI.Web/Plugins
         cd eform-angular-frontend/eform-client && ../../eform-angular-items-planning-plugin/testinginstallpn.sh
         ../../eform-angular-greate-belt-plugin/testinginstallpn.sh
+    - name: yarn install
+      run: cd eform-angular-frontend/eform-client && yarn install
+    - name: Install Playwright browsers
+      run: cd eform-angular-frontend/eform-client && npx playwright install --with-deps chromium
     - name: Start the newly build Docker container
       id: docker-run
       run: docker run --name my-container -p 4200:5000 --network data microtingas/greate-belt-container:latest "/ConnectionString=host=mariadbtest;Database=420_Angular;user=root;password=secretpassword;port=3306;Convert Zero Datetime = true;SslMode=none;" > docker_run_log 2>&1 &
