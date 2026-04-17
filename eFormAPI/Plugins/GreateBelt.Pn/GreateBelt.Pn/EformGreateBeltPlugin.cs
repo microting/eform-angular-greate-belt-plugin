@@ -118,7 +118,7 @@ namespace GreateBelt.Pn
             var itemsPlannigConnectionString = connectionString.Replace(
                 "eform-angular-greate-belt-plugin",
                 "eform-angular-items-planning-plugin");
-            services.AddDbContext<ItemsPlanningPnDbContext>(o =>
+            services.AddDbContextPool<ItemsPlanningPnDbContext>(o =>
                 o.UseMySql(itemsPlannigConnectionString, new MariaDbServerVersion(
                     new Version(10, 4, 0)), mySqlOptionsAction: builder =>
                 {
