@@ -6,13 +6,13 @@ import {Subscription, tap} from 'rxjs';
 import {LocaleService} from 'src/app/common/services';
 import {selectCurrentUserLocale} from 'src/app/state';
 import {Store} from '@ngrx/store';
-import {filter} from 'rxjs/operators';
+import {RouterOutlet} from '@angular/router';
 
 @Component({
     selector: 'app-greate-belt-pn-layout',
     template: `
     <router-outlet></router-outlet>`,
-    standalone: false
+    imports: [RouterOutlet]
 })
 export class GreateBeltPnLayoutComponent
   implements AfterContentInit, OnInit, OnDestroy {

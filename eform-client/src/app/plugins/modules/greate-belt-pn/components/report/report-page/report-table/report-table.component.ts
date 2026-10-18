@@ -13,8 +13,13 @@ import {ReportStateService} from '../../store';
 import {ReportCaseModel} from '../../../../models';
 import {Router} from '@angular/router';
 import {Sort} from '@angular/material/sort';
-import {MtxGridColumn} from '@ng-matero/extensions/grid';
-import {TranslateService} from '@ngx-translate/core';
+import {MtxGrid, MtxGridColumn} from '@ng-matero/extensions/grid';
+import {TranslatePipe, TranslateService} from '@ngx-translate/core';
+import {AsyncPipe} from '@angular/common';
+import {MatIconButton} from '@angular/material/button';
+import {MatIcon} from '@angular/material/icon';
+import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu';
+import {MatTooltip} from '@angular/material/tooltip';
 import {Store} from '@ngrx/store';
 import {
   selectReportPaginationIsSortDsc,
@@ -26,7 +31,17 @@ import {
     templateUrl: './report-table.component.html',
     styleUrls: ['./report-table.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    imports: [
+        MtxGrid,
+        AsyncPipe,
+        MatIconButton,
+        MatIcon,
+        MatMenu,
+        MatMenuItem,
+        MatMenuTrigger,
+        MatTooltip,
+        TranslatePipe,
+    ]
 })
 export class ReportTableComponent implements OnInit {
   private store = inject(Store);
