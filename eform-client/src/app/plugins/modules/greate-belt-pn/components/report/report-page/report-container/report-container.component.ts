@@ -19,7 +19,13 @@ import {Overlay} from '@angular/cdk/overlay';
 import {dialogConfigHelper} from 'src/app/common/helpers';
 import {MtxGridColumn} from '@ng-matero/extensions/grid';
 import {STANDARD_DATE_FORMAT} from 'src/app/common/const';
-import {TranslateService} from '@ngx-translate/core';
+import {TranslatePipe, TranslateService} from '@ngx-translate/core';
+import {AsyncPipe} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {MatFormField, MatLabel} from '@angular/material/form-field';
+import {MatInput} from '@angular/material/input';
+import {EformNewSubheaderComponent, EformPaginationComponent} from 'src/app/common/modules/eform-shared/components';
+import {ReportTableComponent} from '../report-table/report-table.component';
 import {Store} from '@ngrx/store';
 import {
   selectReportFiltersNameFilter,
@@ -31,7 +37,17 @@ import {
     selector: 'app-report-container',
     templateUrl: './report-container.component.html',
     styleUrls: ['./report-container.component.scss'],
-    standalone: false
+    imports: [
+        EformNewSubheaderComponent,
+        EformPaginationComponent,
+        ReportTableComponent,
+        MatFormField,
+        MatLabel,
+        MatInput,
+        FormsModule,
+        AsyncPipe,
+        TranslatePipe,
+    ]
 })
 export class ReportContainerComponent implements OnInit, OnDestroy {
   private reportService = inject(GreateBeltPnReportService);
