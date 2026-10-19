@@ -1,48 +1,17 @@
-import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
-import {FormsModule} from '@angular/forms';
-import {RouterModule} from '@angular/router';
-import {TranslateModule} from '@ngx-translate/core';
-import {EformCasesModule} from 'src/app/common/modules/eform-cases/eform-cases.module';
-import {EformSharedModule} from 'src/app/common/modules/eform-shared/eform-shared.module';
-import {ReportContainerComponent, ReportTableComponent} from './components';
-import {GreateBeltPnRouting} from './greate-belt-pn.routing.module';
-import {GreateBeltPnLayoutComponent} from './layouts';
-import {GreateBeltPnReportService} from './services';
-import {MtxGridModule} from '@ng-matero/extensions/grid';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatInputModule} from '@angular/material/input';
-import * as reportReducer from './state/report/report.reducer';
+import {MatDialogModule} from '@angular/material/dialog';
 import {StoreModule} from '@ngrx/store';
-import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu';
-import {MatIcon} from '@angular/material/icon';
-import {MatIconButton} from "@angular/material/button";
+import {GreateBeltPnRouting} from './greate-belt-pn.routing.module';
+import {GreateBeltPnReportService} from './services';
+import * as reportReducer from './state/report/report.reducer';
 
 @NgModule({
   imports: [
-    CommonModule,
-    TranslateModule,
-    FormsModule,
-    EformSharedModule,
-    RouterModule,
+    MatDialogModule,
     GreateBeltPnRouting,
-    EformCasesModule,
-    MtxGridModule,
-    MatFormFieldModule,
-    MatInputModule,
     StoreModule.forFeature('greateBeltPn', {
       reportState: reportReducer.reportReducer,
     }),
-    MatMenuTrigger,
-    MatIcon,
-    MatMenu,
-    MatMenuItem,
-    MatIconButton
-  ],
-  declarations: [
-    GreateBeltPnLayoutComponent,
-    ReportContainerComponent,
-    ReportTableComponent,
   ],
   providers: [GreateBeltPnReportService],
 })
