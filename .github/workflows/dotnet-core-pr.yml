@@ -46,7 +46,7 @@ jobs:
         path: greate-belt-container.tar
   greate-betl-pn-test:
     needs: greate-belt-pn-build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04 # Playwright cannot install chromium on ubuntu-latest (26.04) yet, see microting/eform-angular-frontend#8222
     steps:
     - uses: actions/checkout@v3
       with:
