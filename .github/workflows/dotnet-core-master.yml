@@ -8,21 +8,21 @@ jobs:
   greate-belt-pn-build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         path: eform-angular-greate-belt-plugin
     - name: Extract branch name
       id: extract_branch
       run: echo "branch=$(echo ${GITHUB_REF#refs/heads/})" >> $GITHUB_OUTPUT
     - name: 'Preparing Frontend checkout'
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         fetch-depth: 0
         repository: microting/eform-angular-frontend
         ref: ${{ steps.extract_branch.outputs.branch }}
         path: eform-angular-frontend
     - name: 'Preparing items planning checkout'
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         fetch-depth: 0
         repository: microting/eform-angular-items-planning-plugin
@@ -51,7 +51,7 @@ jobs:
     needs: greate-belt-pn-build
     runs-on: ubuntu-24.04 # Playwright cannot install chromium on ubuntu-latest (26.04) yet, see microting/eform-angular-frontend#8222
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         path: eform-angular-greate-belt-plugin
     - name: Extract branch name
@@ -81,13 +81,13 @@ jobs:
       with:
         node-version: 22
     - name: 'Preparing Frontend checkout'
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         repository: microting/eform-angular-frontend
         ref: ${{ steps.extract_branch.outputs.branch }}
         path: eform-angular-frontend
     - name: 'Preparing ItemsPlanning checkout'
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         repository: microting/eform-angular-items-planning-plugin
         ref: ${{ steps.extract_branch.outputs.branch }}
@@ -141,7 +141,7 @@ jobs:
   greatebelt-dotnet-test:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         path: eform-angular-greate-belt-plugin
     - name: Create docker network
@@ -153,9 +153,9 @@ jobs:
     - name: Sleep 15 seconds
       run: sleep 15
     - name: Setup .NET Core
-      uses: actions/setup-dotnet@v3
+      uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 10.0.x
+        dotnet-version: 11.0.x
     - name: Build
       run: dotnet build eform-angular-greate-belt-plugin/eFormAPI/Plugins/GreateBelt.Pn/GreateBelt.Pn.sln
     - name: Unit Tests
@@ -168,7 +168,7 @@ jobs:
       matrix:
         test: [a]
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         path: eform-angular-greate-belt-plugin
     - name: Extract branch name
@@ -193,13 +193,13 @@ jobs:
       with:
         node-version: 22
     - name: 'Preparing Frontend checkout'
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         repository: microting/eform-angular-frontend
         ref: ${{ steps.extract_branch.outputs.branch }}
         path: eform-angular-frontend
     - name: 'Preparing ItemsPlanning checkout'
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         repository: microting/eform-angular-items-planning-plugin
         ref: ${{ steps.extract_branch.outputs.branch }}
